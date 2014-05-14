@@ -1,8 +1,12 @@
 # Complex Task Allocation
 
+## Links
+
 Check out the [issues page](https://github.com/lucaswoj/ece457a/issues) for remaining tasks
 
 Use [this link to email all group members](mailto: lucas@lucaswoj.com,amaguire@uwaterloo.ca,dlwcarr@uwaterloo.ca,ardobrik@uwaterloo.ca,asweinga@uwaterloo.ca)
+
+The [project requirements as they are published on the course website](http://www.alaakhamis.org/teaching/ECE457A/projects.html)
 
 ## Team Members
 
@@ -12,7 +16,11 @@ Use [this link to email all group members](mailto: lucas@lucaswoj.com,amaguire@u
  - Dane Carr
  - Austin Dobrik
 
-## Project Requirements
+## Topic
+
+In mobile surveillance systems, complex task allocation addresses how to optimally assign a set of surveillance tasks to a set of mobile sensing agents to maximize overall expected performance, taking into account the priorities of the tasks and the skill ratings of the mobile sensors. Ref. Alaa Khamis, Ahmed Elmogy and Fakhreddine Karray, "Complex Task Allocation in Mobile Surveillance Systems," Journal of Intelligent and Robotic Systems, Springer], [Mohamed Badreldin, Ahmed Hussein and Alaa Khamis, "A Comparative Study between Optimization and Market-based Approaches to Multi-robot Task Allocation," Advances in Artificial Intelligence Journal, 2013.] and [Alaa Khamis, Cooperative Multirobot Systems, Plenary Talk at IAC2014].
+
+## Requirements
 
 Projects must be done in group of 5 students. Teamwork helps to achieve more than what could ever be achieved on your own, improve problem solving, foster creativity and innovation and improve decision making. Teams of students must conceive, design and develop the project. Different issues should be considered to form a collaborative team such as responsibility for assignment, team composition (hard and soft skills, previous academic performance, etc.) and the schedule of the team members (how easy to establish regular face-to-face meetings). Once team is formed, students should be willing to subordinate their personal preferences to the decisions of the team, and be willing to compromise in order to achieve a group consensus. As team work should have team rewards, team members will receive a common grade. However a free-riding team member will be penalized if a common and repetitive negative feedback (peer evaluations) received from the other team members. This feedback will be investigated before deciding the penalty. "Coming together is a beginning, keeping together is progress and working together is success", Henry Ford (1863-1947), founder of the Ford Motor Company and father of modern assembly lines.
 
