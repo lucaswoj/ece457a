@@ -6,7 +6,7 @@ Check out the [issues page](https://github.com/lucaswoj/ece457a/issues) for rema
 
 Use [this link to email all group members](mailto: lucas@lucaswoj.com,amaguire@uwaterloo.ca,dlwcarr@uwaterloo.ca,ardobrik@uwaterloo.ca,asweinga@uwaterloo.ca)
 
-The [project requirements as they are published on the course website](http://www.alaakhamis.org/teaching/ECE457A/projects.html)
+Reference the [project requirements as they are published on the course website](http://www.alaakhamis.org/teaching/ECE457A/projects.html)
 
 ## Team Members
 
