@@ -1,0 +1,71 @@
+\documentclass[a4paper]{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{parskip}
+\usepackage{amssymb}
+
+\newcommand{\coinblack}{\blacksquare}
+\newcommand{\coinwhite}{\square}
+\newcommand{\coinempty}{-}
+
+\title{ECE457a Assignment 1}
+
+\author{Lucas Wojciechowksi, Ariel Weingarten, Alexander Macguire, Austin Dobrik, Dane Carr}
+
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Question 1}
+
+\subsection{Part A}
+
+The game board consists of 7 squares, indexed from 0 to 6.
+
+We can define every state within the game as a 7-tuple containing
+\begin{itemize}
+\item 3 black coins, denoted $\coinblack$
+\item 2 white coins, denoted $\coinwhite$
+\item 2 emptys, denoted $\coinempty$
+\end{itemize}
+The inital state is $s_0 = (\coinempty \coinempty \coinblack \coinwhite \coinblack \coinwhite \coinblack)$
+
+Coins are moved as adjacent pairs. We define a pair of coins as $p_i$, where $i$ is the lowest-indexed square on which the coins rest. In the initial state, the first pair of coins is $p_2$.
+
+Empty squares on the board always exist as a single adjacent pair, which we will also define by its lowest-indexed square. On the initial game board, the empty pair is at $p_0$.
+
+Lets define a function, $\text{empty\_pair}(s)$ which, given a state $s$, returns the empty pair on the board. For example. $\text{empty\_pair}(s_0) = p_0$.
+
+In any game state, $s$, the valid pairs are
+$$\{p_i | i \in [0, 5], i \not\in [\text{empty\_pair}(s) - 1, \text{empty\_pair}(s) + 1]\}$$
+Each of these pairs corresponds with exactly one valid move
+$$p_i \rightarrow \text{empty\_pair}(s)$$
+
+
+
+\subsection{Part B}
+
+\subsubsection{Breadth First Search}
+
+\subsubsection{Depth First Search (with depth limit of 3)}
+
+\subsubsection{Hill Climbing Search}
+
+\subsubsection{Best First Search (using heuristic developed in previous answer}
+
+\subsubsection{Compare the performance of the above search strategies in terms of the number of nodes generated}
+
+\section{Question 2}
+
+% Insert picture of the MIN MAX tree from assignment
+
+\subsection{Part A}
+
+
+
+
+\end{document}
