@@ -41,7 +41,7 @@ Empty squares on the board always exist as a single adjacent pair, which we will
 Lets define a function, $\text{empty\_pair}(s)$ which, given a state $s$, returns the empty pair on the board. For example. $\text{empty\_pair}(s_0) = p_0$.
 
 In any game state, $s$, the valid pairs are
-$$\{p_i | i \in [0, 5], i \not\in [\text{empty\_pair}(s) - 1, \text{empty\_pair}(s) + 1]\}$$
+$$\{p_i | i \in [0, 5] \backslash [\text{empty\_pair}(s) - 1, \text{empty\_pair}(s) + 1]\}$$
 Each of these pairs corresponds with exactly one valid move
 $$p_i \rightarrow \text{empty\_pair}(s)$$
 
