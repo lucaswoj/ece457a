@@ -300,9 +300,6 @@ function newgame_Callback(hObject, eventdata, handles)
     if turn==1
         decision(handles);
     end
-    % OKAY CONTINUE FROM HERE
-    % AI IS NOW TURN == 1
-
 % end function
 
 % REPLACE THIS RULE-BASED DECISION CODE WITH MIN-MAX STRATEGY
@@ -327,7 +324,7 @@ function decision(handles)
     % search for moves that will let us win
     % if no results, search for moves that will
     % block player from winning
-    for player = [1, -1]
+    for turn = [1, -1]
         for line = lines'
             % see if we have 2 in any line -- choose the third if so
             if board(line(1)) == turn && board(line(2)) == turn && board(line(3)) == 0
