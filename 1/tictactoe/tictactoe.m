@@ -328,13 +328,13 @@ function decision(handles)
         for line = lines'
             % see if we have 2 in any line -- choose the third if so
             if board(line(1)) == turn && board(line(2)) == turn && board(line(3)) == 0
-                num = line(1)
+                num = line(3)
                 break
             elseif board(line(1)) == turn && board(line(2)) == 0 && board(line(3)) == turn
                 num = line(2)
                 break
             elseif board(line(1)) == 0 && board(line(2)) == turn && board(line(3)) == turn
-                num = line(3)
+                num = line(1)
                 break
             end
         end
