@@ -200,15 +200,18 @@ function pushbutton9_Callback(hObject, eventdata, handles)
 function picksquare(handles,num)
     turn=getappdata(gcbf,'turn');
     availableSquares=getappdata(gcbf,'availableSquares');
+
+    % this removes [num] from availableSquares, obviously
     availableSquares(availableSquares==num)=[];
     setappdata(gcbf,'availableSquares',availableSquares);
     board=getappdata(gcbf,'board');
     board(num)=turn;
+
     if turn==1
         set(eval(['handles.pushbutton' int2str(num)]),'String','X');
-        turn=2;
+        turn=-1;
         set(handles.dispturn,'String','O Turn');
-    elseif turn==2
+    elseif turn==-1
         set(eval(['handles.pushbutton' int2str(num)]),'String','O');
         turn=1;
         set(handles.dispturn,'String','X Turn');
@@ -218,25 +221,31 @@ function picksquare(handles,num)
     [win]=checkboard(board);
 
     if win~=0
+        % somebody won the game!
         for i=1:9
+            % disable the click button for all butons
             set(eval(['handles.pushbutton' int2str(i)]),'Enable','off');
         end
     	if win==1
            set(handles.dispturn,'String','X WINS!');
-        elseif win==2
+        elseif win==-1
            set(handles.dispturn,'String','O WINS!');
         end
     end
 
     if win==0
+        % nobody has won
         if isempty(availableSquares)
+           % but there are no more squares -- tie!
            for i=1:9
                set(eval(['handles.pushbutton' int2str(i)]),'Enable','off');
            end
            set(handles.dispturn,'String','Tie Game');
            return
         end
-        if turn==2
+
+        % ai is player 1
+        if turn==1
             decision(handles);
         end
     end
@@ -244,7 +253,8 @@ function picksquare(handles,num)
 
 function [win]=checkboard(b)
     win=0;
-    for i=1:2
+    % foreach (i in [-1, 1])
+    for i=[-1 1]
         if b(1)==i && b(2)==i && b(3)==i
             win=i;
         elseif b(4)==i && b(5)==i && b(6)==i
@@ -274,10 +284,12 @@ function newgame_Callback(hObject, eventdata, handles)
         set(eval(['handles.pushbutton' int2str(i)]),'Enable','on');
         set(eval(['handles.pushbutton' int2str(i)]),'String','');
     end
-    turn=ceil(rand*2);
+
+    % turn is either -1 or 1 now
+    turn=-1 + 2 * (ceil(rand*2) - 1);
     if turn==1
         set(handles.dispturn,'String','X Turn');
-    elseif turn==2
+    elseif turn==-1
         set(handles.dispturn,'String','O Turn');
     end
     setappdata(gcbf,'turn',turn);
@@ -285,9 +297,11 @@ function newgame_Callback(hObject, eventdata, handles)
     setappdata(gcbf,'board',board);
     availableSquares=[1:9];
     setappdata(gcbf,'availableSquares',availableSquares);
-    if turn==2
+    if turn==1
         decision(handles);
     end
+    % OKAY CONTINUE FROM HERE
+    % AI IS NOW TURN == 1
 
 % end function
 
@@ -296,48 +310,82 @@ function decision(handles)
     availableSquares=getappdata(gcbf,'availableSquares');
     board=getappdata(gcbf,'board');
     num=0;
-    i=1;
-    j=2;
     pause(0.5);
 
-    %try to win, if u can't try to block
-    while num==0
-        if i==1
-        	s=[1 2 3];
-        elseif i==2
-        	s=[4 5 6];
-        elseif i==3
-        	s=[7 8 9];
-        elseif i==4
-        	s=[1 4 7];
-        elseif i==5
-        	s=[2 5 8];
-        elseif i==6
-        	s=[3 6 9];
-        elseif i==7
-        	s=[1 5 9];
-        elseif i==8
-        	s=[3 5 7];
-        elseif i==9 && j==2
-            j=1;
-            i=1;
-        elseif i==9 && j==1
-            num=availableSquares(ceil(rand*(length(availableSquares)))); %pick any sq if everything fails
+    % winning lines
+    lines = [
+                1 2 3; 
+                4 5 6; 
+                7 8 9; 
+                1 4 7; 
+                2 5 8; 
+                3 6 9; 
+                1 5 9; 
+                3 5 7
+            ];
+
+    % search for moves that will let us win
+    % if no results, search for moves that will
+    % block player from winning
+    for player = [1, -1]
+        for line = lines'
+            % see if we have 2 in any line -- choose the third if so
+            if board(line(1)) == turn && board(line(2)) == turn && board(line(3)) == 0
+                num = line(1)
+                break
+            elseif board(line(1)) == turn && board(line(2)) == 0 && board(line(3)) == turn
+                num = line(2)
+                break
+            elseif board(line(1)) == 0 && board(line(2)) == turn && board(line(3)) == turn
+                num = line(3)
+                break
+            end
         end
 
-    	if board(s(1))==j && board(s(2))==j && board(s(3))==0
-            num=s(3);
-    	elseif board(s(1))==j && board(s(2))==0 && board(s(3))==j
-            num=s(2);
-    	elseif board(s(1))==0 && board(s(2))==j && board(s(3))==j
-            num=s(1);
-    	end
-        i=i+1;
+        if num ~= 0
+            break
+        end
+    end
+
+    if num == 0
+        % yolo at random if you don't have a move
+        num=availableSquares(ceil(rand*(length(availableSquares)))); %pick any sq if everything fails
     end
 
     picksquare(handles,num);
-
 % end function
+
+
+% Finds the best board for player with turn = 1
+% With turn = -1, it will get THE WORST BOARD
+function bestBoard = getBestBoard(board, turn, ab)
+    bestBoard = board;
+    bestScore = -Inf;
+
+    if checkboard(board) ~= 0
+        % there is a winrar -- nothing to do
+        return;
+    end
+
+    for i = 1:9
+        if board(i) ~= 0
+            % Only permute squares that are empty
+            continue;
+        end
+        
+        evolution = board;
+        evolution(i) = turn;
+
+        % modify ab?
+        score = scoreBoard(getBestBoard(evolution, -turn, ab)) * turn;
+
+        if score > bestScore
+            bestScore = score;
+            bestBoard = evolution;
+        end
+    end
+
+
 
 % --- Executes during object creation, after setting all properties.
 function MTTT_CreateFcn(hObject, eventdata, handles)
