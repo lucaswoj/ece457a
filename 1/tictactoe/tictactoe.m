@@ -302,54 +302,15 @@ function newgame_Callback(hObject, eventdata, handles)
     end
 % end function
 
-% REPLACE THIS RULE-BASED DECISION CODE WITH MIN-MAX STRATEGY
 function decision(handles)
     availableSquares=getappdata(gcbf,'availableSquares');
     board=getappdata(gcbf,'board');
-    num=0;
     pause(0.5);
 
-    % winning lines
-    lines = [
-                1 2 3; 
-                4 5 6; 
-                7 8 9; 
-                1 4 7; 
-                2 5 8; 
-                3 6 9; 
-                1 5 9; 
-                3 5 7
-            ];
+    getBestBoard(board, 1, [])
+    move = getappdata(gcbf, 'evolution')
 
-    % search for moves that will let us win
-    % if no results, search for moves that will
-    % block player from winning
-    for turn = [1, -1]
-        for line = lines'
-            % see if we have 2 in any line -- choose the third if so
-            if board(line(1)) == turn && board(line(2)) == turn && board(line(3)) == 0
-                num = line(3)
-                break
-            elseif board(line(1)) == turn && board(line(2)) == 0 && board(line(3)) == turn
-                num = line(2)
-                break
-            elseif board(line(1)) == 0 && board(line(2)) == turn && board(line(3)) == turn
-                num = line(1)
-                break
-            end
-        end
-
-        if num ~= 0
-            break
-        end
-    end
-
-    if num == 0
-        % yolo at random if you don't have a move
-        num=availableSquares(ceil(rand*(length(availableSquares)))); %pick any sq if everything fails
-    end
-
-    picksquare(handles,num);
+    picksquare(handles, move);
 % end function
 
 
@@ -379,9 +340,51 @@ function bestBoard = getBestBoard(board, turn, ab)
         if score > bestScore
             bestScore = score;
             bestBoard = evolution;
+            setappdata(gcbf, 'evolution', i);
         end
     end
 
+% We know that every board is a 3x3 grid composed of the following:
+%  1 represents "naughts"
+% -1 representes "crosses"
+%  0 represents empty spaces
+function score = scoreBoard( boardVector )
+	score = 0;
+
+    board = [ boardVector(1:3); boardVector(4:6); boardVector(7:9) ];
+
+	score = score + checkThreeLength( board( 1, 1:3 ) );
+	score = score + checkThreeLength( board( 2, 1:3 ) );
+	score = score + checkThreeLength( board( 3, 1:3 ) );
+
+	score = score + checkThreeLength( board( 1:3, 1 ) );
+	score = score + checkThreeLength( board( 1:3, 2 ) );
+	score = score + checkThreeLength( board( 1:3, 3 ) );
+
+	diagonalOne = [ board( 1, 1 ), board( 2, 2 ), board( 3, 3 ) ];
+	score = score + checkThreeLength( diagonalOne );
+
+	diagonalTwo = [ board( 1, 3 ), board( 2, 2 ), board( 3, 1 ) ];
+	score = score + checkThreeLength( diagonalTwo );
+
+function score = checkThreeLength( threeLength )
+	threeLengthsWithNaughts = ( threeLength == 1 );
+
+	threeLengthsWithCrosses  = ( threeLength == -1 );
+
+	if ~threeLengthsWithCrosses & ~threeLengthsWithNaughts
+		% empty threeLength
+		score  = 0;
+	elseif ~threeLengthsWithNaughts
+		% at least one cross and no naughts
+		score = 1;
+	elseif ~threeLengthsWithCrosses
+		% at least one naught and no crosses
+		score = -1;
+	else
+		% at least one naught and one cross
+		score = 0;
+  end
 
 
 % --- Executes during object creation, after setting all properties.
