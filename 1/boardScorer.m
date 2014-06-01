@@ -1,8 +1,8 @@
 testBoard0 = [ 0, 0, 0; 0, 0, 0; 0, 0, 0] % should result in 8 for both players
 
 % We know that every board is a 3x3 grid composed of the following:
-% -1 represents "naughts"
-%  1 representes "crosses"
+%  1 represents "naughts"
+% -1 representes "crosses"
 %  0 represents empty spaces
 function score = scoreBoard( board )
 	score = 0;
@@ -23,9 +23,9 @@ function score = scoreBoard( board )
 end
 
 function score = checkThreeLength( threeLength )
-	threeLengthsWithNaughts = ( threeLength == -1 );
+	threeLengthsWithNaughts = ( threeLength == 1 );
 
-	threeLengthsWithCrosses  = ( threeLength ==  1 );
+	threeLengthsWithCrosses  = ( threeLength ==  -1 );
 
 	if ~threeLengthsWithCrosses && ~threeLengthsWithNaughts
 		% empty threeLength
