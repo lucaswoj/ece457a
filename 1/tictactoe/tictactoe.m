@@ -416,10 +416,10 @@ function score = checkThreeLength( threeLength )
 		score = -1;
 	elseif threeLengthsWithCrosses
         % Crosses has won
-        score = Inf
+        score = 100000
     elseif threeLengthsWithNaughts
         % Naughts has won
-        score = -Inf
+        score = -100000
     else
 		% at least one naught and one cross
 		score = 0;
