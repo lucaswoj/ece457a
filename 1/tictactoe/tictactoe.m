@@ -45,6 +45,36 @@ else
 end
 % End initialization code - DO NOT EDIT
 
+% --- Executes on button press in newgame.
+function newgame_Callback(hObject, eventdata, handles)
+% hObject    handle to newgame (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+    for i=1:9
+        set(eval(['handles.pushbutton' int2str(i)]),'Enable','on');
+        set(eval(['handles.pushbutton' int2str(i)]),'String','');
+    end
+
+    board = zeros(1,9);
+    setappdata(gcbf,'board',board);
+    availableSquares=[1:9];
+    setappdata(gcbf,'availableSquares',availableSquares);
+    
+   
+    % turn is either -1 or 1 now
+    turn=-1 + 2 * (ceil(rand*2) - 1);
+
+
+    set(handles.dispturn,'String','O Turn');
+    setappdata(gcbf,'turn',-1);
+
+    if turn==1
+        % he always just picks the top left, so we hard coded it because
+        % it's relatively slow and hard to test
+        actuallyDoMove(handles, 1, 1)
+    end
+% end function
+
 
 % --- Executes just before tictactoe is made visible.
 function tictactoe_OpeningFcn(hObject, eventdata, handles, varargin)
@@ -197,27 +227,38 @@ function pushbutton9_Callback(hObject, eventdata, handles)
     end
 % end function
 
-function picksquare(handles,num)
-    turn=getappdata(gcbf,'turn');
+function actuallyDoMove(handles, num, turn)
     availableSquares=getappdata(gcbf,'availableSquares');
 
     % this removes [num] from availableSquares, obviously
     availableSquares(availableSquares==num)=[];
+    
     setappdata(gcbf,'availableSquares',availableSquares);
+    
     board=getappdata(gcbf,'board');
     board(num)=turn;
-
+    setappdata(gcbf,'board',board);
+    
     if turn==1
         set(eval(['handles.pushbutton' int2str(num)]),'String','X');
-        turn=-1;
-        set(handles.dispturn,'String','O Turn');
     elseif turn==-1
         set(eval(['handles.pushbutton' int2str(num)]),'String','O');
-        turn=1;
+    end
+
+function picksquare(handles,num)
+    turn=getappdata(gcbf,'turn');
+    actuallyDoMove(handles, num, turn);
+
+    if turn==1
+        set(handles.dispturn,'String','O Turn');
+    elseif turn==-1
         set(handles.dispturn,'String','X Turn');
     end
-    setappdata(gcbf,'turn',turn);
-    setappdata(gcbf,'board',board);
+    turn = -turn;
+    setappdata(gcbf,'turn', turn);
+    
+    availableSquares=getappdata(gcbf,'availableSquares');
+    board=getappdata(gcbf,'board');
     [win]=checkboard(board);
 
     if win~=0
@@ -275,102 +316,83 @@ function [win]=checkboard(b)
     end
 % end function
 
-% --- Executes on button press in newgame.
-function newgame_Callback(hObject, eventdata, handles)
-% hObject    handle to newgame (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-    for i=1:9
-        set(eval(['handles.pushbutton' int2str(i)]),'Enable','on');
-        set(eval(['handles.pushbutton' int2str(i)]),'String','');
-    end
 
-    % turn is either -1 or 1 now
-    turn=-1 + 2 * (ceil(rand*2) - 1);
-    if turn==1
-        set(handles.dispturn,'String','X Turn');
-    elseif turn==-1
-        set(handles.dispturn,'String','O Turn');
-    end
-    setappdata(gcbf,'turn',turn);
-    board=zeros(1,9);
-    setappdata(gcbf,'board',board);
-    availableSquares=[1:9];
-    setappdata(gcbf,'availableSquares',availableSquares);
-    if turn==1
-        decision(handles);
-    end
-% end function
 
 function decision(handles)
     availableSquares=getappdata(gcbf,'availableSquares');
     board=getappdata(gcbf,'board');
     pause(0.5);
 
-    getBestBoard(board, 1, [ -Inf, Inf ])
-    move = getappdata(gcbf, 'evolution')
+    [bestScore, move] = getMaxScore(board, 1);
+    
+    bestScore
+    move
 
     picksquare(handles, move);
 % end function
 
-
-% Finds the best board for player with turn = 1 (computer, crosses)
-% With turn = -1 (human, naughts), it will get THE WORST BOARD
-function bestBoard = getBestBoard(board, turn, ab)
-    bestBoard = board;
+% computer is crosses (turn == 1)
+function [bestScore, move] = getMaxScore(board, depth)
     bestScore = -Inf;
-
+    move = -1;
+    
     if checkboard(board) ~= 0
         % there is a winrar -- nothing to do
+        bestScore = scoreBoard(board);
         return;
     end
-
-    % Check each space on board for potential move
-    % Every empty space is a potential move/child board
+    
     for i = 1:9
         if board(i) ~= 0
-            % Can only permute squares that are empty; skip this square
             continue;
         end
-
+        
         evolution = board;   % temp board
-        evolution(i) = turn; % make move on temp board
+        evolution(i) = 1; % make move on temp board
 
-        % We want to score the children ("evolution") boards if they are leaf nodes
-        % and then propagate those values back up, selecting min/max as needed
-
-        % ab pruning?
-        score = scoreBoard(getBestBoard(evolution, -turn, ab)) * turn;
-
-        % AB pruning IGNORE FOR NOW
-        % if turn == -1
-        %     % human's turn (MIN node)
-        %     % if score < ab(2) % ab(2) is beta
-        %     %     ab(2) = score
-        %     % end
-
-        %     % if ab(1) >= ab(2)
-        %     %     bestScore = beta
-        %     % end
-
-        % elseif turn == 1
-        %     % computers's turn (MAX node)
-        %     % if score > ab(1) % ab(1) is alpha
-        %     %     ab(1) = score
-        %     % end
-
-        %     % if ab(1) >= ab(2)
-        %     %     % bestScore = alpha
-        %     % end
-        % end
-        % /AB Pruning
+        score = getMinScore(evolution, depth + 1);
 
         if score > bestScore
             bestScore = score;
-            bestBoard = evolution;
-            setappdata(gcbf, 'evolution', i);
+            move = i;
         end
     end
+    
+    if bestScore == -Inf
+        bestScore = scoreBoard(board);
+    end
+    
+% human is naughts (turn == -1)
+function worstScore = getMinScore(board, depth)
+    worstScore = Inf;
+    
+    if checkboard(board) ~= 0
+        % there is a winrar -- nothing to do
+        worstScore = scoreBoard(board);
+        return;
+    end
+    
+    for i = 1:9
+        if board(i) ~= 0
+            continue;
+        end
+        
+        evolution = board;   % temp board
+        evolution(i) = -1; % make move on temp board
+        
+        [score, idontcareaboutthemove] = getMaxScore(evolution, depth + 1);
+
+        if score < worstScore
+            worstScore = score;
+        end
+    end
+    
+    if worstScore == Inf
+        worstScore = scoreBoard(board);
+    end
+
+
+
 
 % We know that every board is a 3x3 grid composed of the following:
 % -1 represents "naughts"
@@ -379,33 +401,22 @@ function bestBoard = getBestBoard(board, turn, ab)
 % Because the computer (crosses) is the player using minmax strategy
 % available the objective function is:
 % f(board) = availableThreeLengthsForCrosses - availableThreeLengthsForCrosses
-function score = scoreBoard( boardVector )
-	score = 0;
+function printBoard(boardVector)
+    board = [ boardVector(1:3); boardVector(4:6); boardVector(7:9) ]
 
-    board = [ boardVector(1:3); boardVector(4:6); boardVector(7:9) ];
-
-	score = score + checkThreeLength( board( 1, 1:3 ) );
-	score = score + checkThreeLength( board( 2, 1:3 ) );
-	score = score + checkThreeLength( board( 3, 1:3 ) );
-
-	score = score + checkThreeLength( board( 1:3, 1 ) );
-	score = score + checkThreeLength( board( 1:3, 2 ) );
-	score = score + checkThreeLength( board( 1:3, 3 ) );
-
-	diagonalOne = [ board( 1, 1 ), board( 2, 2 ), board( 3, 3 ) ];
-	score = score + checkThreeLength( diagonalOne );
-
-	diagonalTwo = [ board( 1, 3 ), board( 2, 2 ), board( 3, 1 ) ];
-	score = score + checkThreeLength( diagonalTwo );
+function score = scoreBoard( board )
+    [score] = checkboard(board)
 
 % The computer (crosses) gets a positive point per three length and
 % the human (naughts) gets a negative point per three length
 function score = checkThreeLength( threeLength )
-	threeLengthsWithNaughts = ( threeLength == -1 );
+	threeLengthsWithNaughts = ( threeLength == -1 )
 
 	threeLengthsWithCrosses  = ( threeLength == 1 );
+    
+    ~threeLengthsWithCrosses
 
-	if ~threeLengthsWithCrosses & ~threeLengthsWithNaughts
+	if (~threeLengthsWithCrosses) && (~threeLengthsWithNaughts)
 		% empty threeLength
 		score  = 0;
 	elseif ~threeLengthsWithNaughts
@@ -416,10 +427,10 @@ function score = checkThreeLength( threeLength )
 		score = -1;
 	elseif threeLengthsWithCrosses
         % Crosses has won
-        score = 100000
+        score = Inf
     elseif threeLengthsWithNaughts
         % Naughts has won
-        score = -100000
+        score = -Inf
     else
 		% at least one naught and one cross
 		score = 0;
