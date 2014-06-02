@@ -80,6 +80,12 @@ For example, if the goal state is $s_f = (\coinblack \coinblack \coinblack \coin
 \end{center}
 
 \subsubsection{Compare the performance of the above search strategies in terms of the number of nodes generated}
+Breadth-first search generated 15 nodes before finding the solution, depth-first search generated 20, and hill climbing and best first generated 11.
+Hill climbing and best first search followed the exact same path in this case, so their performance was the same.  However it may be different with a 
+different heuristic or a different initial state. Note that the depth limit of 3 on depth first search forced the search to generate more nodes.  If it 
+had been allowed to go to a depth of 4, depth-first search would have found the solution after only 6 nodes.
+
+In this case, hill climbing and best first search are tied for best performance.
 
 \section{Question 2}
 
