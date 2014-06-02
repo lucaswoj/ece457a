@@ -307,7 +307,7 @@ function decision(handles)
     board=getappdata(gcbf,'board');
     pause(0.5);
 
-    getBestBoard(board, 1, [])
+    getBestBoard(board, 1, [ -Inf, Inf ])
     move = getappdata(gcbf, 'evolution')
 
     picksquare(handles, move);
@@ -330,12 +330,36 @@ function bestBoard = getBestBoard(board, turn, ab)
             % Only permute squares that are empty
             continue;
         end
-        
+
         evolution = board;
         evolution(i) = turn;
 
+        if ab(1) >= ab(2)
+            % if at any time alpha >= beta, then your opponent's best
+            % move can force a worse position than your best move so far
+            % and so there is no need to further evaluate this move
+            break;
+        end
+
         % modify ab?
         score = scoreBoard(getBestBoard(evolution, -turn, ab)) * turn;
+
+        if turn == -1
+            % computer's turn (MAX node)
+            if score > ab(1) % ab(1) is alpha
+                ab(1) = score
+            else
+
+            end
+
+        elseif turn == 1
+            % human's turn (MIN node)
+            if score < ab(2) % ab(2) is beta
+                ab(2) = score
+            else
+
+            end
+        end
 
         if score > bestScore
             bestScore = score;
