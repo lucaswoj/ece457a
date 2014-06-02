@@ -68,8 +68,16 @@ $$p_i \rightarrow \text{empty\_pair}(s)$$
 
 
 \subsubsection{Hill Climbing Search}
+We used a simple and intuitive heuristic, where the value of each node is the number of squares that have the same coin as the goal state.
+For example, if the goal state is $s_f = (\coinblack \coinblack \coinblack \coinwhite \coinwhite \coinempty \coinempty)$ then $s_0 = (\coinempty \coinempty \coinblack \coinwhite \coinblack \coinwhite \coinblack)$ has value 2.
+\begin{center}
+\includegraphics[width=1\textwidth]{HillClimbing.png}
+\end{center}
 
 \subsubsection{Best First Search (using heuristic developed in previous answer}
+\begin{center}
+\includegraphics[width=1\textwidth]{BestFirst.png}
+\end{center}
 
 \subsubsection{Compare the performance of the above search strategies in terms of the number of nodes generated}
 
