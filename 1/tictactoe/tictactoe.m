@@ -314,8 +314,8 @@ function decision(handles)
 % end function
 
 
-% Finds the best board for player with turn = 1
-% With turn = -1, it will get THE WORST BOARD
+% Finds the best board for player with turn = 1 (computer, crosses)
+% With turn = -1 (human, naughts), it will get THE WORST BOARD
 function bestBoard = getBestBoard(board, turn, ab)
     bestBoard = board;
     bestScore = -Inf;
@@ -325,41 +325,45 @@ function bestBoard = getBestBoard(board, turn, ab)
         return;
     end
 
+    % Check each space on board for potential move
+    % Every empty space is a potential move/child board
     for i = 1:9
         if board(i) ~= 0
-            % Only permute squares that are empty
+            % Can only permute squares that are empty; skip this square
             continue;
         end
 
-        evolution = board;
-        evolution(i) = turn;
+        evolution = board;   % temp board
+        evolution(i) = turn; % make move on temp board
 
-        if ab(1) >= ab(2)
-            % if at any time alpha >= beta, then your opponent's best
-            % move can force a worse position than your best move so far
-            % and so there is no need to further evaluate this move
-            break;
-        end
+        % We want to score the children ("evolution") boards if they are leaf nodes
+        % and then propagate those values back up, selecting min/max as needed
 
-        % modify ab?
+        % ab pruning?
         score = scoreBoard(getBestBoard(evolution, -turn, ab)) * turn;
 
-        if turn == -1
-            % computer's turn (MAX node)
-            if score > ab(1) % ab(1) is alpha
-                ab(1) = score
-            else
+        % AB pruning IGNORE FOR NOW
+        % if turn == -1
+        %     % human's turn (MIN node)
+        %     % if score < ab(2) % ab(2) is beta
+        %     %     ab(2) = score
+        %     % end
 
-            end
+        %     % if ab(1) >= ab(2)
+        %     %     bestScore = beta
+        %     % end
 
-        elseif turn == 1
-            % human's turn (MIN node)
-            if score < ab(2) % ab(2) is beta
-                ab(2) = score
-            else
+        % elseif turn == 1
+        %     % computers's turn (MAX node)
+        %     % if score > ab(1) % ab(1) is alpha
+        %     %     ab(1) = score
+        %     % end
 
-            end
-        end
+        %     % if ab(1) >= ab(2)
+        %     %     % bestScore = alpha
+        %     % end
+        % end
+        % /AB Pruning
 
         if score > bestScore
             bestScore = score;
@@ -369,9 +373,12 @@ function bestBoard = getBestBoard(board, turn, ab)
     end
 
 % We know that every board is a 3x3 grid composed of the following:
-%  1 represents "naughts"
-% -1 representes "crosses"
+% -1 represents "naughts"
+% 1 representes "crosses"
 %  0 represents empty spaces
+% Because the computer (crosses) is the player using minmax strategy
+% available the objective function is:
+% f(board) = availableThreeLengthsForCrosses - availableThreeLengthsForCrosses
 function score = scoreBoard( boardVector )
 	score = 0;
 
@@ -391,10 +398,12 @@ function score = scoreBoard( boardVector )
 	diagonalTwo = [ board( 1, 3 ), board( 2, 2 ), board( 3, 1 ) ];
 	score = score + checkThreeLength( diagonalTwo );
 
+% The computer (crosses) gets a positive point per three length and
+% the human (naughts) gets a negative point per three length
 function score = checkThreeLength( threeLength )
-	threeLengthsWithNaughts = ( threeLength == 1 );
+	threeLengthsWithNaughts = ( threeLength == -1 );
 
-	threeLengthsWithCrosses  = ( threeLength == -1 );
+	threeLengthsWithCrosses  = ( threeLength == 1 );
 
 	if ~threeLengthsWithCrosses & ~threeLengthsWithNaughts
 		% empty threeLength
@@ -405,10 +414,16 @@ function score = checkThreeLength( threeLength )
 	elseif ~threeLengthsWithCrosses
 		% at least one naught and no crosses
 		score = -1;
-	else
+	elseif threeLengthsWithCrosses
+        % Crosses has won
+        score = Inf
+    elseif threeLengthsWithNaughts
+        % Naughts has won
+        score = -Inf
+    else
 		% at least one naught and one cross
 		score = 0;
-  end
+    end
 
 
 % --- Executes during object creation, after setting all properties.
