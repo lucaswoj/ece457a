@@ -13,7 +13,11 @@
 \usepackage{amssymb}
 
 \title{Statement of Work}
-\author{Lucas Wojciechowksi, Ariel Weingarten, Alexander Maguire, Austin Dobrik, Dane Carr}
+\author{
+	Group 27 \\
+	\\
+	Lucas Wojciechowksi, Ariel Weingarten, Alexander Maguire, \\
+	Austin Dobrik, Dane Carr}
 \date{\today}
 
 \begin{document}
@@ -32,7 +36,6 @@
 % tasks to a set of mobile sensing agents to maximize overall expected
 % performance, taking into account the priorities of the tasks and the skill
 % ratings of the mobile sensors.
-%
 
 % Suggested reference papers:
 %
@@ -52,7 +55,7 @@
 % following:
 %
 % Find
-% $$X = {x_1, x_2, ..., x_n}^-1$$
+% $$X = {x_1, x_2, ..., x_n}^T$$
 % which minimizes/maximizes $f(X)$ subject to equality constraints
 % $$\forall j \in [1, m], l_j(X) = 0$$
 % and inequality constraints
@@ -60,6 +63,35 @@
 %
 % Define the decision variable or design vector, objective function/s and the
 % problem constraints.
+
+\subsection{Givens}
+
+Suppose you have a number of mobile sensors
+$$\mathit{sensors} = \{ \mathit{sensor}_i | i \in [1, n_\mathit{sensors}] \}$$
+
+Using these mobile sensors, you are to peform a number of tasks
+$$\mathit{tasks} = \{ \mathit{task}_i | i \in [1, n_\mathit{tasks}] \}$$
+
+There is one exactly one task per sensor
+$$n = n_\mathit{sensors} = n_\mathit{tasks}$$
+
+Each task has an assigned ``priority"
+% $$\forall \mathit{task_i} \in \mathit{tasks}, \mathit{priority}(\mathit{task}_i) \in [0 ,1]$$
+$$\mathit{priority}(\mathit{task}_i) \in [0 ,1]$$
+
+Sensors are not homogeneous; some are more ``skilled" at certain tasks than others
+% $$\forall \mathit{sensor_i} \in \mathit{sensors}, \forall \mathit{task_j} \in \mathit{tasks}, \mathit{skill}(\mathit{sensor}_i, \mathit{task}_j) \in [0 ,1]$$
+$$\mathit{skill}(\mathit{sensor}_i, \mathit{task}_j) \in [0 ,1]$$
+
+\subsection{Problem}
+
+Our objective is to find an injective mapping of $\mathit{task}$s to $\mathit{sensor}$s that optimizes the overall expected performance. This mapping can be expressed as a vector
+$$S = [s_1, ..., s_n]^T$$
+$$s_i = j \Rightarrow \mathit{sensor}_i \text{ performs } \mathit{task}_j$$
+
+Our objective is to maximize our objective function, $\mathit{performance}(S)$
+$$\mathit{performance}(S) = \sum_{i=1}^n \mathit{skill}(\mathit{sensor}_i, \mathit{task}_{s_i}) \cdot \mathit{priority}(\mathit{task}_{s_i})$$
+
 
 \section{Problem Modeling}
 
