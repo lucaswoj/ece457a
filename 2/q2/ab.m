@@ -28,7 +28,7 @@ warning('off','all');
 
 load Units100.mat
 
-TabuIterations = 50;
+TabuIterations = 100;
 TabuLengths = [5, 10, 15, 25, 50];
 
 [KruskalMST, KruskalCost] = Kruskal(Graph);
