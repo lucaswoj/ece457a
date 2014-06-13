@@ -18,17 +18,25 @@
 % In this problem, a MATLAB code that implements the Tabu Search algorithm for
 % finding the MST of an undirected graph is given:
 
+% a) Use the given functions to find the most cost-effective paths for the graph
+% given in Units100.mat and report the total cost of laying the cables.
+
 % b) Run the code with different tabu list lengths (5, 10, 15, 25, 50) and
 % report the cost obtained in each case. What do you observe?
 
+warning('off','all');
+
 load Units100.mat
 
-Iterations = 5;
+TabuIterations = 50;
+TabuLengths = [5, 10, 15, 25, 50];
 
-Lengths = [5, 10, 15, 25, 50];
-for i = 1:numel(Lengths)
-    Length = Lengths(i);
-    [MST, Cost] = TabuSearch(Graph, 50, Iterations, @GenInitialST, @GetBestNeighbourST);
+[KruskalMST, KruskalCost] = Kruskal(Graph);
+fprintf('\n\nKruskal Cost: %d\n\n', KruskalCost);
 
-    fprintf('\n\nIterations: %d\nTabu length: %d\nCost: %d\n\n', Iterations, Length, Cost);
+for i = 1:numel(TabuLengths)
+    TabuLength = TabuLengths(i);
+    [TabuMST, TabuCost] = TabuSearch(Graph, 50, TabuIterations, @GenInitialST, @GetBestNeighbourST);
+
+    fprintf('\n\nTabu Iterations: %d\nTabu length: %d\nTabu Cost: %d\n\n', TabuIterations, TabuLength, TabuCost);
 end

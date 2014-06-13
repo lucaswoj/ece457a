@@ -1,5 +1,5 @@
 function  [BestSoln BestSolnCost] = TabuSearch( ...
-                ProbData, TabuLength, NumIterations, ...      
+                ProbData, TabuLength, NumIterations, ...
                 GenInitialSolnFn, GetBestNeighbourSolnFn)
 
 % This function implements the tabu search algorithm.
@@ -10,7 +10,7 @@ function  [BestSoln BestSolnCost] = TabuSearch( ...
 %   NumIterations: The maximum number of iterations
 %   GenInitialSolnFn: A handle to a function that generates an initial
 %                     solution to the problem.
-%   GetBestNeighbourSolnFn: A hanlde to a function that generates the 
+%   GetBestNeighbourSolnFn: A hanlde to a function that generates the
 %                         neighbourhood of a given solution and update
 %                         the best neighborhood.
 %
@@ -30,7 +30,7 @@ for nIt = 1 : NumIterations
     % avoiding Tabu moves
     [Soln SolnCost TabuList] = feval(GetBestNeighbourSolnFn, ProbData, ...
                                 Soln, TabuList, TabuLength);
-            
+
     % Update the best solution
     if SolnCost < BestSolnCost
         BestSoln = Soln;

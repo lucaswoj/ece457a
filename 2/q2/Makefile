@@ -17,7 +17,7 @@ bash:
 		ece457a-assignment2-question2
 		bash
 
-2a 2b: docker-build
+ab: docker-build
 	$(call docker-run,$@)
 
 
