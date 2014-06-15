@@ -1,6 +1,6 @@
 # Complex Task Allocation
 
-[That guy](http://i.imgur.com/ueQVw76.png)
+![That guy](http://i.imgur.com/ueQVw76.png)
 
 ## Links
 
