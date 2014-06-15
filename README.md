@@ -1,5 +1,7 @@
 # Complex Task Allocation
 
+[That guy](http://i.imgur.com/ueQVw76.png)
+
 ## Links
 
 Check out the [issues page](https://github.com/lucaswoj/ece457a/issues) for remaining tasks
