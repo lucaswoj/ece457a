@@ -25,9 +25,8 @@ function  [BestSoln BestSolnCost] = TabuSearch( ...
 BestSoln = Soln;
 BestSolnCost = SolnCost;
 
-fprintf('Running Tabu Search:    /    ', TabuLength);
 for nIt = 1 : NumIterations
-    fprintf('\b\b\b\b\b\b\b\b\b%3d / %3d', nIt, NumIterations);
+    fprintf('    %d/%d: %d\n', nIt, NumIterations, SolnCost)
 
     % Get the best solution in the neighbourhood of the current solution
     % avoiding Tabu moves

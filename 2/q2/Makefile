@@ -1,9 +1,5 @@
 docker-run = \
-	docker run \
-		--tty \
-		--interactive \
-		ece457a-assignment2-question2 \
-		bash -c "cd /etc/ece457a/assignment2/question2/$(1) && octave Main.m"
+
 
 docker-build:
 	boot2docker up
@@ -18,7 +14,12 @@ bash:
 		ece457a-assignment2-question2
 		bash
 
-ab c d: docker-build
-	$(call docker-run,$@)
+ab c d dc: docker-build
+	docker run \
+		--tty \
+		--interactive \
+		ece457a-assignment2-question2 \
+		bash -c "cd /etc/ece457a/assignment2/question2/$@ && octave Main.m" | \
+	tee $@.out
 
 

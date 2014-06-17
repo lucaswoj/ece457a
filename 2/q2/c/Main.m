@@ -28,15 +28,21 @@ warning('off','all');
 
 load Units100.mat
 
-TabuIterations = 50;
+TabuIterations = 100;
 TabuLengths = [5, 10, 15, 25, 50];
 
+fprintf('\n\n');
+fprintf('Running Kruskal’s Algorithm\n');
 [KruskalMST, KruskalCost] = Kruskal(Graph);
-fprintf('\n\nKruskal Cost: %d\n\n', KruskalCost);
+fprintf('Lowest Cost: %d\n');
+fprintf('\n\n');
 
 for i = 1:numel(TabuLengths)
     TabuLength = TabuLengths(i);
-    [TabuMST, TabuCost] = TabuSearch(Graph, 50, TabuIterations, @GenInitialST, @GetBestNeighbourST);
 
-    fprintf('\n\nTabu Iterations: %d\nTabu length: %d\nTabu Cost: %d\n\n', TabuIterations, TabuLength, TabuCost);
+    fprintf('\n\n');
+    fprintf('Running Tabu Search (Length: %d, Iterations: %d)\n', TabuIterations, TabuLength)
+    [TabuMST, TabuCost] = TabuSearch(Graph, TabuLength, TabuIterations, @GenInitialST, @GetBestNeighbourST);
+    fprintf('Lowest Cost: %d\n', TabuCost);
+    fprintf('\n\n');
 end
