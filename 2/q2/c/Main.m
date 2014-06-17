@@ -34,7 +34,7 @@ TabuLengths = [5, 10, 15, 25, 50];
 fprintf('\n\n');
 fprintf('Running Kruskal’s Algorithm\n');
 [KruskalMST, KruskalCost] = Kruskal(Graph);
-fprintf('Lowest Cost: %d\n');
+fprintf('Lowest Cost: %d\n', KruskalCost);
 fprintf('\n\n');
 
 for i = 1:numel(TabuLengths)
