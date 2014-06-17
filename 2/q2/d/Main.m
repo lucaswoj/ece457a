@@ -41,7 +41,7 @@ for i = 1:numel(TabuLengths)
     TabuLength = TabuLengths(i);
 
     fprintf('\n\n');
-    fprintf('Running Tabu Search (Length: %d, Iterations: %d)\n', TabuIterations, TabuLength)
+    fprintf('Running Tabu Search (Length: %d, Iterations: %d)\n', TabuLength, TabuIterations)
     [TabuMST, TabuCost] = TabuSearch(Graph, TabuLength, TabuIterations, @GenInitialST, @GetBestNeighbourST);
     fprintf('Lowest Cost: %d\n', TabuCost);
     fprintf('\n\n');
