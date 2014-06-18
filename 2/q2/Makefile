@@ -14,12 +14,19 @@ bash:
 		ece457a-assignment2-question2
 		bash
 
-ab c d dc: docker-build
+octave:
 	docker run \
 		--tty \
 		--interactive \
 		ece457a-assignment2-question2 \
-		bash -c "cd /etc/ece457a/assignment2/question2/$@ && octave Main.m" | \
-	tee $@.out
+		bash -c "octave"
+
+ab.out c.out d.out dc.out: docker-build
+	docker run \
+		--tty \
+		--interactive \
+		ece457a-assignment2-question2 \
+		bash -c "cd /etc/ece457a/assignment2/question2/$(@:.out=) && octave Main.m" | \
+	tee $@
 
 

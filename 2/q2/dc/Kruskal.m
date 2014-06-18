@@ -37,7 +37,8 @@ while max(size(EdgeCosts)) > 1
     N2(1) = [];
 
     % Recompute all node costs
-    NodeCosts = (10 ./ (1 + exp(-1 * sum(MST).' ./ 10))) - (10 ./ (1 + exp(-1 * sum(MST - 1).' ./ 10)));
+    NodeCosts = (10 ./ (1 + exp(-1 * sum(MST).' ./ 10))) - ...
+        (10 ./ (1 + exp(-1 * sum(MST - 1).' ./ 10)));
 
     % Recompute all overall costs
     Costs = EdgeCosts + NodeCosts(N1) + NodeCosts(N2);
@@ -47,4 +48,4 @@ while max(size(EdgeCosts)) > 1
 end
 
 % Calculate the cost of the minimum spanning tree
-MSTCost = sum(sum(Graph .* MST)) / 2;
+MSTCost = GetCost(Graph, MST);
