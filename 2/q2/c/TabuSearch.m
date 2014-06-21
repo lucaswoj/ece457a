@@ -38,4 +38,8 @@ for nIt = 1 : NumIterations
         BestSoln = Soln;
         BestSolnCost = SolnCost;
     end
+
+    if SolnCost == 109
+        break
+    end
 end

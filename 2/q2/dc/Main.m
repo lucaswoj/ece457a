@@ -24,12 +24,20 @@
 % b) Run the code with different tabu list lengths (5, 10, 15, 25, 50) and
 % report the cost obtained in each case. What do you observe?
 
+ % - You should run each experiment several times and report the average results.
+
+ % - Units100.mat contains a sparse matrix Graph that represents the possible
+ %   paths between 100 factory’s units through which communication cables can be
+ %   laid. The element Graph (a, b) represents that cost of the path between
+ %   units a and b.
+
+
 warning('off','all');
 
 load Units100.mat
 
-TabuIterations = 10;
-TabuLengths = [1], %5, 10, 15, 25, 50];
+TabuIterations = 100;
+TabuLengths = [5, 10, 15, 25, 50];
 
 fprintf('\n\n');
 fprintf('Running Kruskal’s Algorithm\n');
@@ -39,14 +47,18 @@ fprintf('Edges: %d\n', nnz(KruskalMST) / 2);
 fprintf('Nodes: 100\n');
 fprintf('\n\n');
 
-for i = 1:numel(TabuLengths)
-    TabuLength = TabuLengths(i);
+for j=1:5
+  rand("seed", j)
 
-    fprintf('\n\n');
-    fprintf('Running Tabu Search (Length: %d, Iterations: %d)\n', TabuLength, TabuIterations)
-    [TabuMST, TabuCost] = TabuSearch(Graph, TabuLength, TabuIterations, @GenInitialST, @GetBestNeighbourST);
-    fprintf('Lowest Cost: %d\n', TabuCost);
-    fprintf('Edges: %d\n', nnz(TabuMST) / 2);
-    fprintf('Nodes: 100\n');
-    fprintf('\n\n');
+  for i = 1:numel(TabuLengths)
+      TabuLength = TabuLengths(i);
+
+      fprintf('\n\n');
+      fprintf('Running Tabu Search (Length: %d, Iterations: %d)\n', TabuLength, TabuIterations)
+      [TabuMST, TabuCost] = TabuSearch(Graph, TabuLength, TabuIterations, @GenInitialST, @GetBestNeighbourST);
+      fprintf('Lowest Cost: %d\n', TabuCost);
+      fprintf('Edges: %d\n', nnz(TabuMST) / 2);
+      fprintf('Nodes: 100\n');
+      fprintf('\n\n');
+  end
 end

@@ -29,4 +29,8 @@ ab.out c.out d.out dc.out: docker-build
 		bash -c "cd /etc/ece457a/assignment2/question2/$(@:.out=) && octave Main.m" | \
 	tee $@
 
+clean:
+	rm *.out
+
+all: ab.out c.out d.out dc.out
 
