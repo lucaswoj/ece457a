@@ -105,6 +105,59 @@ $$\mathit{performance}(S) = \sum_{i=1}^n \mathit{skill}(\mathit{sensor}_i, \math
 % models for real-life problems such as school bus routing problem and complex
 % task allocation problem.
 
+The complex task allocation problem can be modeled as a linear assignment problem.  The solution can be represented as a bipartite graph $G=(S,T,E)$.  The vertex sets $S$ and $T$ each have $n$ vertices, and $E$ contains $n$ edges. $x_{i,j}$ represents an edge between $S_i$ and $T_j$. 
+
+A solution can be represented as a matrix $X_G$, where 
+
+$$x_{i,j} = \left\{
+     \begin{array}{lr}
+       1 & : x \in E\\
+       0 & : x \notin E
+     \end{array}
+   \right.$$
+
+Let $p(t_i)$ equal the priority of task $i$.
+Let $s(s_j, t_i)$ equal the skill of sensor $j$ at task $i$. The performance can be represented as a matrix
+
+$P = \begin{bmatrix}
+p(t_0) \cdot s(s_0, t_0) & \cdots & p(t_n) \cdot s(s_0, t_n) \\
+\vdots & \ddots & \vdots \\
+p(t_0) \cdot s(s_n, t_0) & \cdots & p(t_n) \cdot s(s_n, t_n) \\
+\end{bmatrix}$
+
+The performance of a solution can be calculated by multipling a solution matrix and the performance matrix, then summing the elements of the resulting matrix.
+
+E.g.
+$$X = \begin{bmatrix}
+0 & 1 & 0 \\
+1 & 0 & 0 \\
+0 & 0 & 1
+\end{bmatrix}$$
+$$P = \begin{bmatrix}
+0.2 & 0.4 & 0.1 \\
+0.6 & 0.8 & 0.9 \\
+0.3 & 0.2 & 0.5
+\end{bmatrix}$$
+
+$$XP = 
+\begin{bmatrix}
+0 & 1 & 0 \\
+1 & 0 & 0 \\
+0 & 0 & 1
+\end{bmatrix}
+\begin{bmatrix}
+0.2 & 0.4 & 0.1 \\
+0.6 & 0.8 & 0.9 \\
+0.3 & 0.2 & 0.5
+\end{bmatrix} = 
+\begin{bmatrix}
+0 & 0.4 & 0 \\
+0.6 & 0 & 0 \\
+0 & 0 & 0.5
+\end{bmatrix}$$
+
+$$performance(X) = \sum_{i=1}^{3}\sum_{j=1}^{3}XP_{i,j} = 1.5$$
+
 \section{Reduced Size Problem}
 
 % Describe a reduced version of the problem in order to be used to perform
