@@ -29,6 +29,40 @@
 
 \maketitle
 
+\section{Question 1}
+
+\subsection{Part A}
+
+\subsubsection{Solution Representation}
+
+Solutions will be represented as a set of $m$ vectors of varying length $l_{i}$ s.t. $\sum_{i=0}^{m}dim(v_{i}) = c$. 
+Each vector represents the route for one vehicle, and each element represents a city along the vehicle's route with cities being visited in order.
+
+$v_{0} = \begin{bmatrix}
+v_{0,0} & v_{0,1} & \cdots & v_{0,l_{0}}
+\end{bmatrix} \\
+v_{1} = \begin{bmatrix}
+v_{1,0} & v_{1,1} & \cdots & v_{1,l_{1}}
+\end{bmatrix} \\
+\vdots \\
+v_{m} = \begin{bmatrix}
+v_{m,0} & v_{m,1} & \cdots & v_{m,l_{m}}
+\end{bmatrix}$
+
+\subsubsection{Neighbourhood Operators}
+
+There will be two neighbourhood operators, one to change the order of the cities and one to change the length of a route.  The first operation is
+to swap any two elements.  The elements can either be in the same vehicle vector, or in two different vehicle vectors.  The second operation is to
+remove one element from a vehicle vector and add it to another.
+
+\subsubsection{Objective Function}
+
+Let $Depot_{c_{i}}$ be the distance between the depot and city $i$ \\
+Let $D_{c_{i},c_{j}}$ be the distance between city $i$ and city $j$ \\
+Let $S_{c_{i}}$ be the time required to service city $i$ \\
+
+$\sum_{i=0}^{m}(Depot_{v_{i,0}} + Depot_{v_{i,l_{i}}} + \sum_{j=0}^{l_{i}-1}D_{v_{i,j},v_{i,j+1}} + \sum_{j=0}^{l_{i}}S_{v_{i,j}}) $
+
 \section{Question 2}
 
 \end{document}
