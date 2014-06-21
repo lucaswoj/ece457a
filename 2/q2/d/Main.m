@@ -37,12 +37,16 @@ fprintf('Running Kruskal’s Algorithm\n');
 fprintf('Lowest Cost: %d\n', KruskalCost);
 fprintf('\n\n');
 
-for i = 1:numel(TabuLengths)
-    TabuLength = TabuLengths(i);
+for j=1:5
+  rand("seed", j)
 
-    fprintf('\n\n');
-    fprintf('Running Tabu Search (Length: %d, Iterations: %d)\n', TabuLength, TabuIterations);
-    [TabuMST, TabuCost] = TabuSearch(Graph, TabuLength, TabuIterations, @GenInitialST, @GetBestNeighbourST);
-    fprintf('Lowest Cost: %d\n', TabuCost);
-    fprintf('\n\n');
+  for i = 1:numel(TabuLengths)
+      TabuLength = TabuLengths(i);
+
+      fprintf('\n\n');
+      fprintf('Running Tabu Search (Length: %d, Iterations: %d)\n', TabuLength, TabuIterations);
+      [TabuMST, TabuCost] = TabuSearch(Graph, TabuLength, TabuIterations, @GenInitialST, @GetBestNeighbourST);
+      fprintf('Lowest Cost: %d\n', TabuCost);
+      fprintf('\n\n');
+  end
 end

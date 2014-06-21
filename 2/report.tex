@@ -71,4 +71,66 @@ $\sum_{i=0}^{m}(Depot_{v_{i,0}} + Depot_{v_{i,l_{i}}} + \sum_{j=0}^{l_{i}-1}D_{v
 
 \section{Question 2}
 
+% An industrial communication company is planning to lay cables to a new factory
+% allowing all the factory’s units to be linked for the interchange of data. If
+% it is constrained to bury the cable only along certain paths, then there would
+% be an undirected graph representing which points are connected by those paths.
+% Some of those paths might be more expensive, because they are longer, or
+% require the cable to be buried deeper; these paths would be represented by
+% edges with larger weights. For example, Figure 1 shows 5 factory’s units and
+% the possible paths along which the cables can be buried.
+
+% The minimum spanning tree (MST) of the graph that represents the factory’s
+% units and paths can be used to decide the most cost-effective paths for laying
+% cables. MST is a tree that spans all the nodes of the graph with a minimum
+% cost. MST is widely used in different applications such as communication
+% network, transportation networks, scheduling and data clustering. Different
+% greedy algorithms have been proposed for finding a MST such as Prim-Jarnik,
+% Kruskal’s and Baruvka’s Algorithms.
+
+% In this problem, a MATLAB code that implements the Tabu Search algorithm for
+% finding the MST of an undirected graph is given.
+
+% - You should run each experiment several times and report the average results.
+
+% - Units100.mat contains a sparse matrix Graph that represents the possible
+%   paths between 100 factory’s units through which communication cables can be
+%   laid. The element Graph (a, b) represents that cost of the path between
+%   units a and b.
+
+\subsection{Part A}
+
+% a) Use the given functions to find the most cost-effective paths for the graph
+% given in Units100.mat and report the total cost of laying the cables.
+
+Using Kruskal's Algorithm, we calculate the most cost-effective paths for the
+graph given in \texttt{Units100.mat} and find the cost of this solution to be
+109.
+
+\subsection{Part B}
+
+% b) Run the code with different tabu list lengths (5, 10, 15, 25, 50) and
+% report the cost obtained in each case. What do you observe?
+
+\subsection{Part C}
+
+% Modify GetBestNeighbourST.m and other necessary functions to include the use
+% of an aspiration criterion. The aspiration criterion in this problem could be
+% to allow solutions that are better than the currently known best solution.
+% Repeat (a) and (b) with the modified code.
+
+\subsection{Part D}
+
+% Suppose that splitters need be used at the factory’s units if the number of
+% cables going through the unit exceeds 2. The cost of the splitter increases as
+% the number of cables connected to the splitter n increases and it can be
+% calculated as (omitted) Modify GetBestNeighbourST.m and other necessary
+% functions to consider adding the cost of the splitters. Repeat (a) and (b)
+% with the modified code.
+
+\subsection{Part E}
+
+% Compare between Tabu Search and the greedy algorithm of Kruskal as an example
+% for greedy algorithms.
+
 \end{document}
