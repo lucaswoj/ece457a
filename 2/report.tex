@@ -61,7 +61,13 @@ Let $Depot_{c_{i}}$ be the distance between the depot and city $i$ \\
 Let $D_{c_{i},c_{j}}$ be the distance between city $i$ and city $j$ \\
 Let $S_{c_{i}}$ be the time required to service city $i$ \\
 
-$\sum_{i=0}^{m}(Depot_{v_{i,0}} + Depot_{v_{i,l_{i}}} + \sum_{j=0}^{l_{i}-1}D_{v_{i,j},v_{i,j+1}} + \sum_{j=0}^{l_{i}}S_{v_{i,j}}) $
+$\sum_{i=0}^{m}(Depot_{v_{i,0}} + Depot_{v_{i,l_{i}}} + \sum_{j=0}^{l_{i}-1}D_{v_{i,j},v_{i,j+1}} + \sum_{j=0}^{l_{i}}S_{v_{i,j}})$
+
+\subsection{Part B}
+
+To account for a constraint on the length of each route, we could penalize each solution that contains a route longer than $T$.  Every route that exceeds $T$ would add an additional cost $P$ to the objective function.  This way the SA algorithm would be able to probabilistically choose this poor solution if it needed to diversify.  The new objective function would be 
+
+$\sum_{i=0}^{m}(Depot_{v_{i,0}} + Depot_{v_{i,l_{i}}} + \sum_{j=0}^{l_{i}-1}D_{v_{i,j},v_{i,j+1}} + \sum_{j=0}^{l_{i}}S_{v_{i,j}} + \left.P\right|_{if cost(v_{i}) > T}^{})$
 
 \section{Question 2}
 
