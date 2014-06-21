@@ -35,7 +35,7 @@
 
 \subsubsection{Solution Representation}
 
-Solutions will be represented as a set of $m$ vectors of varying length $l_{i}$ s.t. $\sum_{i=0}^{m}dim(v_{i}) = c$. 
+Solutions will be represented as a set of $m$ vectors of varying length $l_{i}$ s.t. $\sum_{i=0}^{m}dim(v_{i}) = c$.
 Each vector represents the route for one vehicle, and each element represents a city along the vehicle's route with cities being visited in order.
 
 $v_{0} = \begin{bmatrix}
@@ -65,7 +65,7 @@ $\sum_{i=0}^{m}(Depot_{v_{i,0}} + Depot_{v_{i,l_{i}}} + \sum_{j=0}^{l_{i}-1}D_{v
 
 \subsection{Part B}
 
-To account for a constraint on the length of each route, we could penalize each solution that contains a route longer than $T$.  Every route that exceeds $T$ would add an additional cost $P$ to the objective function.  This way the SA algorithm would be able to probabilistically choose this poor solution if it needed to diversify.  The new objective function would be 
+To account for a constraint on the length of each route, we could penalize each solution that contains a route longer than $T$.  Every route that exceeds $T$ would add an additional cost $P$ to the objective function.  This way the SA algorithm would be able to probabilistically choose this poor solution if it needed to diversify.  The new objective function would be
 
 $\sum_{i=0}^{m}(Depot_{v_{i,0}} + Depot_{v_{i,l_{i}}} + \sum_{j=0}^{l_{i}-1}D_{v_{i,j},v_{i,j+1}} + \sum_{j=0}^{l_{i}}S_{v_{i,j}} + \left.P\right|_{if cost(v_{i}) > T}^{})$
 
@@ -111,6 +111,13 @@ graph given in \texttt{Units100.mat} and find the cost of this solution to be
 
 % b) Run the code with different tabu list lengths (5, 10, 15, 25, 50) and
 % report the cost obtained in each case. What do you observe?
+As the number of iterations approaches 100, then regardless of tabu list length the algorithm converges to the ideal answer. \\
+Since the number of iterations was not specified, we have included a graph of the answer provided by the algorithm for iterations 1 through 100 for tabu list lengths of 5, 10, 15, 25, 50.
+Tabu Length 5:   \\
+Tabu Length 10: \\
+Tabu Length 15: \\
+Tabu Length 25: \\
+Tabu Length 50: \\
 
 \subsection{Part C}
 
