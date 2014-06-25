@@ -1,0 +1,85 @@
+% (Written responses must be typeset and in pdf. Only one member of the group
+% (should submit to the appropriate dropbox on Learn.)
+
+% Due Wed, June 30, 11:59:59 PM
+
+\documentclass[a4paper]{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{parskip}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{svg}
+
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\title{ECE457A Assignment 2}
+\author{
+  Group 27 \\
+  \\
+  Lucas Wojciechowksi, Ariel Weingarten, Alexander Maguire, \\
+  Austin Dobrik, Dane Carr}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Question 1}
+
+\subsection{Binary Encoding}
+\subsection{Part a}
+\[
+0011111111111111101110000111100001 \\
+0101000101101110010000110110111101 \\
+1000110111011101101011100111101111 \\
+1001001000100010000000000000000000 \\
+\]
+\subsection{Part b}
+Our crossover operator will take in 2 chromosomes and produce 2 children. A number, $$n$$,  in the range [0, 35] is selected randomly. The first child has the first $$n$$ bits of the first parents and the last $$36-n$$ bits of the second parent. The second child has the first $$n$$ bits of the second parent and the last $$36-n$$ bits of the second parent.
+
+\[
+0011 11111111111111 1000 01101101111011 \\
+0101 00010110111001 0111 00001111000011 \\
+1000 00100010001001 0000 00000000000001 \\
+1001 11011101110111 0101 11001111011111 \\
+\]
+\subsection{Part c}
+Our mutation operator takes in 1 chromosome and produces 1 child. Assume a mutation threshold $$r$$ in the range [0,1]. For every bit in the chromosome, generate a random probability, $$p$$, in the range [0,1]. If $$p > r$$, then flip the bit.
+\[
+0001 11111110111110 0111 00000101000010 \\
+0101 00000110101001 1000 01101011111010 \\
+1001 10111101110111 0101 11001011011110 \\
+1001 00100011001001 0001 00000000110001 \\
+\]
+\subsubsection{Decimal Real Number Floating Point Encoding}
+\subsection{Part a}
+\[
+0011 11111111111111 0111 00001111000011 \\
+0101 00010110111001 1000 01101101111011 \\
+1000 11011101110111 0101 11001111011111 \\
+1001 00100010001001 0000 00000000000001 \\
+\]
+\subsection{Part b}
+Our crossover operator will take in 2 chromosomes and produce 2 children. A number, $$n$$,  in the range [0, 35] is selected randomly. The first child has the first $$n$$ bits of the first parents and the last $$36-n$$ bits of the second parent. The second child has the first $$n$$ bits of the second parent and the last $$36-n$$ bits of the second parent.
+
+\[
+0011 11111111111111 1000 01101101111011 \\
+0101 00010110111001 0111 00001111000011 \\
+1000 00100010001001 0000 00000000000001 \\
+1001 11011101110111 0101 11001111011111 \\
+\]
+\subsection{Part c}
+Our mutation operator takes in 1 chromosome and produces 1 child. Assume a mutation threshold $$r$$ in the range [0,1]. For every bit in the chromosome, generate a random probability, $$p$$, in the range [0,1]. If $$p > r$$, then flip the bit.
+\[
+0001 11111110111110 0111 00000101000010 \\
+0101 00000110101001 1000 01101011111010 \\
+1001 10111101110111 0101 11001011011110 \\
+1001 00100011001001 0001 00000000110001 \\
+\]
+
+\end{document}
