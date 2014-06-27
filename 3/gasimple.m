@@ -1,17 +1,12 @@
 % Genetic Algorithm (Simple Demo) Matlab/Octave Program
 % Written by X S Yang (Cambridge University)
 % Usage :  gasimple or gasimple('x * exp( - x)');
-function [bestsol,  bestfun,  count] = gasimple(funstr)
-    global solnew sol pop popnew fitness fitold f range;
-    if nargin<1, 
-        % Easom Function with fmax = l at x = pi
-        funstr = '-cos(x) * exp( -(x - 3.1415926) ^ 2)';
-    end
-
-    range = [ -10 10]; % Range/Domain
+function [bestsol,  bestfun,  count] = gasimple(n)
+    global solnew sol pop popnew fitness fitold f range totaln genesize;
+    range = [ -1 1]; % Range/Domain
 
     % Converting to an inline function
-    f = vectorize(inline(funstr));
+    f = @func; 
 
     % Initializing the parameters
     rand('state' , 0'); % Reset the random generator
@@ -21,18 +16,20 @@ function [bestsol,  bestfun,  count] = gasimple(funstr)
     nsite = 2;    % number of mutation sites
     pc = 0.95;    % Crossover probability
     pm = 0.05;    % Mutation probability
-    nsbit = 16;   % String length (bits)
+    genesize = 8;
+    nsbit = genesize * n;   % String length (bits)
+    totaln = n;
 
     % Generating the initial population
     popnew = init_gen(popsize, nsbit);
     fitness = zeros(1, popsize); % fitness array
 
     % Display the shape of the function
-    x = range(1) : 0.1 : range(2); plot(x, f(x));
+    x = range(1) : 0.1 : range(2); 
 
     % Initialize solution < -  initial population
     for i = 1 : popsize, 
-        solnew(i) = bintodec(popnew(i,  : ));
+        solnew(i, :) = popnew(i,  : );
     end
 
     % Start the evolution loop
@@ -44,7 +41,7 @@ function [bestsol,  bestfun,  count] = gasimple(funstr)
             ii = floor(popsize * rand) + 1; jj = floor(popsize * rand) + 1;
 
             % Cross over
-            if pc>rand, 
+            if pc > rand, 
                 [popnew(ii,  : ), popnew(jj,  : )] = crossover(pop(ii,  : ), pop(jj,  : ));
                 % Evaluate the new pairs
                 count = count + 2;
@@ -52,7 +49,7 @@ function [bestsol,  bestfun,  count] = gasimple(funstr)
             end
 
 % Mutation at n sites
-            if pm>rand, 
+            if pm > rand, 
                 kk = floor(popsize * rand) + 1; count = count + 1;
                 popnew(kk,  : ) = mutate(pop(kk,  : ), nsite);
                 evolve(kk);
@@ -68,21 +65,42 @@ function [bestsol,  bestfun,  count] = gasimple(funstr)
     set(gcf, 'color', 'w');
     subplot (2, 1, 1); plot(bestsol); title('Best estimates');
     subplot(2, 1, 2); plot(bestfun); title('Fitness');
+    bestsol(MaxGen)
+
+function y = func(geno)
+    pheno = decode(geno);
+    y = 0;
+    for i = 1 : length(pheno),
+        y = y + abs(pheno(i)) ^ (i + 1);
+    end
+
+    % want to minimize the function
+    y = -y;
 
 % All the sub functions
 % generation of the initial population
 function pop = init_gen(np, nsbit)
-    % String length = nsbit + l with pop( : , l) for the Sign
-    pop = rand(np, nsbit + 1)>0.5;
+    pop = rand(np, nsbit) > 0.5;
 
 % Evolving the new generation
 function evolve(j)
     global solnew popnew fitness fitold pop sol f;
-    solnew(j) = bintodec(popnew(j,  : ));
-    fitness(j) = f(solnew(j));
-    if fitness(j)>fitold(j), 
+    solnew(j, :) = popnew(j,  : );
+    fitness(j) = f(solnew(j, :));
+    if fitness(j) > fitold(j), 
         pop(j,  : ) = popnew(j,  : );
         sol(j) = solnew(j);
+    end
+
+function pheno = decode(bin)
+    global totaln genesize;
+
+    pheno = [];
+
+    for i = 1 : totaln,
+        idx = 1 + (i - 1) * genesize;
+        gene = bin(idx : idx + genesize - 1);
+        pheno = [pheno bintodec(gene)];
     end
 
 % Convert a binary string into a decimal number
