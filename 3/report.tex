@@ -84,17 +84,44 @@ Our mutation operator takes in 1 chromosome and produces 1 child. Assume a mutat
 
 \section{Question 2}
 \subsection{Part a}
+True. If a 1-point crossover happens between the two 1's in the second string,
+the resulting strings will be $00010000000$ and $00000000100$ -- neither of
+which is either of the original parent strings. If the crossover occurs at any
+other location, the resulting strings will be the parent strings, unchanged.
 
 \subsection{Part b}
-The offspring that result from a 1-point crossover are $11010yxxyyyxyxxy$ and $yxyyx01100101101$ since the parents are split at the crossover point, and the ends of the chromosomes are swapped.  This causes one child to start with parent 1's genetic material and end with parent 2's, while the other child starts with parent 2's genetic material and ends with parent 1's.
+The offspring that result from a 1-point crossover are $11010yxxyyyxyxxy$ and
+$yxyyx01100101101$ since the parents are split at the crossover point, and the
+ends of the chromosomes are swapped.  This causes one child to start with
+parent 1's genetic material and end with parent 2's, while the other child
+starts with parent 2's genetic material and ends with parent 1's.
 
 \subsection{Part c}
-Uniform crossover is performed by swapping the genes underlined in the first parent, which yields children 01000101 01111000 01111010 and 10100100 10011001 01101000
+Uniform crossover is performed by swapping the genes underlined in the first
+parent, which yields children $$01000101 01111000 01111010$$ and $$10100100
+10011001 01101000$$
 
 \subsection{Part d}
+True. 1 and 2-point crossover will almost always disrupt localized schemata
+(except when the crossover points occur exactly between genes).
 
 \subsection{Part e}
 
 \subsection{Part f}
+First, order the population by fitness:
+
+$$\{3, 5, 1, 2, 4\}$$
+
+Compute $p(r) \forall r$:
+
+\begin{align*}
+    p(1) &= 0.5 \\
+    p(2) &= 0.625 \\
+    p(3) &= 0.75 \\
+    p(4) &= 0.875 \\
+    p(5) &= 1 \\
+\end{align*}
+
+\textbf{wtf this doesn't make any sense?}
 
 \end{document}
