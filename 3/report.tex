@@ -137,6 +137,9 @@ True. 1 and 2-point crossover will almost always disrupt localized schemata
 (except when the crossover points occur exactly between genes).
 
 \subsection{Part e}
+False. The parameter $G$ describes the fraction of the population to be replaced
+in each generation, but this parameter is unrelated to the population size
+itself.
 
 \subsection{Part f}
 First, order the population by fitness:
@@ -153,6 +156,7 @@ Compute $p(r) \forall r$:
     p(5) &= 1 \\
 \end{align*}
 
-\textbf{wtf this doesn't make any sense?}
+From here, we simply select population with the highest $p(r)$, individual 4.
+
 
 \end{document}
