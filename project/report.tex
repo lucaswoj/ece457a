@@ -35,7 +35,7 @@
 % task allocation addresses how to optimally assign a set of surveillance
 % tasks to a set of mobile sensing agents to maximize overall expected
 % performance, taking into account the priorities of the tasks and the skill
-% ratings of the mobile sensors.
+% ratings of the mobile robots.
 
 % Suggested reference papers:
 %
@@ -66,32 +66,30 @@
 
 \subsection{Givens}
 
-Suppose you have a number of mobile sensors
-$$\mathit{sensors} = \{ \mathit{sensor}_i | i \in [1, n_\mathit{sensors}] \}$$
+Suppose you have a number of mobile robots
+$$\mathit{robots} = \{ \mathit{robot}_i | i \in [1, n_\mathit{robots}] \}$$
 
-Using these mobile sensors, you are to peform a number of tasks
+Using these mobile robots, you are to peform a number of tasks
 $$\mathit{tasks} = \{ \mathit{task}_i | i \in [1, n_\mathit{tasks}] \}$$
 
-There is one exactly one task per sensor
-$$n = n_\mathit{sensors} = n_\mathit{tasks}$$
-
-Each task has an assigned ``priority"
+Each task has an inherent ``priority"
 % $$\forall \mathit{task_i} \in \mathit{tasks}, \mathit{priority}(\mathit{task}_i) \in [0 ,1]$$
 $$\mathit{priority}(\mathit{task}_i) \in [0 ,1]$$
 
-Sensors are not homogeneous; some are more ``skilled" at certain tasks than others
-% $$\forall \mathit{sensor_i} \in \mathit{sensors}, \forall \mathit{task_j} \in \mathit{tasks}, \mathit{skill}(\mathit{sensor}_i, \mathit{task}_j) \in [0 ,1]$$
-$$\mathit{skill}(\mathit{sensor}_i, \mathit{task}_j) \in [0 ,1]$$
+Robots are not homogeneous; some are more ``skilled" at certain tasks than others
+% $$\forall \mathit{robot_i} \in \mathit{robots}, \forall \mathit{task_j} \in \mathit{tasks}, \mathit{skill}(\mathit{robot}_i, \mathit{task}_j) \in [0 ,1]$$
+$$\mathit{skill}(\mathit{robot}_i, \mathit{task}_j) \in [0 ,1]$$
 
-\subsection{Problem}
+A single $\mathit{robot}$ may do multiple tasks.
 
-Our objective is to find an injective mapping of $\mathit{task}$s to $\mathit{sensor}$s that optimizes the overall expected performance. This mapping can be expressed as a vector
-$$S = [s_1, ..., s_n]^T$$
-$$s_i = j \Rightarrow \mathit{sensor}_i \text{ performs } \mathit{task}_j$$
+You want to find the mapping of $\mathit{robot}$s to $\mathit{task}$s that optimizes the overall expected performance. This mapping can be expressed as a logical matrix, $S$, where
 
-Our objective is to maximize our objective function, $\mathit{performance}(S)$
-$$\mathit{performance}(S) = \sum_{i=1}^n \mathit{skill}(\mathit{sensor}_i, \mathit{task}_{s_i}) \cdot \mathit{priority}(\mathit{task}_{s_i})$$
-
+$$S_{i,j} = \left\{
+ \begin{array}{lr}
+   1 & :
+   0 & :
+ \end{array}
+\right.$$
 
 \section{Problem Modeling}
 
@@ -104,59 +102,6 @@ $$\mathit{performance}(S) = \sum_{i=1}^n \mathit{skill}(\mathit{sensor}_i, \math
 % (TSP) and multiple travelling salesman problem (mTSP) are commonly used as
 % models for real-life problems such as school bus routing problem and complex
 % task allocation problem.
-
-The complex task allocation problem can be modeled as a linear assignment problem.  The solution can be represented as a bipartite graph $G=(S,T,E)$.  The vertex sets $S$ and $T$ each have $n$ vertices, and $E$ contains $n$ edges. $x_{i,j}$ represents an edge between $S_i$ and $T_j$. 
-
-A solution can be represented as a matrix $X_G$, where 
-
-$$x_{i,j} = \left\{
-     \begin{array}{lr}
-       1 & : x \in E\\
-       0 & : x \notin E
-     \end{array}
-   \right.$$
-
-Let $p(t_i)$ equal the priority of task $i$.
-Let $s(s_j, t_i)$ equal the skill of sensor $j$ at task $i$. The performance can be represented as a matrix
-
-$P = \begin{bmatrix}
-p(t_0) \cdot s(s_0, t_0) & \cdots & p(t_n) \cdot s(s_0, t_n) \\
-\vdots & \ddots & \vdots \\
-p(t_0) \cdot s(s_n, t_0) & \cdots & p(t_n) \cdot s(s_n, t_n) \\
-\end{bmatrix}$
-
-The performance of a solution can be calculated by multipling a solution matrix and the performance matrix, then summing the elements of the resulting matrix.
-
-E.g.
-$$X = \begin{bmatrix}
-0 & 1 & 0 \\
-1 & 0 & 0 \\
-0 & 0 & 1
-\end{bmatrix}$$
-$$P = \begin{bmatrix}
-0.2 & 0.4 & 0.1 \\
-0.6 & 0.8 & 0.9 \\
-0.3 & 0.2 & 0.5
-\end{bmatrix}$$
-
-$$XP = 
-\begin{bmatrix}
-0 & 1 & 0 \\
-1 & 0 & 0 \\
-0 & 0 & 1
-\end{bmatrix}
-\begin{bmatrix}
-0.2 & 0.4 & 0.1 \\
-0.6 & 0.8 & 0.9 \\
-0.3 & 0.2 & 0.5
-\end{bmatrix} = 
-\begin{bmatrix}
-0 & 0.4 & 0 \\
-0.6 & 0 & 0 \\
-0 & 0 & 0.5
-\end{bmatrix}$$
-
-$$performance(X) = \sum_{i=1}^{3}\sum_{j=1}^{3}XP_{i,j} = 1.5$$
 
 \section{Reduced Size Problem}
 
