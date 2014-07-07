@@ -80,7 +80,7 @@ $$\mathit{skill}(\mathit{robot}_i, \mathit{task}_j) \in [0 ,1]$$
 
 $\mathit{robot}$s are assigned to tasks.
 $$\mathit{robots}_i \rightarrow \mathit{task}_j$$
-A single $\mathit{robot}$ may be assigned to multiple $\mathit{task}$.
+A single $\mathit{robot}$ may be assigned to multiple $\mathit{task}$. Every task
 
 \subsection{Problem}
 
@@ -121,9 +121,13 @@ $$
 % models for real-life problems such as school bus routing problem and complex
 % task allocation problem.
 
-Given a population of robots $R$, a set of tasks $T$, a priority for each task $P_t$, the 
+Given a population of robots $R$, a set of tasks $T$, a priority for each task $P_t$, the
 skill of each robot $S_{r,t}$ and a assignment of tasks to robots $A_r$, for each $r \in R$
 we can create a directed, weighted graph as follows:
+
+We will reduce complex task allocation to the travleing salesman problem.
+
+Given a random initial solution, $S_0$,
 
 \begin{align*}
 	G_r &= (V, E) \\
