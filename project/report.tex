@@ -91,15 +91,23 @@ $$S_{i,j} = \left\{
      0 : \mathit{robot}_i \not \rightarrow \mathit{task}_j
   \end{array}
 \right\}$$
+For example,
+$$S = \begin{bmatrix}
+  0 & 1 & 0 \\
+  1 & 0 & 0 \\
+  0 & 0 & 1
+\end{bmatrix}$$
 
 Overall peformance is defined as
-$$\mathit{peformance}\left(
-\sum_{i=0}^{n_\mathit{robots}}
-\sum_{j=0}^{n_\mathit{tasks}}
-S_{i,j} \cdot
-\mathit{skill}(\mathit{robot}_i, \mathit{task}_j) \cdot
-\mathit{priority}(\mathit{task}_j)
-\right)$$
+$$
+  \mathit{peformance}\left(
+    \sum_{i=0}^{n_\mathit{robots}}
+    \sum_{j=0}^{n_\mathit{tasks}}
+    S_{i,j} \cdot
+    \mathit{skill}(\mathit{robot}_i, \mathit{task}_j) \cdot
+    \mathit{priority}(\mathit{task}_j)
+  \right)
+$$
 
 \section{Problem Modeling}
 
