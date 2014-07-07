@@ -13,6 +13,7 @@
 \usepackage{amssymb}
 \usepackage{mathtools}
 \usepackage{svg}
+\usepackage{pdfpages}
 
 \DeclarePairedDelimiter\ceil{\lceil}{\rceil}
 \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
@@ -111,13 +112,12 @@ graph given in \texttt{Units100.mat} and find the cost of this solution to be
 
 % b) Run the code with different tabu list lengths (5, 10, 15, 25, 50) and
 % report the cost obtained in each case. What do you observe?
-As the number of iterations approaches 100, then regardless of tabu list length the algorithm converges to the ideal answer. \\
-Since the number of iterations was not specified, we have included a graph of the answer provided by the algorithm for iterations 1 through 100 for tabu list lengths of 5, 10, 15, 25, 50.
-Tabu Length 5:   \\
-Tabu Length 10: \\
-Tabu Length 15: \\
-Tabu Length 25: \\
-Tabu Length 50: \\
+
+Since the number of iterations was not specified, we have included a graph of the solution provided by the algorithm for iterations 1 through 100, averaged over 5 runs.
+
+We observe that regardless of tabu length, all answers converge to the ideal answer of 109 around 90 iterations.
+
+\includepdf[pages={1}]{q2/ab.pdf}
 
 \subsection{Part C}
 
@@ -125,6 +125,43 @@ Tabu Length 50: \\
 % of an aspiration criterion. The aspiration criterion in this problem could be
 % to allow solutions that are better than the currently known best solution.
 % Repeat (a) and (b) with the modified code.
+
+We modified \texttt{GetBestNeighbourST.m}'s use of the tabu list to implement an aspiration criterion. In particular, we changed
+
+\begin{verbatim}
+    % 2. Check if the edge to be removed (e1) is in the tabu list
+    if TabuEdges(NT1(e1), NT2(e1)) == 0
+        if NewSTCost < BestNeighbourSTCost
+            BestNeighbourST = NewST;
+            BestNeighbourSTCost = NewSTCost;
+
+            TabuEdgeN1 = N1(BestEdge);
+            TabuEdgeN2 = N2(BestEdge);
+            AddTabuMove = true;
+        end
+    end
+\end{verbatim}
+
+to read
+
+\begin{verbatim}
+    % 2. Check if the edge to be removed (e1) is in the tabu list
+    if (TabuEdges(NT1(e1), NT2(e1)) == 0 && NewSTCost < BestNeighbourSTCost) || ...
+                (TabuEdges(NT1(e1), NT2(e1)) ~= 0 && NewSTCost < STCost)
+
+            BestNeighbourST = NewST;
+            BestNeighbourSTCost = NewSTCost;
+
+            TabuEdgeN1 = N1(BestEdge);
+            TabuEdgeN2 = N2(BestEdge);
+            AddTabuMove = true;
+        end
+    end
+\end{verbatim}
+
+We graphed this code in the same way as part B. Note that the graph is shallower as all runs converge to the ideal answer more quickly than in part A.
+
+\includepdf[pages={1}]{q2/c.pdf}
 
 \subsection{Part D}
 
@@ -135,9 +172,32 @@ Tabu Length 50: \\
 % functions to consider adding the cost of the splitters. Repeat (a) and (b)
 % with the modified code.
 
+In this part, we replaced all cost calculations with a call to the function
+\begin{verbatim}
+function Cost = GetCost(Graph, ST)
+
+EdgeCost = sum(sum(Graph .* ST)) / 2;
+NodeCost = sum(10 ./ (1 + exp(-1 * sum(Graph) ./ 10)));
+
+Cost = EdgeCost + NodeCost;
+\end{verbatim}
+
+This new cost function did not produce an ideal solution with Kruskal's algorithm.
+
+Using Tabu Search, however, it did converge to an answer at a cost of 1103. We graphed the solution versus iterations averaged over 5 runs in the same way as part A.
+\includepdf[pages={1}]{q2/d.pdf}
+
+We also tried using the improvements from part C in the new problem proposed for part D and found it to have better performance characteristics again. We graphed the solution versus iterations averaged over 5 runs in the same way as part A.
+
+\includepdf[pages={1}]{q2/dc.pdf}
+
 \subsection{Part E}
 
 % Compare between Tabu Search and the greedy algorithm of Kruskal as an example
 % for greedy algorithms.
+
+In parts A and B, Kurskal's algorithm produced the same answer as Tabu Search in many orders of magnitude less time. However, in part D, the nature of the problem changed such that a greedy algorithm such as Kurskal's was no longer suitable.
+
+In general, for problems like this, one should use a greedy algorithm if at all feasible; the greedy algorithm will produce a guaranteed optimal solution in $O(n)$ time. However, when a greedy algorithm is not feasible, such with the complex cost function in part D, a Tabu Search algorithm is a good tool to try.
 
 \end{document}
