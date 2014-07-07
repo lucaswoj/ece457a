@@ -72,24 +72,34 @@ $$\mathit{robots} = \{ \mathit{robot}_i | i \in [1, n_\mathit{robots}] \}$$
 Using these mobile robots, you are to peform a number of tasks
 $$\mathit{tasks} = \{ \mathit{task}_i | i \in [1, n_\mathit{tasks}] \}$$
 
-Each task has an inherent ``priority"
-% $$\forall \mathit{task_i} \in \mathit{tasks}, \mathit{priority}(\mathit{task}_i) \in [0 ,1]$$
+Each task has an inherent $\mathit{priority}$
 $$\mathit{priority}(\mathit{task}_i) \in [0 ,1]$$
 
-Robots are not homogeneous; some are more ``skilled" at certain tasks than others
-% $$\forall \mathit{robot_i} \in \mathit{robots}, \forall \mathit{task_j} \in \mathit{tasks}, \mathit{skill}(\mathit{robot}_i, \mathit{task}_j) \in [0 ,1]$$
+$\mathit{robot}$s are not homogeneous; some are more ``skilled" at certain tasks than others
 $$\mathit{skill}(\mathit{robot}_i, \mathit{task}_j) \in [0 ,1]$$
 
-A single $\mathit{robot}$ may do multiple tasks.
+$\mathit{robot}$s are assigned to tasks.
+$$\mathit{robots}_i \rightarrow \mathit{task}_j$$
+A single $\mathit{robot}$ may be assigned to multiple $\mathit{task}$.
+
+\subsection{Problem}
 
 You want to find the mapping of $\mathit{robot}$s to $\mathit{task}$s that optimizes the overall expected performance. This mapping can be expressed as a logical matrix, $S$, where
-
 $$S_{i,j} = \left\{
- \begin{array}{lr}
-   1 & :
-   0 & :
- \end{array}
-\right.$$
+  \begin{array}{lr}
+     1 : \mathit{robot}_i \rightarrow \mathit{task}_j \\
+     0 : \mathit{robot}_i \not \rightarrow \mathit{task}_j
+  \end{array}
+\right\}$$
+
+Overall peformance is defined as
+$$\mathit{peformance}\right(
+\sum_{i=0}^{n_\mathit{robots}}
+\sum_{j=0}^{n_\mathit{tasks}}
+S_{i,j} \cdot
+\mathit{skill}(\mathit{robot}_i, \mathit{task}_j) \cdot
+\mathit{priority}(\mathit{task}_j)
+\left)$$
 
 \section{Problem Modeling}
 
