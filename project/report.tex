@@ -86,8 +86,8 @@ You want to find the mapping of $\mathit{robot}$s to $\mathit{task}$s that optim
 
 $$S_{i,j} = \left\{
  \begin{array}{lr}
-   1 & :
-   0 & :
+   1 & : \\
+   0 & : 
  \end{array}
 \right.$$
 
@@ -102,6 +102,30 @@ $$S_{i,j} = \left\{
 % (TSP) and multiple travelling salesman problem (mTSP) are commonly used as
 % models for real-life problems such as school bus routing problem and complex
 % task allocation problem.
+
+Given a population of robots $R$, a set of tasks $T$, a priority for each task $P_t$, the 
+skill of each robot $S_{r,t}$ and a assignment of tasks to robots $A_r$, for each $r \in R$
+we can create a directed, weighted graph as follows:
+
+\begin{align*}
+	G_r &= (V, E) \\
+	V &= \{ start \} \cup A_r \\
+	E_{x, t} &= -P_a S_{r,t} \qquad \forall t \in A_r \\
+	E_{x, start} &= 0
+\end{align*}
+
+Which is to say, for each robot we create a graph with a start node and a node for each task assigned to said robot. The cost of traveling to any node is the negative of the robot's skill on the task multiplied by the task's priority. The cost of traveling to the start node is always 0.
+
+From here, we can run TSP on the created graph, with the robot starting at the start node. It is trivial to show that regardless of the path taken, the total cost traveled is:
+
+$$C_r = \sum_t^{A_r} -P_t S_{r,t}$$
+
+In order to maximize efficiency of the system as a whole, we must then minimize the total cost for all robots:
+
+$$C = \sum_r^{R} C_r = \sum_r^{R} \sum_t^{A_r} -P_t S_{r,t}$$
+
+
+
 
 \section{Reduced Size Problem}
 
