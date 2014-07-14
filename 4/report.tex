@@ -1,7 +1,7 @@
 % (Written responses must be typeset and in pdf. Only one member of the group
 % (should submit to the appropriate dropbox on Learn.)
 
-% Due Wed, June 30, 11:59:59 PM
+% Due Mon, July 21, 11:59:59 PM
 
 \documentclass[a4paper]{article}
 
@@ -17,7 +17,7 @@
 \DeclarePairedDelimiter\ceil{\lceil}{\rceil}
 \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
 
-\title{ECE457A Assignment 3}
+\title{ECE457A Assignment 4}
 \author{
   Group 27 \\
   \\
@@ -28,135 +28,6 @@
 \begin{document}
 
 \maketitle
-
-\section{Question 1}
-
-\subsection{Binary Encoding}
-\subsection{Part a}
-
-The length of the binary encoding chromosome for a variable $x_i$ with a range, $L_i$ and a precision $m_i$ is given by
-$$n_i = \ceil{\text{log}_2(L_i \cdot 10^{m_i})}$$
-
-This problem specifies two variables, $x$ and $y$, each with a range of $[0, 10)$, $L_i = 10$, and a precision of 4, $m_i = 4$. Therefore, the chromosomes should be of length
-$$n_y + n_x = 2 \cdot \ceil{\text{log}_2(10 \cdot 10^4)} = 34$$
-
-Four individuals of this length are
-\begin{description}
-\item[a1] \texttt{0011111111111111101110000111100001}
-\item[a2] \texttt{0101000101101110010000110110111101}
-\item[a3] \texttt{1000110111011101101011100111101111}
-\item[a4] \texttt{1001001000100010000000000000000000}
-\end{description}
-
-\subsection{Part b}
-Our crossover operator will take in 2 chromosomes and produce 2 children. A number, $n$, in the range $[0, 33]$ is selected randomly. The first child has the first $n$ bits of the first parents and the last $33-n$ bits of the second parent. The second child has the first $n$ bits of the second parent and the last $33-n$ bits of the second parent.
-
-Chromosomes b1 and b2 are the result of crossover between chromosomes a1 and a2. Chromosomes b3 and b4 are the result of crossover between chromosomes a3 and a4.
-
-\begin{description}
-\item[b1] \texttt{0011 11111111111111 1000 01101101111011}
-\item[b2] \texttt{0101 00010110111001 0111 00001111000011}
-\item[b3] \texttt{1000 00100010001001 0000 00000000000001}
-\item[b4] \texttt{1001 11011101110111 0101 11001111011111}
-\end{description}
-
-\subsection{Part c}
-Our mutation operator takes in 1 chromosome and produces 1 child. Assume a mutation threshold $r$ in the range $[0,1]$. For every bit in the chromosome, generate a random probability, $p$, in the range $[0,1]$. If $p > r$, then flip the bit.
-
-Chromosome c1 is a mutation of chromosome a1, etc.
-
-\begin{description}
-\item[c1] \texttt{0001 11111110111110 0111 00000101000010}
-\item[c2] \texttt{0101 00000110101001 1000 01101011111010}
-\item[c3] \texttt{1001 10111101110111 0101 11001011011110}
-\item[c4] \texttt{1001 00100011001001 0001 00000000110001}
-\end{description}
-
-\subsection{Decimal Real Number Floating Point Encoding}
-\subsubsection{Part a}
-
-The length of the chromosome is the sum of the number of bits needed to represent the integer portion and the number of bits needed to represent the decimal portion. For a real number with integer part range of $\alpha_i$ and decimal part range of $\beta_i$ is calculated as
-$$n_i = \floor{log_2(\alpha_i) + 1} + \floor{log_2(\beta_i) + 1}$$
-
-In the case described by this question, we have two variables, $x$ and $y$, both with $\alpha_i = 10$ and $\beta_i = 9999$. Therefore the number of bits required to represent our chromosome is
-$$ n_x + n_y = 2 \cdot \floor{log_2(10) + 1} + \floor{log_2(9999) + 1} = 36 $$
-
-Four individuals of this length are
-\begin{description}
-\item[a1] \texttt{0011 11111111111111 0111 00001111000011}
-\item[a2] \texttt{0101 00010110111001 1000 01101101111011}
-\item[a3] \texttt{1000 11011101110111 0101 11001111011111}
-\item[a4] \texttt{1001 00100010001001 0000 00000000000001}
-\end{description}
-
-\subsubsection{Part b}
-Our crossover operator will take in 2 chromosomes and produce 2 children. A number, $n$,  in the range $[0, 35]$ is selected randomly. The first child has the first $n$ bits of the first parents and the last $36-n$ bits of the second parent. The second child has the first $n$ bits of the second parent and the last $36-n$ bits of the second parent.
-
-Chromosomes b1 and b2 are the result of crossover between chromosomes a1 and a2. Chromosomes b3 and b4 are the result of crossover between chromosomes a3 and a4.
-
-\begin{description}
-\item[b1] \texttt{0011 11111111111111 1000 01101101111011}
-\item[b2] \texttt{0101 00010110111001 0111 00001111000011}
-\item[b3] \texttt{1000 00100010001001 0000 00000000000001}
-\item[b4] \texttt{1001 11011101110111 0101 11001111011111}
-\end{description}
-
-\subsubsection{Part c}
-Our mutation operator takes in 1 chromosome and produces 1 child. Assume a mutation threshold $r$ in the range $[0,1]$. For every bit in the chromosome, generate a random probability, $p$, in the range $[0,1]$. If $p > r$, then flip the bit.
-
-Chromosome c1 is a mutation of chromosome a1, etc.
-
-\begin{description}
-\item[c1] \texttt{0001 11111110111110 0111 00000101000010}
-\item[c2] \texttt{0101 00000110101001 1000 01101011111010}
-\item[c3] \texttt{1001 10111101110111 0101 11001011011110}
-\item[c4] \texttt{1001 00100011001001 0001 00000000110001}
-\end{description}
-
-\section{Question 2}
-\subsection{Part a}
-True. If a 1-point crossover happens between the two 1's in the second string,
-the resulting strings will be $00010000000$ and $00000000100$ -- neither of
-which is either of the original parent strings. If the crossover occurs at any
-other location, the resulting strings will be the parent strings, unchanged.
-
-\subsection{Part b}
-The offspring that result from a 1-point crossover are $11010yxxyyyxyxxy$ and
-$yxyyx01100101101$ since the parents are split at the crossover point, and the
-ends of the chromosomes are swapped.  This causes one child to start with
-parent 1's genetic material and end with parent 2's, while the other child
-starts with parent 2's genetic material and ends with parent 1's.
-
-\subsection{Part c}
-Uniform crossover is performed by swapping the genes underlined in the first
-parent, which yields children $$01000101 01111000 01111010$$ and $$10100100
-10011001 01101000$$
-
-\subsection{Part d}
-True. 1 and 2-point crossover will almost always disrupt localized schemata
-(except when the crossover points occur exactly between genes).
-
-\subsection{Part e}
-False. The parameter $G$ describes the fraction of the population to be replaced
-in each generation, but this parameter is unrelated to the population size
-itself.
-
-\subsection{Part f}
-First, order the population by fitness:
-
-$$\{3, 5, 1, 2, 4\}$$
-
-Compute $p(r) \forall r$:
-
-\begin{align*}
-    p(1) &= 0.5 \\
-    p(2) &= 0.625 \\
-    p(3) &= 0.75 \\
-    p(4) &= 0.875 \\
-    p(5) &= 1 \\
-\end{align*}
-
-From here, we simply select population with the highest $p(r)$, individual 4.
 
 
 \end{document}
