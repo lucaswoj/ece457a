@@ -1,0 +1,13 @@
+Particle swarm optimization (PSO) is one of the modern heuristic algorithms that can be applied to continuous and discrete optimization problems.
+The original binary PSO (BPSO) has got some disadvantages that make the algorithm not to converge well.
+To deal with these disadvantages, a new BPSO (NBPSO) is introduced. The results provided in the fallowing papers show the superiority of the NBPSO.
+
+[1]. M.Rostami Shahrbabak and H.Nezamabadi-pour, " New Approach to Binary PSO Algorithm" 14th Iranian Conference on Electrical Engineering, may 2006.
+[2]. H.Nezamabadi-pour, M.Rostami Shahrbabaki and M.Maghfoori Farsangi "Binary Particle Swarm Optimization: Challenges and new
+Solutions"The CSI Journal on Computer Science and Engineering Vol. 6, No. 1 (a), 2008.
+
+                        *********************************************************************
+
+The code provided here runs NBPSO (New Binary PSO) Algorithm to find eigther minimum or maximum of a function.
+The local and global version are presented.
+
