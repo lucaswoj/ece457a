@@ -1,0 +1,3 @@
+To use code
+
+Simply run the Tabu.m file and you can edit the number of iterations and the Tabu Length in it

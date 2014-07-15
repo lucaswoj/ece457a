@@ -1,0 +1,25 @@
+run =
+
+  Columns 1 through 9
+
+     1     2     3     4     5     6     7     8     9
+
+  Column 10
+
+    10
+
+
+final_SI =
+
+  Columns 1 through 5
+
+    0.7071    1.7951    0.7071    0.7071    0.7071
+
+  Columns 6 through 10
+
+    0.7071    1.8559    0.7071    0.7071    2.1344
+
+
+average =
+
+    1.0735
