@@ -12,7 +12,9 @@
 \usepackage{parskip}
 \usepackage{amssymb}
 \usepackage{mathtools}
+\usepackage{upgreek}
 \usepackage{svg}
+\usepackage{todonotes}
 
 \DeclarePairedDelimiter\ceil{\lceil}{\rceil}
 \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
@@ -149,6 +151,177 @@ F(1.175,-0.43) &\approx 38.96
 \end{align*}
 
 
+\section{Question 2}
 
+Initialize the graph with $\uptau = \alpha = \beta = Q = 1$, $\rho = 0.7$. The values of $\alpha$, $\beta$ were chosen to be 1 because we were unable to find any literature on "good" values of the parameters which described the ACS algorithm exactly as defined in class.
+
+\subsection{Iteration 1}
+
+Compute the selection probability $\eta_1^1$:
+$$
+\eta_1^1 = \sum_{n \in N_1} \frac{\uptau_{1n}^\alpha}{d_{1n}^\beta} = \frac{1}{4} + \frac{1}{2} + \frac{1}{9} + \frac{1}{12} = 0.95
+$$
+
+Compute $p_{1i}^1 \quad \forall i \in V$:
+\begin{align*}
+p_{1i}^1 &= \frac{\uptau_{1n}d_{1i}^{-1}}{\eta_1^1} \\
+\\
+p_{12}^1 &= 0.26 \\
+p_{13}^1 &= 0.53 \\
+p_{14}^1 &= 0.12 \\
+p_{15}^1 &= 0.08
+\end{align*}
+
+Select a new node from $N_1$ based on the relative percentages $p_{1i}^1$. In the preparation of this paper, the authors called $rand()$, which returned $p_{15}^1$. Thus, we will next go to node 5.
+
+$$
+\text{Tour}^1 = \{1, 5\} \qquad 
+d_{tour}^1 = 12
+$$
+
+Now compute $\eta_5^1$:
+$$
+\eta_5^1 = \sum_{n \in N_5 \setminus \{1\}} \frac{\uptau_{5n}^\alpha}{d_{5n}^\beta} = \frac{1}{5} + \frac{1}{10} + \frac{1}{3} = 0.63
+$$
+
+Again, compute the relative percentages $p_{5i}^1$:
+\begin{align*}
+p_{52}^1 &= 0.32 \\
+p_{53}^1 &= 0.16 \\
+p_{54}^1 &= 0.53
+\end{align*}
+
+$rand()$ now choses $p_{54}^1$; select node 4 as the next step on the route.
+
+$$
+\text{Tour}^1 = \{1, 5, 4\} \qquad 
+d_{tour}^1 = 15
+$$
+
+For the sake of brevity, we will continue on with the math, marking taken paths in \textbf{bold face}.
+
+$$
+\eta_4^1 = \sum_{n \in N_4 \setminus \{1,5\}} \frac{\uptau_{4n}^\alpha}{d_{4n}^\beta} = \frac{1}{5} + \frac{1}{4} = 0.45
+$$
+
+\begin{align*}
+p_{42}^1 &= 0.44 \\
+\mathbf{p_{43}^1} &= \mathbf{0.56}
+\end{align*}
+
+$$
+\text{Tour}^1 = \{1, 5, 4, 3\} \qquad 
+d_{tour}^1 = 19
+$$
+
+$$
+\mathbf{p_{32}^1} = \mathbf{1}
+$$
+
+$$
+\text{Tour}^1 = \{1, 5, 4, 3, 2, 1\} \qquad 
+d_{tour}^1 = 30
+$$
+
+Now evaporate the pheromone over the graph:
+
+$$
+\uptau_{ij} = (1 - \rho) \uptau_{ij} 
+$$
+
+$$ \uptau_{ij} = \begin{tabular}{r | c c c c}
+$i \setminus j$ & 2 & 3 & 4 & 5 \\ \hline
+1 & 0.3 & 0.3 & 0.3 & 0.3 \\
+2 &     & 0.3 & 0.3 & 0.3 \\
+3 &     &     & 0.3 & 0.3 \\
+4 &     &     &     & 0.3
+\end{tabular}
+$$
+
+And update the tour with the pheromone left by the ant:
+
+$$\uptau_{update} = \frac{Q}{d_{tour}^1} = 0.033$$
+
+$$ \uptau_{ij} = \begin{tabular}{r | c c c c}
+$i \setminus j$ & 2 & 3 & 4 & 5 \\ \hline
+1 & 0.33 & 0.3 & 0.3 & 0.33 \\
+2 &     & 0.33 & 0.3 & 0.3 \\
+3 &     &     & 0.33 & 0.3 \\
+4 &     &     &     & 0.33
+\end{tabular}
+$$
+
+\subsection{Iteration 2}
+
+$$
+\eta_1^1 = \sum_{n \in N_1} \frac{\uptau_{1n}^\alpha}{d_{1n}^\beta} = \frac{0.33}{4} + \frac{0.3}{2} + \frac{0.3}{9} + \frac{0.33}{12} = 0.29
+$$
+
+\begin{align*}
+p_{1i}^2 &= \frac{\uptau_{1i} d_{1i}^{-1}}{\eta_1^1} \\
+\\
+p_{12}^2 &= 0.28 \\
+\mathbf{p_{13}^2} &= \mathbf{0.51} \\
+p_{14}^2 &= 0.11 \\
+p_{15}^2 &= 0.09
+\end{align*}
+
+$$
+\text{Tour}^2 = \{1, 3\} \qquad 
+d_{tour}^2 = 2
+$$
+
+$$
+\eta_3^2 = \sum_{n \in N_3\setminus\{1\}} \frac{\uptau_{3n}^\alpha}{d_{3n}^\beta} = \frac{0.33}{7} + \frac{0.33}{4} + \frac{0.3}{10} = 0.16
+$$
+
+\begin{align*}
+\mathbf{p_{32}^2} &= \mathbf{0.29} \\
+p_{34}^2 &= 0.52 \\
+p_{35}^2 &= 0.19
+\end{align*}
+
+$$
+\text{Tour}^2 = \{1, 3, 2\} \qquad 
+d_{tour}^2 = 9
+$$
+
+$$
+\eta_2^2 = \sum_{n \in N_2\setminus\{1,3\}} \frac{\uptau_{2n}^\alpha}{d_{2n}^\beta} = \frac{0.3}{5} + \frac{0.3}{5} = 0.12
+$$
+
+\begin{align*}
+p_{24}^2 &= 0.50 \\
+\mathbf{p_{25}^2} &= \mathbf{0.20}
+\end{align*}
+
+$$
+\text{Tour}^2 = \{1, 3, 2, 5, 4, 1\} \qquad 
+d_{tour}^2 = 26
+$$
+
+$$
+\uptau_{ij} = (1 - \rho) \uptau_{ij} 
+$$
+
+$$ \uptau_{ij} = \begin{tabular}{r | c c c c}
+$i \setminus j$ & 2 & 3 & 4 & 5 \\ \hline
+1 & 0.23 & 0.21 & 0.21 & 0.23 \\
+2 &      & 0.23 & 0.21 & 0.21 \\
+3 &      &      & 0.23 & 0.21 \\
+4 &      &      &      & 0.23
+\end{tabular}
+$$
+
+$$\uptau_{update} = \frac{Q}{d_{tour}^2} = 0.038$$
+
+$$ \uptau_{ij} = \begin{tabular}{r | c c c c}
+$i \setminus j$ & 2 & 3 & 4 & 5 \\ \hline
+1 & 0.23 & 0.25 & 0.25 & 0.23 \\
+2 &      & 0.28 & 0.21 & 0.21 \\
+3 &      &      & 0.23 & 0.21 \\
+4 &      &      &      & 0.28
+\end{tabular}
+$$
 
 \end{document}
