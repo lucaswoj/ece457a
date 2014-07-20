@@ -75,15 +75,16 @@ v_{1x}^2 &= 0.792\cdot0 + 1.5\cdot0.3\cdot(0.5-0.5) + 1.5\cdot0.9\cdot(1-0.5) = 
 v_{1y}^2 &= 0.792\cdot0 + 1.5\cdot0.3\cdot(1.25-1.25) + 1.5\cdot0.9\cdot(0-1.25) = -1.68\\
 \end{align*}
 
-\begin{table}
+\begin{center}
     \begin{tabular}{|c|c|c|c|c|}
     % Header
+    \hline
     $(x_0^i,y_0^i)$ & $(v_{0x}^i,v_{0y}^i)$ & $pbest_0^i$ & $(v_{1x}^i,v_{1y}^i)$ & $(x_1^i,y_1^i)$ \\ \hline
     % Data
     (1,0) & (0,0) & (1,0) & (0,0) & (1,0) \\ \hline
     (0.5, 1.25) & (0,0) & (0.5, 1.25) & (0.675,-1.68) & (1.175,-0.43) \\ \hline
     \end{tabular}
-\end{table}
+\end{center}
 
 \subsection{Iteration 2}
 \subsubsection{Particle 1}
@@ -107,7 +108,7 @@ F(1.175,-0.43) &\approx 38.96
 \subsubsection{Outcome}
 The global best comes from Particle 2. The best solution thus far is $(x_0, y_0) = (1.175,-0.43)$.
 \[
-	gbest_0 = 55.56
+	gbest_1 = 38.96
 \]
 
 Now we can calculate the new velocities using $r_1=0.4$ and $r_2=0.7$
@@ -119,13 +120,14 @@ v_{1x}^2 &= 0.792\cdot0 + 1.5\cdot0.3\cdot(1.175-1.175) + 1.5\cdot0.9\cdot(1.175
 v_{1y}^2 &= 0.792\cdot0 + 1.5\cdot0.3\cdot(-0.43 - (-0.43)) + 1.5\cdot0.9\cdot(-0.43 - (-0.43)) = -0\\
 \end{align*}
 
-\begin{table}
+\begin{center}
     \begin{tabular}{|c|c|c|c|c|}
+    \hline
     $(x_1^i,y_1^i)$ & $(v_{1x}^i,v_{1y}^i)$ & $pbest_1^i$ & $(v_{2x}^i,v_{2y}^i)$ & $(x_2^i,y_2^i)$ \\ \hline
     (1,0) & (0,0) & (1,0) & (0.184,-0.452) & (1.184, -0.452 ) \\ \hline
     (1.175,-0.43) & (0.675,-1.68) & (1.175,-0.43) & (0,0) & (1.175,-0.43) \\ \hline
     \end{tabular}
-\end{table}
+\end{center}
 
 \section{Conclusions}
 After two iterations we have two candidate solutions. Particle 1 yields a more optimal solution and that will be the solution that we pick.\\
