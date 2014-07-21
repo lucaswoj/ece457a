@@ -81,7 +81,9 @@ $$\mathit{skill}(\mathit{robot}_i, \mathit{task}_j) \in [0 ,1]$$
 
 $\mathit{robot}$s are assigned to tasks.
 $$\mathit{robots}_i \rightarrow \mathit{task}_j$$
-A single $\mathit{robot}$ may be assigned to multiple $\mathit{task}$. Every task
+A single $\mathit{robot}$ may be assigned to multiple $\mathit{task}$.
+
+$\mathit{tasks} are separated by physical distances that a robot must traverse to move from one task to another$
 
 \subsection{Problem}
 
@@ -152,9 +154,9 @@ $$C = \sum_r^{R} C_r = \sum_r^{R} \sum_t^{A_r} -P_t S_{r,t}$$
 This is almost verbatim out of the literature.
 
 \begin{align}
-x_{ij} = \begin{cases} 
+x_{ij} = \begin{cases}
       1 & \text{if arc(i,j) is used in the tour} \\
-      0 & otherwise 
+      0 & otherwise
    \end{cases} \\
 \text{minimize} \sum_{i=1}^n \sum_{j=1}^n c_{ij} \times x_{ij} \\
 \sum_{i=1}^n \sum_{j=1}^n &= n \\
