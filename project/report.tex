@@ -12,7 +12,7 @@
 \usepackage{parskip}
 \usepackage{amssymb}
 
-\title{Statement of Work}
+\title{Complex Task Allocation: A Comparison of Metaheuristics}
 \author{
 	Group 27 \\
 	\\
@@ -80,7 +80,9 @@ $$\mathit{skill}(\mathit{robot}_i, \mathit{task}_j) \in [0 ,1]$$
 
 $\mathit{robot}$s are assigned to tasks.
 $$\mathit{robots}_i \rightarrow \mathit{task}_j$$
-A single $\mathit{robot}$ may be assigned to multiple $\mathit{task}$. Every task
+A single $\mathit{robot}$ may be assigned to multiple $\mathit{task}$.
+
+$\mathit{tasks} are separated by physical distances that a robot must traverse to move from one task to another$
 
 \subsection{Problem}
 
@@ -151,9 +153,9 @@ $$C = \sum_r^{R} C_r = \sum_r^{R} \sum_t^{A_r} -P_t S_{r,t}$$
 This is almost verbatim out of the literature.
 
 \begin{align}
-x_{ij} = \begin{cases} 
+x_{ij} = \begin{cases}
       1 & \text{if arc(i,j) is used in the tour} \\
-      0 & otherwise 
+      0 & otherwise
    \end{cases} \\
 \text{minimize} \sum_{i=1}^n \sum_{j=1}^n c_{ij} \times x_{ij} \\
 \sum_{i=1}^n \sum_{j=1}^n &= n \\
@@ -170,11 +172,58 @@ x_{ij} \in \{0, 1\},\qquad \forall (i, j) \in A \\
 % (PLP), a reduced size problem may contain only 4 departments (facilities)
 % and 4 locations.
 
+In this section, we define a reduced size complex task allocation problem which will be used to perform hand-iterations of various optimization algorithms in the following sections.
+
+Suppose we have 2 robots
+$$\mathit{robots} = \left\{ \mathit{robot}_0, \mathit{robot}_1 \right\}$$
+
+These robots must collectively perform 3 tasks
+$$\mathit{tasks} = \left\{ \mathit{task}_0, \mathit{task}_1,  \mathit{task}_2 \right\}$$
+
+The priority of each task is
+
+\begin{tabular}{llll}
+$\mathit{task}_0$  & 0.1 \\
+$\mathit{task}_1$  & 0.2 \\
+$\mathit{task}_2$  & 0.3 \\
+\end{tabular}
+\vspace{1.5em}
+
+The skill of each robot  at each task is
+
+\begin{tabular}{llll}
+                   & $\mathit{task}_0$ & $\mathit{task}_1$ & $\mathit{task}_2$ \\
+$\mathit{robot}_0$ & 0.1               & 0.4               & 0.5               \\
+$\mathit{robot}_1$ & 0.2               & 0.3               & 0.6               \\
+\end{tabular}
+\vspace{1.5em}
+
+The distances between tasks are
+
+\begin{tabular}{llll}
+                   & $\mathit{task}_0$ & $\mathit{task}_1$ & $\mathit{task}_2$ \\
+$\mathit{task}_0$  & 0                 & 0.1               & 0.2               \\
+$\mathit{task}_1$  & 0.1               & 0                 & 0.3               \\
+$\mathit{task}_2$  & 0.2               & 0.3               & 0                 \\
+\end{tabular}
+\vspace{1.5em}
+
+Each robot, $\mathit{robot}_i$, starts at a depot, $\mathit{depot}_i$. The distance from each depot to each task is
+
+\begin{tabular}{llll}
+                   & $\mathit{task}_0$ & $\mathit{task}_1$ & $\mathit{task}_2$ \\
+$\mathit{depot}_0$ & 0.6               & 0.3               & 0.1               \\
+$\mathit{depot}_1$ & 0.5               & 0.4               & 0.2               \\
+\end{tabular}
+\vspace{1.5em}
+
 \section{Real Problem}
 
 % The real size problem formulation and modeling will be used to show the
 % ability of the proposed solutions implemented in handling large size
 % problems.
+
+
 
 
 \end{document}
