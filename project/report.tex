@@ -176,7 +176,7 @@ The $\text{skill}(i, \mathit{dst})$ function makes use of the matrix $M_{skill}$
 % models for real-life problems such as school bus routing problem and complex
 % task allocation problem.
 
-Given a population of robots $R$, a set of tasks $T$, a priority for each task $P$, each robot's skill at performing each task $M_{skill}(r,t)$ and an ordered assignment of tasks to robots $S_r$, for each $r \in R$
+Given a population of $\mathit{robots}$, a set of $\mathit{tasks}$, a set of $\mathit{depots}$ a priority for each task $P$, each robot's skill at performing each task $M_{skill}(r,t)$ and an ordered assignment of tasks to robots $S(r)$, for each $r \in \mathit{robots}$
 we can create a directed, weighted graph as follows:
 
 We will model complex task allocation loosely on the traveling salesman problem.
@@ -185,20 +185,16 @@ Given a random initial solution, $S_0$,
 
 \begin{align*}
 	G &= (V, E) \\
-	V &= \{ start \} \cup T \\
-	E_{x, t} &= -P_a S_{r,t} \qquad \forall t \in A_r \\
-	E_{x, start} &= 0
+	V &= \mathit{depots} \cup \mathit{tasks} \\
+	E_{task_i, task_j} &= D_\text{task-task}(i,j) \qquad \forall t \in \mathit{tasks} \\
+  E_{depot_i, task_j} &= D_\text{depot-task}(i,j) \qquad \forall d \in \mathit{depots}\\
+	E_{task_i, depot_j} &= D_\text{task-depot}(i,j) \qquad \forall d \in \mathit{depots}\\
 \end{align*}
+%
 
-Which is to say, for each robot we create a graph with a start node and a node for each task assigned to said robot. The cost of traveling to any node is <<INSERT COST FUNCTION DESCRIPTION HERE>>. The cost of traveling to the start node is the distance from the current node to the start node.
+That is, we create a graph that shows the distances between every task and the distances between every task and every depot.
 
-From here, we can run TSP on the created graph, with the robot starting at the start node. It is trivial to show that regardless of the path taken, the total cost traveled is:
-
-$$C_r = \sum_t^{A_r} -P_t S_{r,t}$$
-
-In order to maximize efficiency of the system as a whole, we must then minimize the total cost for all robots:
-
-$$C = \sum_r^{R} C_r = \sum_r^{R} \sum_t^{A_r} -P_t S_{r,t}$$
+From here, we can run TSP on the created graph. The cost of taking each edge will be determined using $w$ which will take in the distance represented by that edge as an input. Every robot starts at their depot.
 
 \section{Potential other model}
 
