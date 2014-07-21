@@ -29,6 +29,9 @@ end
 function v = cost(solution)
     global homes;
 
+    % append a sentinel to the end of the solution so the logic below works
+    solution = [ solution, 0 ];
+
     v = 0;
 
     robot = 1;
