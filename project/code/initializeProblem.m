@@ -1,12 +1,12 @@
-function initializeProblem()
+function initializeProblem(solution)
     global homes priority skill distance;
 
     homes = [ 4, 5 ];
 
-    priority =  [ 
+    priority =  [
                     % first 3 are tasks
                     % last 2 are depots
-                    0.1, 0.2, 0.3, 0, 0 
+                    0.1, 0.2, 0.3, 0, 0
                 ];
 
     skill = [
@@ -22,7 +22,7 @@ function initializeProblem()
                     0.5, 0.4, 0.2, 0,   0
                 ];
 
-    cost([1, 2, 0, 3])
+    cost(s + 1)
 end
 
 
@@ -74,4 +74,3 @@ function v = costi(robot, path)
         v = v + weight(robot, path(t), path(t + 1));
     end
 end
-

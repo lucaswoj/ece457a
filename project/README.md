@@ -28,19 +28,19 @@ Projects must be done in group of 5 students. Teamwork helps to achieve more tha
 
 ### Report
 
-The objective of the final project is to provide a comparative study between different meta-heuristic optimization techniques to solve the selected problem. The project report must contain the following sections: 
+The objective of the final project is to provide a comparative study between different meta-heuristic optimization techniques to solve the selected problem. The project report must contain the following sections:
 
 #### Summary
 
-The Summary should be a brief version of the full report. It should give the reader an accurate overview. Be brief, but be specific. 
+The Summary should be a brief version of the full report. It should give the reader an accurate overview. Be brief, but be specific.
 
 #### Introduction
 
-summarize the importance of the problem you are trying to solve and the reason that motivated you to select this project. Explain what was the problem or challenge that you were given? state the purpose of the project and how did you solve it? Enumerate the objectives of the project and describe in brief the structure of the report. 
+summarize the importance of the problem you are trying to solve and the reason that motivated you to select this project. Explain what was the problem or challenge that you were given? state the purpose of the project and how did you solve it? Enumerate the objectives of the project and describe in brief the structure of the report.
 
 #### Literature Review
 
-Conduct a critical survey on similar solutions and explain how your solution extends or differs from these solutions. 
+Conduct a critical survey on similar solutions and explain how your solution extends or differs from these solutions.
 
 #### Proposed Solution
 
@@ -58,7 +58,7 @@ Establish a set of evaluation metrics and run some experiments with different va
 
 #### Conclusions & Recommendations
 
-summarize the conclusion and future improvement. Explain how did you solve the problem, what problems were met? what did the results show? And how to refine the proposed solution?You may organize ideas using lists or numbered points, if appropriate, but avoid making your report into a check-list or a series of encrypted notes 
+summarize the conclusion and future improvement. Explain how did you solve the problem, what problems were met? what did the results show? And how to refine the proposed solution?You may organize ideas using lists or numbered points, if appropriate, but avoid making your report into a check-list or a series of encrypted notes
 
 #### References
 
