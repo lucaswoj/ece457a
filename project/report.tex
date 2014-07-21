@@ -94,40 +94,48 @@
 % a need to explain background information regarding some supplementary methods
 % used in your formulation, do that here
 
-Suppose you have a number of mobile robots
+Suppose we have a number of mobile $\mathit{robot}$s
 $$\mathit{robots} = \{ \mathit{robot}_i | i \in [1, n_\mathit{robots}] \}$$
 
-Each robot starts at a start location, called a $\mathit{depot}$. In particular, $\mathit{robot}_i$ starts at $\mathit{depot}_i$
-
-Using these mobile robots, you are to perform a number of tasks
+Using these $\mathit{robot}$s, we are to perform a number of tasks
 $$\mathit{tasks} = \{ \mathit{task}_i | i \in [1, n_\mathit{tasks}] \}$$
 
-Each task has an inherent $\mathit{priority}$
+Each task has a $\mathit{priority}$
 $$\text{priority}(\mathit{task}_i) \in [0 ,1]$$
 
 $\mathit{robot}$s are not homogeneous; some are more ``skilled" at certain tasks than others
 $$\text{skill}(\mathit{robot}_i, \mathit{task}_j) \in [0 ,1]$$
 
-Tasks are located a certain distance each other
+Tasks are located some distance each other
 $$\mathit{distance}(\mathit{task}_i, \mathit{task}_j) > 0 \in \mathbb{R}$$
 
-$\textit{depot}$s similarly are located a certain distance from each task.
+Each $\mathit{robot}$ starts at some location, its $\mathit{depot}$. $\mathit{robot}_i$ starts at $\mathit{depot}_i$
+
+Each $\textit{depot}$ is located a certain distance from each task.
 $$\mathit{distance}(\mathit{depot}_i, \mathit{task}_j)$$
 
 $\mathit{task}$s are assigned to $\mathit{robot}$s.
 $$\mathit{task}_j \rightarrow \mathit{robot}_i$$
-The mapping of $\mathit{task}$s to $\mathit{robot}$s is many-to-one.
 
-A solution to this problem, $S$, consists of assigning a path through tasks to each robot such that each task is performed exactly once. Each path is represented as an ordered set of tasks.
-$$S(i) = \{\mathit{task}_0, \mathit{task}_1, ..., \mathit{task}_n\}$$
+We seek, for each $\mathit{robot}$, a path through the $\mathit{task}$s such that each $\mathit{task}$ is performed exactly once and our overall cost is minimized.
 
-The cost of a path is given by
+A solution, $S$, consists of a mapping of $\mathit{robot}$s to paths through $\mathit{task}$s.
+$$S(\mathit{robot}_i) = \{\mathit{task}_0, \mathit{task}_1, ..., \mathit{task}_n\}$$
+
+
+
+\subsubsection{Cost Function}
+
+
+
+
+The cost of some path, $S(i)$ is given by
 $$
-\text{cost}_i(S(i)) = w(i, S(i,|S_i|), S(i,0)) + \sum_{t = 0}^{|S(i)|-1} w(i, S(i,t), S(i,t+1))
+\text{cost}(S(i)) = w(i, S(i,|S(i)|), S(i,0)) + \sum_{t = 0}^{|S(i)|-1} w(i, S(i,t), S(i,t+1))
 $$
 
-Subject to the constraint:
-
+% TODO does not not naturally follow from our cost function?
+Subject to the constraint
 $$
 n \notin S(i) \quad \text{if} \quad M_{skill}(i, n) = 0
 $$
