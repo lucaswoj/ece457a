@@ -11,7 +11,6 @@
 \usepackage{graphicx}
 \usepackage{parskip}
 \usepackage{amssymb}
-\usepackage{todonotes}
 
 \title{Complex Task Allocation: A Comparison of Metaheuristics}
 \author{
@@ -27,8 +26,8 @@
 
 \section*{Summary}
 
-% The Summary should be a brief version of the full report. It should give the
-% reader an accurate overview. Be brief, but be specific.
+% The summary should be a brief version of the full report It should give the
+% reader an accurate overview Be brief, but be specific.
 
 \section{Introduction}
 
@@ -53,6 +52,13 @@
 % to characterize its complexity and its main challenges. Collect related
 % resources and conduct a critical survey on similar solutions reported in the
 % literature.
+
+% Collect resources and think about how to explain any of the topics below
+%  - Motivation
+%  - Definition
+%  - [*] Categorization
+%  - Challenges
+%  - Applications
 
 % Suggested reference papers:
 %
@@ -84,6 +90,10 @@
 % Define the decision variable or design vector, objective function/s and the
 % problem constraints.
 
+% Include the problem statement and describe its modeling If you think there is
+% a need to explain background information regarding some supplementary methods
+% used in your formulation, do that here
+
 \subsection{Givens}
 
 Suppose you have a number of mobile robots
@@ -93,53 +103,43 @@ Using these mobile robots, you are to peform a number of tasks
 $$\mathit{tasks} = \{ \mathit{task}_i | i \in [1, n_\mathit{tasks}] \}$$
 
 Each task has an inherent $\mathit{priority}$
-$$\text{priority}(\mathit{task}_i) \in [0 ,1]$$
+$$\mathit{priority}(\mathit{task}_i) \in [0 ,1]$$
 
 $\mathit{robot}$s are not homogeneous; some are more ``skilled" at certain tasks than others
-$$\text{skill}(\mathit{robot}_i, \mathit{task}_j) \in [0 ,1]$$
+$$\mathit{skill}(\mathit{robot}_i, \mathit{task}_j) \in [0 ,1]$$
 
-$\mathit{task}$s are assigned to $\mathit{robot}$s.
-$$\mathit{task}_j \rightarrow \mathit{robot}_i$$
+$\mathit{robot}$s are assigned to tasks.
+$$\mathit{robots}_i \rightarrow \mathit{task}_j$$
+A single $\mathit{robot}$ may be assigned to multiple $\mathit{task}$.
 
-The mapping of $task$s to $robot$s is many-to-one.
-
-There also exist a physical distance between any two tasks which must be traversed, relative to the robot traveling:
-$$
-\text{distance}(\mathit{robot}_i, \mathit{task}_{src}, \mathit{task}_{dst}) \in \mathbb{R}
-$$
+$\mathit{tasks} are separated by physical distances that a robot must traverse to move from one task to another$
 
 \subsection{Problem}
 
-We want to find an ordered assignments of tasks to robots that minimizes the overall expected performance function defined below. This mapping can be expressed as a collection of tuples of paths $S$ where $S_{i,1\dots}$ represents the tasks assigned to $\mathit{robot}_i$, and $S_{i,0}$ is a special starting node of $\mathit{robot}_i$.
+You want to find the mapping of $\mathit{robot}$s to $\mathit{task}$s that optimizes the overall expected performance. This mapping can be expressed as a logical matrix, $S$, where
+$$S_{i,j} = \left\{
+  \begin{array}{lr}
+     1 : \mathit{robot}_i \rightarrow \mathit{task}_j \\
+     0 : \mathit{robot}_i \not \rightarrow \mathit{task}_j
+  \end{array}
+\right\}$$
+For example,
+$$S = \begin{bmatrix}
+  0 & 1 & 0 \\
+  1 & 0 & 0 \\
+  0 & 0 & 1
+\end{bmatrix}$$
 
+Overall peformance is defined as
 $$
-\text{cost}_i = w(i, S_{i,|S_i|}, S_{i,0}) + \sum_{t = 0}^{|S_i|-1} w(i, S_{i,t}, S_{i,t+1})
+  \mathit{peformance}\left(
+    \sum_{i=0}^{n_\mathit{robots}}
+    \sum_{j=0}^{n_\mathit{tasks}}
+    S_{i,j} \cdot
+    \mathit{skill}(\mathit{robot}_i, \mathit{task}_j) \cdot
+    \mathit{priority}(\mathit{task}_j)
+  \right)
 $$
-
-Subject to the constraint:
-
-$$
-n \notin S_i \quad \text{if} \quad \text{skill}(i, n) = 0
-$$
-
-Therefore, the overall performance of a solution is: 
-
-$$
-\sum_{i \in \mathit{robot}} \text{cost}_i
-$$
-
-Our weighted-distance function can be defined as follows:
-$$
-w(i, \mathit{src}, \mathit{dst}) = \begin{cases}
-(\alpha - \text{priority}(\mathit{dst}))^\gamma \times (\beta - \text{skill}(i, \mathit{dst})) \times \text{distance}(\mathit{src}, \mathit{dst}) & \mathit{dst} \ne S_{i,0} \\
-\text{distance}(\mathit{src}, \mathit{dst}) & \text{otherwise}
-\end{cases}
-$$
-
-where $\alpha, \beta \geq 1$. These parameters are to ensure that the priority and skill factors are aligned with the minimization of the function. 
-
-$\gamma$ is used to tweak the relative importance of a task's priority, and has no constraints on it.
-
 
 \subsection{Modeling as Traveling Salesman Problem}
 
@@ -152,6 +152,10 @@ $\gamma$ is used to tweak the relative importance of a task's priority, and has 
 % (TSP) and multiple travelling salesman problem (mTSP) are commonly used as
 % models for real-life problems such as school bus routing problem and complex
 % task allocation problem.
+
+% An abstract mathematical model is built in this step Modeller can be inspired
+% by some similar models in the literature Some models are relaxed versions of
+% real life problems (e.g. School bus routing can be approximated using TSP)
 
 Given a population of robots $R$, a set of tasks $T$, a priority for each task $P_t$, the
 skill of each robot $S_{r,t}$ and a assignment of tasks to robots $A_r$, for each $r \in R$
@@ -201,7 +205,12 @@ x_{ij} \in \{0, 1\},\qquad \forall (i, j) \in A \\
 % (PLP), a reduced size problem may contain only 4 departments (facilities)
 % and 4 locations.
 
-In this section, we define a reduced size complex task allocation problem which will be used to perform hand-iterations of various optimization algorithms in the following sections.
+% Describe a small scale problem of the original one Try to perform hand
+% iterations to make sure modeling is done properly
+
+In this section, we define a reduced size complex task allocation problem which
+will be used to perform hand-iterations of various optimization algorithms in
+the following sections.
 
 Suppose we have 2 robots
 $$\mathit{robots} = \left\{ \mathit{robot}_0, \mathit{robot}_1 \right\}$$
@@ -237,7 +246,8 @@ $\mathit{task}_2$  & 0.2               & 0.3               & 0                 \
 \end{tabular}
 \vspace{1.5em}
 
-Each robot, $\mathit{robot}_i$, starts at a depot, $\mathit{depot}_i$. The distance from each depot to each task is
+Each robot, $\mathit{robot}_i$, starts at a depot, $\mathit{depot}_i$. The
+distance from each depot to each task is
 
 \begin{tabular}{llll}
                    & $\mathit{task}_0$ & $\mathit{task}_1$ & $\mathit{task}_2$ \\
@@ -252,6 +262,10 @@ $\mathit{depot}_1$ & 0.5               & 0.4               & 0.2               \
 % ability of the proposed solutions implemented in handling large size
 % problems.
 
+% Gradually Increase the size of problem to study the scalability of your model
+% Some models will fail in this step (any examples? Is the any way to know that
+% beforehand?)
+
 \section{Proposed Solution}
 
 % Once the problem is formulated and modeled, the five main algorithms studied
@@ -263,7 +277,6 @@ $\mathit{depot}_1$ & 0.5               & 0.4               & 0.2               \
 
 % The studied algorithms must be implemented from scratch using Matlab/Octave
 % without using any toolboxes.
-
 
 %  - Generate an initial solution.
 %  - Suggest a cost function (objective function) suitable for this problem.
@@ -280,7 +293,28 @@ $\mathit{depot}_1$ & 0.5               & 0.4               & 0.2               \
 % in this course (TA, SA, GA, PSO and ACO) must be applied to generate a “good”
 % solution for the problem. The solution may be optimal or suboptimal.
 
+% Apply five main optimization algorithms (TS, SA, GA, PSO, and ACO) Try to
+% generate a “good” solution that may be optimal or sub-optimal
+
+% Include at least two hand iterations on the reduced size of the problem The
+% studied algorithms should be implemented from scratch in Matlab / Octave.
+% Using toolboxes are NOT allowed.
+
+\subsection{Traveling Salesman Algorithm}
+
+\subsection{Simulated Annealing Algorithm}
+
+\subsection{Genetic Algorithm}
+
+\subsection{Particle Swarm Optimization Algorithm}
+
+\subsection{Ant Colony Optimization Algorithm}
+
 \section{Performance Evaluation}
+
+% Define some experiments (scenarios) to quantitatively evaluate the performance
+% of your algorithm. Experiments must be run several times and average results
+% should be reported
 
 % Establish a set of evaluation metrics and run some experiments with different
 % values of algorithm parameters to quantitatively and qualitatively assess the
@@ -301,9 +335,17 @@ $\mathit{depot}_1$ & 0.5               & 0.4               & 0.2               \
 % evaluate the performance of the proposed solutions. You should run each
 % experiment several times and report the average results.
 
+% Determine some evaluation metrics (time is a potentially useful candidate) Run
+% some experiments with different values of algorithms parameters to
+% quantitatively and qualitatively assess the performance of the developed
+% solution Identify the pros and cons of each method
+
 \section{Conclusions & Recommendations}
 
-% summarize the conclusion and future improvement. Explain how did you solve the
+% Report your observation and interpret obtained results. Briefly explain your
+% research work, and suggest how to improve the implemented solutions
+
+% Summarize the conclusion and future improvement. Explain how did you solve the
 % problem, what problems were met? What did the results show? and how to refine
 % the proposed solution? You may organize ideas using lists or numbered points,
 % if appropriate, but avoid making your report into a check-list or a series of
@@ -316,5 +358,13 @@ $\mathit{depot}_1$ & 0.5               & 0.4               & 0.2               \
 % sentences, photos, drawings or figures from other sources in your report, the
 % complete reference must be cited. Failure to do so is plagiarism, an academic
 % infraction with serious consequences.
+
+% Remember to cite anything you get from other sources
+%  - Other research papers
+%  - Drawings, charts, figures, etc.
+
+% Failure to do so is plagiarism, an academic infraction with serious
+% consequences. The complete references should be shown at the end of your
+% report
 
 \end{document}
