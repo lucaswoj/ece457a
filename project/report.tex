@@ -11,6 +11,7 @@
 \usepackage{graphicx}
 \usepackage{parskip}
 \usepackage{amssymb}
+\usepackage{todonotes}
 
 \title{Complex Task Allocation: A Comparison of Metaheuristics}
 \author{
@@ -73,43 +74,53 @@ Using these mobile robots, you are to peform a number of tasks
 $$\mathit{tasks} = \{ \mathit{task}_i | i \in [1, n_\mathit{tasks}] \}$$
 
 Each task has an inherent $\mathit{priority}$
-$$\mathit{priority}(\mathit{task}_i) \in [0 ,1]$$
+$$\text{priority}(\mathit{task}_i) \in [0 ,1]$$
 
 $\mathit{robot}$s are not homogeneous; some are more ``skilled" at certain tasks than others
-$$\mathit{skill}(\mathit{robot}_i, \mathit{task}_j) \in [0 ,1]$$
+$$\text{skill}(\mathit{robot}_i, \mathit{task}_j) \in [0 ,1]$$
 
-$\mathit{robot}$s are assigned to tasks.
-$$\mathit{robots}_i \rightarrow \mathit{task}_j$$
-A single $\mathit{robot}$ may be assigned to multiple $\mathit{task}$.
+$\mathit{task}$s are assigned to $\mathit{robot}$s.
+$$\mathit{task}_j \rightarrow \mathit{robot}_i$$
 
-$\mathit{tasks} are separated by physical distances that a robot must traverse to move from one task to another$
+The mapping of $task$s to $robot$s is many-to-one.
+
+There also exist a physical distance between any two tasks which must be traversed, relative to the robot traveling:
+$$
+\text{distance}(\mathit{robot}_i, \mathit{task}_{src}, \mathit{task}_{dst}) \in \mathbb{R}
+$$
 
 \subsection{Problem}
 
-You want to find the mapping of $\mathit{robot}$s to $\mathit{task}$s that optimizes the overall expected performance. This mapping can be expressed as a logical matrix, $S$, where
-$$S_{i,j} = \left\{
-  \begin{array}{lr}
-     1 : \mathit{robot}_i \rightarrow \mathit{task}_j \\
-     0 : \mathit{robot}_i \not \rightarrow \mathit{task}_j
-  \end{array}
-\right\}$$
-For example,
-$$S = \begin{bmatrix}
-  0 & 1 & 0 \\
-  1 & 0 & 0 \\
-  0 & 0 & 1
-\end{bmatrix}$$
+We want to find an ordered assignments of tasks to robots that minimizes the overall expected performance function defined below. This mapping can be expressed as a collection of tuples of paths $S$ where $S_{i,1\dots}$ represents the tasks assigned to $\mathit{robot}_i$, and $S_{i,0}$ is a special starting node of $\mathit{robot}_i$.
 
-Overall peformance is defined as
 $$
-  \mathit{peformance}\left(
-    \sum_{i=0}^{n_\mathit{robots}}
-    \sum_{j=0}^{n_\mathit{tasks}}
-    S_{i,j} \cdot
-    \mathit{skill}(\mathit{robot}_i, \mathit{task}_j) \cdot
-    \mathit{priority}(\mathit{task}_j)
-  \right)
+\text{cost}_i = w(i, S_{i,|S_i|}, S_{i,0}) + \sum_{t = 0}^{|S_i|-1} w(i, S_{i,t}, S_{i,t+1})
 $$
+
+Subject to the constraint:
+
+$$
+n \notin S_i \quad \text{if} \quad \text{skill}(i, n) = 0
+$$
+
+Therefore, the overall performance of a solution is: 
+
+$$
+\sum_{i \in \mathit{robot}} \text{cost}_i
+$$
+
+Our weighted-distance function can be defined as follows:
+$$
+w(i, \mathit{src}, \mathit{dst}) = \begin{cases}
+(\alpha - \text{priority}(\mathit{dst}))^\gamma \times (\beta - \text{skill}(i, \mathit{dst})) \times \text{distance}(\mathit{src}, \mathit{dst}) & \mathit{dst} \ne S_{i,0} \\
+\text{distance}(\mathit{src}, \mathit{dst}) & \text{otherwise}
+\end{cases}
+$$
+
+where $\alpha, \beta \geq 1$. These parameters are to ensure that the priority and skill factors are aligned with the minimization of the function. 
+
+$\gamma$ is used to tweak the relative importance of a task's priority, and has no constraints on it.
+
 
 \section{Problem Modeling}
 
