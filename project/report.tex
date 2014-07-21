@@ -25,18 +25,34 @@
 
 \maketitle
 
-\section{Problem Characterization}
+\section*{Summary}
 
-% This project should start by studying comprehensively the problem in order
-% to characterize its complexity and its main challenges. Collect related
-% resources and conduct a critical survey on similar solutions reported in the
-% literature.
+% The Summary should be a brief version of the full report. It should give the
+% reader an accurate overview. Be brief, but be specific.
+
+\section{Introduction}
+
+% Summarize the importance of the problem you are trying to solve and the reason
+% that motivated you to select this project. Explain what was the problem or
+% challenge that you were given? state the purpose of the project and how did
+% you solve it? Enumerate the objectives of the project and describe in brief
+% the structure of the report.
 
 % Complex Task Allocation Problem: In mobile surveillance systems, complex
 % task allocation addresses how to optimally assign a set of surveillance
 % tasks to a set of mobile sensing agents to maximize overall expected
 % performance, taking into account the priorities of the tasks and the skill
 % ratings of the mobile robots.
+
+\section{Literature Review}
+
+% Conduct a critical survey on different/similar solutions and explain how your
+% solution extends or differs from these solutions.
+
+% This project should start by studying comprehensively the problem in order
+% to characterize its complexity and its main challenges. Collect related
+% resources and conduct a critical survey on similar solutions reported in the
+% literature.
 
 % Suggested reference papers:
 %
@@ -48,7 +64,9 @@
 %    Allocation," Advances in Artificial Intelligence Journal, 2013.
 %  - Alaa Khamis, Cooperative Multirobot Systems, Plenary Talk at IAC2014].
 
-\section{Problem Formulation}
+\section{Problem Formulation and Modeling}
+
+% Include the problem statement and describe its model.
 
 % In this step, an initial statement of the problem should be made. The
 % internal and external factors and the objective(s) of the problem must be
@@ -61,6 +79,7 @@
 % $$\forall j \in [1, m], l_j(X) = 0$$
 % and inequality constraints
 % $$\forall j \in [1, p], g_j(X) \leq 0$$
+% (see "specification for statement of work.pdf" for a visual representation)
 %
 % Define the decision variable or design vector, objective function/s and the
 % problem constraints.
@@ -122,7 +141,7 @@ where $\alpha, \beta \geq 1$. These parameters are to ensure that the priority a
 $\gamma$ is used to tweak the relative importance of a task's priority, and has no constraints on it.
 
 
-\section{Problem Modeling}
+\subsection{Modeling as Traveling Salesman Problem}
 
 % In this important step, an abstract mathematical model is built for the
 % problem. The modeler can be inspired by similar models in the literature.
@@ -175,8 +194,7 @@ x_{ij} \in \{0, 1\},\qquad \forall (i, j) \in A \\
 \forall \text{SubTour} \subseteq V \backslash \phi
 \end{align}
 
-
-\section{Reduced Size Problem}
+\subsection{Reduced Size Problem}
 
 % Describe a reduced version of the problem in order to be used to perform
 % hand-iterations. For example, if you are studying plant layout problem
@@ -228,13 +246,75 @@ $\mathit{depot}_1$ & 0.5               & 0.4               & 0.2               \
 \end{tabular}
 \vspace{1.5em}
 
-\section{Real Problem}
+\subsection{Real Problem}
 
 % The real size problem formulation and modeling will be used to show the
 % ability of the proposed solutions implemented in handling large size
 % problems.
 
+\section{Proposed Solution}
+
+% Once the problem is formulated and modeled, the five main algorithms studied
+% in this course (TA, SA, GA, PSO and ACO) must be applied to generate a “good”
+% solution for the problem. The solution may be optimal or suboptimal.
+
+% At least two hand iterations must be performed on the reduced size problem to
+% show how to use the studied algorithms in solving the selected problem.
+
+% The studied algorithms must be implemented from scratch using Matlab/Octave
+% without using any toolboxes.
 
 
+%  - Generate an initial solution.
+%  - Suggest a cost function (objective function) suitable for this problem.
+%  - Define a suitable neighborhood operator.
+%  - Define a suitable solving strategy for this problem.
+%  - Select your own values for the parameter and explain the basis for your
+%      selection.
+%  - Describe how each algorithm (TS, SA, GA, PSO and ACO) will proceed to
+%       solve this problem by performing at least two hand iterations on a
+%       reduced version of the problem.
+%  - Implement the proposed solution using Matlab/Octave.
+
+% Once the problem is formulated and modeled, the five main algorithms studied
+% in this course (TA, SA, GA, PSO and ACO) must be applied to generate a “good”
+% solution for the problem. The solution may be optimal or suboptimal.
+
+\section{Performance Evaluation}
+
+% Establish a set of evaluation metrics and run some experiments with different
+% values of algorithm parameters to quantitatively and qualitatively assess the
+% performance of the developed solution using different meta-heuristic
+% optimization techniques. Students must identify the pros and cons of each
+% technique and assess the quality of work as well as its fit with project
+% objectives.
+
+% Report your observation and interpret the obtained results. Suggest how to
+% refine the implemented solutions to improve their performance.
+
+% The implemented solutions should be tested against a set of well-defined
+% evaluation metrics. These metrics may include, but are not limited to, the CPU
+% time of the algorithm, number of iterations to converge, time per iteration,
+% optimality (if the ground truth is known), etc.
+
+% A number of experiments/scenarios should be conducted to quantitatively
+% evaluate the performance of the proposed solutions. You should run each
+% experiment several times and report the average results.
+
+\section{Conclusions & Recommendations}
+
+% summarize the conclusion and future improvement. Explain how did you solve the
+% problem, what problems were met? What did the results show? and how to refine
+% the proposed solution? You may organize ideas using lists or numbered points,
+% if appropriate, but avoid making your report into a check-list or a series of
+% encrypted notes.
+
+\section{References}
+
+% Every report needs references; in fact, your failure to consult references for
+% guidance may be considered negligence. On the other hand, when you include
+% sentences, photos, drawings or figures from other sources in your report, the
+% complete reference must be cited. Failure to do so is plagiarism, an academic
+% infraction with serious consequences.
 
 \end{document}
