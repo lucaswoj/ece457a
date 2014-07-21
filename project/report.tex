@@ -94,42 +94,50 @@
 % a need to explain background information regarding some supplementary methods
 % used in your formulation, do that here
 
-\subsection{Givens}
-
-Suppose you have a number of mobile robots
+Suppose we have a number of mobile $\mathit{robot}$s
 $$\mathit{robots} = \{ \mathit{robot}_i | i \in [1, n_\mathit{robots}] \}$$
 
-Using these mobile robots, you are to peform a number of tasks
+Using these $\mathit{robot}$s, we are to perform a number of tasks
 $$\mathit{tasks} = \{ \mathit{task}_i | i \in [1, n_\mathit{tasks}] \}$$
 
-Each task has an inherent $\mathit{priority}$
+Each task has a $\mathit{priority}$
 $$\text{priority}(\mathit{task}_i) \in [0 ,1]$$
 
 $\mathit{robot}$s are not homogeneous; some are more ``skilled" at certain tasks than others
 $$\text{skill}(\mathit{robot}_i, \mathit{task}_j) \in [0 ,1]$$
 
+Tasks are located some distance each other
+$$\mathit{distance}(\mathit{task}_i, \mathit{task}_j) > 0 \in \mathbb{R}$$
+
+Each $\mathit{robot}$ starts at some location, its $\mathit{depot}$. $\mathit{robot}_i$ starts at $\mathit{depot}_i$
+
+Each $\textit{depot}$ is located a certain distance from each task.
+$$\mathit{distance}(\mathit{depot}_i, \mathit{task}_j)$$
+
 $\mathit{task}$s are assigned to $\mathit{robot}$s.
 $$\mathit{task}_j \rightarrow \mathit{robot}_i$$
 
-The mapping of $task$s to $robot$s is many-to-one.
+We seek, for each $\mathit{robot}$, a path through the $\mathit{task}$s such that each $\mathit{task}$ is performed exactly once and our overall cost is minimized.
 
-There also exist a physical distance between any two tasks which must be traversed, relative to the robot traveling:
+A solution, $S$, consists of a mapping of $\mathit{robot}$s to paths through $\mathit{task}$s.
+$$S(\mathit{robot}_i) = \{\mathit{task}_0, \mathit{task}_1, ..., \mathit{task}_n\}$$
+
+
+
+\subsubsection{Cost Function}
+
+% TODO This could be rewritten a little more clearly
+
+
+The cost of some path, $S(i)$ is given by
 $$
-\text{distance}(\mathit{robot}_i, \mathit{task}_{src}, \mathit{task}_{dst}) \in \mathbb{R}
+\text{cost}(S(i)) = w(i, S(i,|S(i)|), S(i,0)) + \sum_{t = 0}^{|S(i)|-1} w(i, S(i,t), S(i,t+1))
 $$
 
-\subsection{Problem}
-
-We want to find an ordered assignments of tasks to robots that minimizes the overall expected performance function defined below. This mapping can be expressed as a collection of tuples of paths $S$ where $S_{i,1\dots}$ represents the tasks assigned to $\mathit{robot}_i$, and $S_{i,0}$ is a special starting node of $\mathit{robot}_i$.
-
+% TODO does not not naturally follow from our cost function?
+Subject to the constraint
 $$
-\text{cost}_i = w(i, S_{i,|S_i|}, S_{i,0}) + \sum_{t = 0}^{|S_i|-1} w(i, S_{i,t}, S_{i,t+1})
-$$
-
-Subject to the constraint:
-
-$$
-n \notin S_i \quad \text{if} \quad \text{skill}(i, n) = 0
+n \notin S(i) \quad \text{if} \quad M_{skill}(i, n) = 0
 $$
 
 Therefore, the overall performance of a solution is:
@@ -138,10 +146,10 @@ $$
 \sum_{i \in \mathit{robot}} \text{cost}_i
 $$
 
-Our weighted-distance function can be defined as follows:
+Our weighted-distance function is defined as follows:
 $$
 w(i, \mathit{src}, \mathit{dst}) = \begin{cases}
-(\alpha - \text{priority}(\mathit{dst}))^\gamma \times (\beta - \text{skill}(i, \mathit{dst})) \times \text{distance}(\mathit{src}, \mathit{dst}) & \mathit{dst} \ne S_{i,0} \\
+(\alpha - \text{priority}(\mathit{dst}))^\gamma \times (\beta - \text{skill}(i, \mathit{dst})) \times \text{distance}(\mathit{src}, \mathit{dst}) & \mathit{dst} \ne S(i,0) \\
 \text{distance}(\mathit{src}, \mathit{dst}) & \text{otherwise}
 \end{cases}
 $$
@@ -150,6 +158,11 @@ where $\alpha, \beta \geq 1$. These parameters are to ensure that the priority a
 
 $\gamma$ is used to tweak the relative importance of a task's priority, and has no constraints on it.
 
+The $\text{distance}(\mathit{src}, \mathit{dst})$ function makes use of $D_\text{task-task}$, $D_\text{depot-task}$, and $D_\text{task-depot}$. $D_\text{task-task}$ is a square matrix that contains the distances between tasks i.e. the distance between task i and j is found at $D_\text{task-task}(i,j)$. $D_\text{depot-task}$ contains the distances from depots to tasks i.e. the distance from depot i to task j is $D_\text{task-task}(i,j)$. $D_\text{task-depot}$ contains the distances from the tasks to the depots i.e. the distance from task i to depot j is $D_\text{task-depot}(i,j)$
+
+The $\text{priority}(\mathit{dst})$ function makes use of $P$. $P$ is a vector where the priority of $\text{task}_i$ is contained in $P(i)$.
+
+The $\text{skill}(i, \mathit{dst})$ function makes use of the matrix $M_{skill}$. The skill of $\text{robot}_i$ at performing $\text{task}_j$ is contained in $M_{skill}(i,j)$
 
 \subsection{Modeling as Traveling Salesman Problem}
 
@@ -163,22 +176,21 @@ $\gamma$ is used to tweak the relative importance of a task's priority, and has 
 % models for real-life problems such as school bus routing problem and complex
 % task allocation problem.
 
-Given a population of robots $R$, a set of tasks $T$, a priority for each task $P_t$, the
-skill of each robot $S_{r,t}$ and a assignment of tasks to robots $A_r$, for each $r \in R$
+Given a population of robots $R$, a set of tasks $T$, a priority for each task $P$, each robot's skill at performing each task $M_{skill}(r,t)$ and an ordered assignment of tasks to robots $S_r$, for each $r \in R$
 we can create a directed, weighted graph as follows:
 
-We will reduce complex task allocation to the travleing salesman problem.
+We will model complex task allocation loosely on the traveling salesman problem.
 
 Given a random initial solution, $S_0$,
 
 \begin{align*}
-  G_r &= (V, E) \\
-  V &= \{ start \} \cup A_r \\
-  E_{x, t} &= -P_a S_{r,t} \qquad \forall t \in A_r \\
-  E_{x, start} &= 0
+	G &= (V, E) \\
+	V &= \{ start \} \cup T \\
+	E_{x, t} &= -P_a S_{r,t} \qquad \forall t \in A_r \\
+	E_{x, start} &= 0
 \end{align*}
 
-Which is to say, for each robot we create a graph with a start node and a node for each task assigned to said robot. The cost of traveling to any node is the negative of the robot's skill on the task multiplied by the task's priority. The cost of traveling to the start node is always 0.
+Which is to say, for each robot we create a graph with a start node and a node for each task assigned to said robot. The cost of traveling to any node is <<INSERT COST FUNCTION DESCRIPTION HERE>>. The cost of traveling to the start node is the distance from the current node to the start node.
 
 From here, we can run TSP on the created graph, with the robot starting at the start node. It is trivial to show that regardless of the path taken, the total cost traveled is:
 
@@ -265,7 +277,7 @@ As an initial solution, we will use
 $$S = [0, 1, \mathit{sentinel}, 2 ]$$
 Which specifies the paths
 \begin{align*}
-\mathit{robot}_0: & \mathit{depot}_0 \rightarrow \mathit{task}_0 \rightarrow \mathit{task}_1 \rightarrow  \mathit{depot}_0
+\mathit{robot}_0: & \mathit{depot}_0 \rightarrow \mathit{task}_0 \rightarrow \mathit{task}_1 \rightarrow  \mathit{depot}_0 \\
 \mathit{robot}_1: & \mathit{depot}_1 \rightarrow \mathit{task}_2 \rightarrow \mathit{depot}_1
 \end{align*}
 
@@ -364,7 +376,7 @@ Which specifies the paths
 % if appropriate, but avoid making your report into a check-list or a series of
 % encrypted notes.
 
-\section{References}
+\section*{References}
 
 % Every report needs references; in fact, your failure to consult references for
 % guidance may be considered negligence. On the other hand, when you include
