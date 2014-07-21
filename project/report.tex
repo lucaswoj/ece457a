@@ -90,7 +90,7 @@ $\mathit{tasks} are separated by physical distances that a robot must traverse t
 You want to find an order assignments of tasks to robots that optimizes the overall expected performance. This mapping can be expressed as a collection of tuples of paths $S$ where $S_{1\dots}^i$ represents the tasks assigned to $\mathit{robot}_i$, and $S_0^i$ is a special starting node of $\mathit{robot}_i$.
 
 $$
-\text{performance}_i = d(i, S_{|S^i|}^i, S_0^i) + \sum_{t = 0}^{|S^i|-1} d(i, S_t^i, S_{t+1}^i)
+\text{performance}_i = c(i, S_{|S^i|}^i, S_0^i) + \sum_{t = 0}^{|S^i|-1} c(i, S_t^i, S_{t+1}^i)
 $$
 
 Therefore, the overall performance of a solution is: 
@@ -99,15 +99,15 @@ $$
 \sum_{i \in \mathit{robot}} \text{performance}_i
 $$
 
-Our distance function can be defined as follows:
+Our cost function can be defined as follows:
 $$
-d(i, \mathit{src}, \mathit{dst}) = \begin{cases}
-\text{priority}(\mathit{dst})^\alpha \times (\beta - \text{skill}(i, \mathit{dst})) \times \text{distance}(\mathit{src}, \mathit{dst}) & \mathit{dst} \ne S_0^i \\
+c(i, \mathit{src}, \mathit{dst}) = \begin{cases}
+(\alpha - \text{priority}(\mathit{dst}))^\gamma \times (\beta - \text{skill}(i, \mathit{dst})) \times \text{distance}(\mathit{src}, \mathit{dst}) & \mathit{dst} \ne S_0^i \\
 \text{distance}(\mathit{src}, \mathit{dst}) & \text{otherwise}
 \end{cases}
 $$
 
-where $\beta \geq 1$, but there are no constraints on $\alpha$.
+where $\alpha, \beta \geq 1$, but there are no constraints on $\gamma$.
 
 
 \section{Problem Modeling}
