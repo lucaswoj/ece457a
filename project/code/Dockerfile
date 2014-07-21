@@ -5,4 +5,4 @@ RUN apt-get update
 RUN apt-get install --assume-yes --force-yes octave
 
 WORKDIR /etc/ece457a/project
-ADD . /etc/ece457a/project
+ADD . .
