@@ -12,12 +12,6 @@
 \usepackage{parskip}
 \usepackage{amssymb}
 
-% Allow for sub^3sections and sub^4sections
-% http://pleasemakeanote.blogspot.com/2010/06/how-to-activate-subsubsubsection-in.html
-\setcounter{secnumdepth}{5}
-\newcommand{\subsubsubsection}[1]{\paragraph{#1} \mbox{}}
-\newcommand{\subsubsubsubsection}[1]{\subparagraph{#1} \mbox{}}
-
 \title{Complex Task Allocation: A Comparison of Metaheuristics}
 \author{
 	Group 27 \\
@@ -221,7 +215,6 @@ x_{ij} = \begin{cases}
 x_{ij} \in \{0, 1\},\qquad \forall (i, j) \in A \\
 \forall \text{SubTour} \subseteq V \backslash \phi
 \end{align}
-
 \subsection{Reduced Size Problem}
 
 % Describe a reduced version of the problem in order to be used to perform
@@ -280,6 +273,14 @@ $\mathit{depot}_1$ & 0.5               & 0.4               & 0.2               \
 \end{tabular}
 \vspace{1.5em}
 
+As an initial solution, we will use
+$$S = [0, 1, \mathit{sentinel}, 2 ]$$
+Which specifies the paths
+\begin{align*}
+\mathit{robot}_0: & \mathit{depot}_0 \rightarrow \mathit{task}_0 \rightarrow \mathit{task}_1 \rightarrow  \mathit{depot}_0 \\
+\mathit{robot}_1: & \mathit{depot}_1 \rightarrow \mathit{task}_2 \rightarrow \mathit{depot}_1
+\end{align*}
+
 \subsection{Real Problem}
 
 % The real size problem formulation and modeling will be used to show the
@@ -291,14 +292,6 @@ $\mathit{depot}_1$ & 0.5               & 0.4               & 0.2               \
 % beforehand?)
 
 \section{Proposed Solution}
-
-As an initial solution, we will use
-$$S_0 = [0, 1, \mathit{sentinel}, 2 ]$$
-Which specifies the paths
-\begin{align*}
-\mathit{robot}_0: & \mathit{depot}_0 \rightarrow \mathit{task}_0 \rightarrow \mathit{task}_1 \rightarrow  \mathit{depot}_0
-\mathit{robot}_1: & \mathit{depot}_1 \rightarrow \mathit{task}_2 \rightarrow \mathit{depot}_1
-\end{align*}
 
 % Once the problem is formulated and modeled, the five main algorithms studied
 % in this course (TA, SA, GA, PSO and ACO) must be applied to generate a “good”
@@ -332,71 +325,7 @@ Which specifies the paths
 % studied algorithms should be implemented from scratch in Matlab / Octave.
 % Using toolboxes are NOT allowed.
 
-\subsection{Tabu Search Algorithm} % Lucas
-
-\subsubsection{Hand Iterations}
-
-We will use a tabu tenure of 1.
-
-We define our tabu list as...
-
-\subsubsubsection{Iteration 1}
-
-We begin with our randomly selected initial solution
-$$S_0 = [ 0, 1, X, 2 ]$$
-
-Next, we find all neighbouring solutions and evaluate the cost of each. No solutions are tabu yet because our tabu list is empty
-
-\begin{tabular}{lllll}
-& \textbf{swap}   & \textbf{solution}    & \textbf{tabu?} & \textbf{cost}  \\
-
-$S_{1,1}$ & $1,2$ & $[1, 0, X, 2]$ & no & 1.0810   \\
-$S_{1,2}$ & $1,3$ & $[X, 1, 0, 2]$ & no & 0.55200  \\
-$S_{1,3}$ & $1,4$ & $[2, 1, X, 0]$ & no & 1.3390   \\
-$S_{1,4}$ & $2,3$ & $[0, X, 1, 2]$ & no & 1.5940   \\
-$S_{1,5}$ & $2,4$ & $[0, 2, X, 1]$ & no & 1.2800   \\
-$S_{1,6}$ & $3,4$ & $[0, 1, 2, X]$ & no & 0.73900  \\
-\end{tabular}
-
-Observe that $S_{1,6}$ has the lowest cost. Therefore the best solution, $S_{1, \text{best}}$.
-
-Since this solution was created by swapping elements 3 and 4 in $S_0$, we mark those in our tabu list
-
-\begin{tabular}{lllll}
-position & 1 & 2 & 3 & 4 \\
-tenure   & 0 & 0 & 1 & 1
-\end{tabular}
-\vspace{1.5em}
-
-\subsubsubsection{Iteration 2}
-
-We begin with $$S_{1, \text{best}} = [0, 1, 2, X]$$
-
-Next, we find all neighbouring solutions and evaluate the cost of each.
-
-\begin{tabular}{lllll}
-& \textbf{swap}   & \textbf{solution}    & \textbf{tabu?} & \textbf{cost}  \\
-
-$S_{2,1}$ & $1,2$ & $[1, 0, 2, X]$ & no  & 0.39500 \\
-$S_{2,2}$ & $1,3$ & $[2, 1, 0, X]$ & yes & 0.86000 \\
-$S_{2,3}$ & $1,4$ & $[X, 1, 2, 0]$ & yes & 0.95200 \\
-$S_{2,4}$ & $2,3$ & $[0, 2, 1, X]$ & yes & 1       \\
-$S_{2,5}$ & $2,4$ & $[0, X, 2, 1]$ & yes & 1.7100  \\
-$S_{2,6}$ & $3,4$ & $[0, 1, X, 2]$ & yes & 1.0900  \\
-\end{tabular}
-
-Observe that $S_{2,1}$ has the lowest cost and is not tabu. Therefore it is the best solution, $S_{2, \text{best}}$.
-
-Since this solution was created by swapping elements 1 and 2, we mark those as tabu with a starting tenure of 1. We also decrement the tenure of all other elements in the tabu list.
-
-\begin{tabular}{lllll}
-position & 1 & 2 & 3 & 4 \\
-tenure   & 1 & 1 & 0 & 0
-\end{tabular}
-\vspace{1.5em}
-
-After two iterations, our best solution is
-$$S_{\text{best}} = S_{2, \text{best}} = S_{2,1}$$
+\subsection{Taboo Search Algorithm} % Lucas
 
 \subsection{Simulated Annealing Algorithm} % Dane
 
