@@ -87,10 +87,16 @@ $\mathit{tasks} are separated by physical distances that a robot must traverse t
 
 \subsection{Problem}
 
-You want to find an order assignments of tasks to robots that optimizes the overall expected performance. This mapping can be expressed as a collection of tuples of paths $S$ where $S_{1\dots}^i$ represents the tasks assigned to $\mathit{robot}_i$, and $S_0^i$ is a special starting node of $\mathit{robot}_i$.
+We want to find an ordered assignments of tasks to robots that minimizes the overall expected performance function defined below. This mapping can be expressed as a collection of tuples of paths $S$ where $S_{i,1\dots}$ represents the tasks assigned to $\mathit{robot}_i$, and $S_{i,0}$ is a special starting node of $\mathit{robot}_i$.
 
 $$
-\text{performance}_i = c(i, S_{|S^i|}^i, S_0^i) + \sum_{t = 0}^{|S^i|-1} c(i, S_t^i, S_{t+1}^i)
+\text{performance}_i = c(i, S_{i,|S_i|}, S_{i,0}) + \sum_{t = 0}^{|S_i|-1} c(i, S_{i,t}, S_{i,t+1})
+$$
+
+Subject to the constraint
+
+$$
+n \notin S_i \quad \text{if} \quad \text{skill}(i, n) = 0
 $$
 
 Therefore, the overall performance of a solution is: 
@@ -102,12 +108,14 @@ $$
 Our cost function can be defined as follows:
 $$
 c(i, \mathit{src}, \mathit{dst}) = \begin{cases}
-(\alpha - \text{priority}(\mathit{dst}))^\gamma \times (\beta - \text{skill}(i, \mathit{dst})) \times \text{distance}(\mathit{src}, \mathit{dst}) & \mathit{dst} \ne S_0^i \\
+(\alpha - \text{priority}(\mathit{dst}))^\gamma \times (\beta - \text{skill}(i, \mathit{dst})) \times \text{distance}(\mathit{src}, \mathit{dst}) & \mathit{dst} \ne S_{i,0} \\
 \text{distance}(\mathit{src}, \mathit{dst}) & \text{otherwise}
 \end{cases}
 $$
 
-where $\alpha, \beta \geq 1$, but there are no constraints on $\gamma$.
+where $\alpha, \beta \geq 1$. These parameters are to ensure that the priority and skill factors are aligned with the minimization of the function. 
+
+$\gamma$ is used to tweak the relative importance of a task's priority, and has no constraints on it.
 
 
 \section{Problem Modeling}
