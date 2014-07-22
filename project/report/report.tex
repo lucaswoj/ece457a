@@ -409,6 +409,50 @@ $$S_{\text{best}} = S_{2, \text{best}} = S_{2,1}$$
 
 \subsection{Simulated Annealing Algorithm} % Dane
 
+\subsubsection{Hand Iterations}
+
+For the weighted distance function parameters, we will use $\alpha_{cost} = \beta = 2$ and $\gamma = 1$. The weighted distance function then becomes 
+$$
+w(i, \mathit{src}, \mathit{dst}) = \begin{cases}
+(2 - \text{priority}(\mathit{dst})) \times (2 - \text{skill}(i, \mathit{dst})) \times \text{distance}(\mathit{src}, \mathit{dst}) & \mathit{dst} \ne S(i,0) \\
+\text{distance}(\mathit{src}, \mathit{dst}) & \text{otherwise}
+\end{cases}
+$$
+
+A geometric cooling schedule will be used with an initial temperature $T_{0} = 3$ and a cooling factor $\alpha_{cooling} = 0.8$ so that
+$$T_{i} = 3 \times 0.8^{i-1}$$
+
+\subsubsubsection{Iteration 1}
+
+We begin with our randomly selected initial solution.
+$$S_0 = [ 1, 2, 0, 3 ]$$
+$$\text{cost}(S_0) = 3.43$$
+
+We then randomly swap two elements, 4 \& 3 to create a neighbouring solution.
+$$S_1 = [ 1, 2, 3, 0 ]$$
+$$\text{cost}(S_1) = 3.319$$
+
+Since $\text{cost}(S_1) < \text{cost}(S_0)$ the probability of selection $P = 1$.
+
+\subsubsubsection{Iteration 2}
+
+Swap 3 \& 1
+$$S_2 = [ 3, 2, 1, 0 ]$$
+$$\text{cost}(S_2) = 2.08$$
+$$\text{cost}(S_2) < \text{cost}(S_1) \rightarrow P = 1$$
+
+\subsubsubsection{Iteration 3}
+
+Swap 1 \& 4
+$$S_3 = [ 0, 2, 1, 3 ]$$
+$$\text{cost}(S_3) = 2.242$$
+$$P = e^{-\frac{cost(S_3) - cost(S_2)}{T_3}} \doteq 0.9191$$
+
+We then pick a random number $r = 0.4228$. Since $r < P$ the non-improving solution $S_3$ is accepted.
+
+After 3 iterations, the best solution is
+$$S_{best} = S_2 = [ 3, 2, 1, 0 ]$$
+
 \subsection{Genetic Algorithm} % Austin
 
 \subsection{Particle Swarm Optimization Algorithm} % Ariel
