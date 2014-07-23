@@ -411,7 +411,7 @@ $$S_{\text{best}} = S_{2, \text{best}} = S_{2,1}$$
 
 \subsubsection{Hand Iterations}
 
-For the weighted distance function parameters, we will use $\alpha_{cost} = \beta = 2$ and $\gamma = 1$. The weighted distance function then becomes 
+For the weighted distance function parameters, we will use $\alpha_{cost} = \beta = 2$ and $\gamma = 1$. The weighted distance function then becomes
 $$
 w(i, \mathit{src}, \mathit{dst}) = \begin{cases}
 (2 - \text{priority}(\mathit{dst})) \times (2 - \text{skill}(i, \mathit{dst})) \times \text{distance}(\mathit{src}, \mathit{dst}) & \mathit{dst} \ne S(i,0) \\
@@ -456,6 +456,63 @@ $$S_{best} = S_2 = [ 3, 2, 1, 0 ]$$
 \subsection{Genetic Algorithm} % Austin
 
 \subsection{Particle Swarm Optimization Algorithm} % Ariel
+
+\subsubsection{Hand Iterations}
+
+% TODO don't say "in this course", find the actual citation.
+As per the reccomendations in this course, we initialize $c_1 = c_2 = 1.4944$ and $w = 0.792$.
+
+\subsubsubsection{Iteration 1}
+
+We choose $r_1 = 0.7426$ and $r_2 = 0.4276$ as random constants for this iteration.
+
+We start with two randomly selected initial positions (solutions)
+% TODO use this solution notation consistently
+% TODO use 1-indexing consistently
+\begin{align*}
+S_0^1 = [1, 2, X, 3], & \qquad cost(S_0^1) = 1.0900 \\
+S_0^2 = [3, 2, X, 1], & \qquad cost(S_0^2) = 1.3300 \\
+S_0^3 = [1, X, 3, 2], & \qquad cost(S_0^3) = 1.5940
+\end{align*}
+
+Observe that $S_0^1$ has the lowest initial score. This becomes our initial $\mathit{gbest}$.
+$$\mathit{gbest} = [1, 2, X, 3]$$
+
+% TODO use a more formal citation format
+% TODO set up bibtex
+For each position, $i$, we calculate $v_1^i$ using the following equation. Note that we redefine the subtraction of two positions, the addition of a velocity and a position, and the multiplication of a velocity by a scalar as defined in M. Clerc's paper, ``Discrete Particle Swarm Optimization."
+$$v_1^i = w v_0^i + c_1 r_1 (x_\text{lbest} - x_0^i) + c_2 r_2 (x_\text{gbest} - x_0^i)$$
+
+The resultant velocities are \mbox{}
+% TODO standardize tabular presentation, centered, bold headings
+\begin{center}
+\begin{tabular}{lllllll}
+        & position     & cost   & lbest position & lbest cost & $v_0$  & $v_1$    \\
+$S_0^1$ & $[1, 2, X, 3]$ & $1.0900$ & $[1, 2, X, 3]$   & $1.0900$     & $[]$     & $[]      $ \\
+$S_0^2$ & $[3, 2, X, 1]$ & $1.3300$ & $[3, 2, X, 1]$   & $1.0900$     & $[]$     & $[(1, 4)]$ \\
+$S_0^2$ & $[1, X, 3, 2]$ & $1.7100$ & $[1, X, 3, 2]$   & $1.7100$     & $[]$     & $[(2, 4)]$ \\
+\end{tabular}
+\end{center}
+
+\subsection{Iteration 2}
+
+We choose $r_1 = 0.2351$ and $r_2 = 0.8262$ as random constants for this iteration.
+
+Applying the velocities calculated in iteration 1 to the positions in iteration 1, we obtain the positions for iteration 2. We calcuate the velocity of each using the same equation, generalized to calculate the velocity for solution $j$
+$$v_j^i = w v_{j-1}^i + c_1 r_1 (x_\text{lbest} - x_{j-1}^i) + c_2 r_2 (x_\text{gbest} - x_{j-1}^i)$$
+
+The resultant velocities are \mbox{}
+% TODO calculate these
+\begin{center}
+\begin{tabular}{lllllll}
+        & position       & cost     & lbest position   & lbest cost   & $v_1$      & $v_2$    \\
+$S_1^1$ & $[1, 2, X, 3]$ & $1.0900$ & $[1, 2, X, 3]$   & $1.0900$     & $[]      $ & ? \\
+$S_1^2$ & $[1, 2, X, 3]$ & $1.0900$ & $[1, 2, X, 3]$   & $1.0900$     & $[(1, 4)]$ & ? \\
+$S_1^2$ & $[1, 3, X, 2]$ & $1.2800$ & $[1, X, 3, 2]$   & $1.2800$     & $[(2, 4)]$ & ? \\
+\end{tabular}
+\end{center}
+
+Observe that $S_0^1$ has the still has lowest global score. Our $\mathit{gbest}$ is unchanged.
 
 \subsection{Ant Colony Optimization Algorithm} % Sandy
 
@@ -515,5 +572,9 @@ $$S_{best} = S_2 = [ 3, 2, 1, 0 ]$$
 % Failure to do so is plagiarism, an academic infraction with serious
 % consequences. The complete references should be shown at the end of your
 % report
+
+
+
+% M. Clerc, “Discrete Particle Swarm Optimization,” in New Optimization Techniques in Engineering. Springer-Verlag, 2004.
 
 \end{document}
