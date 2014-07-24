@@ -39,9 +39,9 @@ function cost = getPathCost(path, robot)
     cost = 0;
 
     for i = 1:length(path)
-        cost = cost + getSkillPriorityCost(robot, path(i));
+        cost = cost + SKILL_PRIORITY_WEIGHT * getSkillPriorityCost(robot, path(i));
     endfor
 
     for i = 1:(length(path) - 1)
-        cost = cost + getDistanceCost(robot, path(i), path(i + 1));
+        cost = cost + DISTANCE_WEIGHT * getDistanceCost(robot, path(i), path(i + 1));
     endfor

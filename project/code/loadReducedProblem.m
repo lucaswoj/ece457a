@@ -11,12 +11,12 @@ function loadReducedProblem()
     nHomes = nRobots;
     homes = (1:nRobots) + nTasks;
 
-    priorities =  [0.1, 0.2, 0.3, 0, 0];
+    priorities =  [0.1, 0.2, 0.3, 1, 1];
     % assert(size(priorities) == [nTasks])
 
     skills = [
-        0.1, 0.4, 0.5, 0, 0;
-        0.2, 0.3, 0.6, 0, 0
+        0.1, 0.4, 0.5, 1, 1;
+        0.2, 0.3, 0.6, 1, 1
     ];
     % assert(size(priorities) == [nTasks, nRobots])
 
