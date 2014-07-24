@@ -11,6 +11,8 @@
 \usepackage{graphicx}
 \usepackage{parskip}
 \usepackage{amssymb}
+\usepackage{upgreek}
+\usepackage{todonotes}
 
 % Allow for sub^3sections and sub^4sections
 % http://pleasemakeanote.blogspot.com/2010/06/how-to-activate-subsubsubsection-in.html
@@ -223,21 +225,6 @@ That is, we create a graph that shows the distances between every task and the d
 
 From here, we can run TSP on the created graph. The cost of taking each edge will be determined using $w$ which will take in the distance represented by that edge as an input. Every robot starts at their depot.
 
-\section{Potential other model}
-
-This is almost verbatim out of the literature.
-
-\begin{align}
-x_{ij} = \begin{cases}
-      1 & \text{if arc(i,j) is used in the tour} \\
-      0 & otherwise
-   \end{cases} \\
-\text{minimize} \sum_{i=1}^n \sum_{j=1}^n c_{ij} \times x_{ij} \\
-\sum_{i=1}^n \sum_{j=1}^n &= n \\
-\sum_{i \in S} \sum_{j \in S} x_{ij} \le |\text{SubTour}| - 1 \\
-x_{ij} \in \{0, 1\},\qquad \forall (i, j) \in A \\
-\forall \text{SubTour} \subseteq V \backslash \phi
-\end{align}
 
 \subsection{Reduced Size Problem}
 
@@ -523,6 +510,183 @@ $S_1^2$ & $[1, 3, X, 2]$ & $1.2800$ & $[1, X, 3, 2]$   & $1.2800$     & $[(2, 4)
 Observe that $S_0^1$ has the still has lowest global score. Our $\mathit{gbest}$ is unchanged.
 
 \subsection{Ant Colony Optimization Algorithm} % Sandy
+
+To model this problem with ACO, we will first transform it into a single-agent TSP problem, and subsequently carry out ACS on the resulting graph.
+
+For the purposes of ACS, the key insight for this transformation is a subtle modification of the graph during search-time. Define the distance between any two $depot$s to be 0, and, at first, connect each task node only to $depot_1$.
+
+Upon visiting $depot_1$, ``teleport'' the ant to $depot_2$, connecting it to all of the task nodes, and disconnecting $depot_1$. Upon doing this, update an internal state variable $robot_{current}$, whose purpose it is to correctly evaluate the $cost()$ function.
+
+The first two iterations of performing ACS on this transformation on the sample problem are fleshed out below:
+
+\subsubsection{Iteration 1}
+
+The starting node is $depot_1 = 4$.
+
+$$
+\eta = \sum_{n \in N_4} \frac{\uptau_{4n}^\alpha}{d_{4n}^\beta} = 3.5133
+$$
+
+\begin{align*}
+p_{4i} &= \frac{\uptau_{4n}^\alpha d_{4i}^{-\beta}}{\eta} \\
+\\
+p_{41} &= 0.19155 \\
+p_{42} &= 0.24881 \\
+\mathbf{p_{43}} &= \mathbf{0.27501} \\
+p_{44} &= 0.28464
+\end{align*}
+
+$$
+\text{Tour} = \{4, 3\}
+$$
+
+% % %
+
+$$
+\eta = \sum_{n \in N_3} \frac{\uptau_{3n}^\alpha}{d_{3n}^\beta} = 2.6438
+$$
+
+\begin{align*}
+p_{3i} &= \frac{\uptau_{3n}^\alpha d_{3i}^{-\beta}}{\eta} \\
+\\
+\mathbf{p_{31}} &= \mathbf{0.32551} \\
+p_{32} &= 0.33063 \\
+p_{34} &= 0.34386
+\end{align*}
+
+$$
+\text{Tour} = \{4, 3, 1\}
+$$
+
+% % %
+
+$$
+\eta = \sum_{n \in N_1\setminus\{3\}} \frac{\uptau_{1n}^\alpha}{d_{1n}^\beta} = 1.5792
+$$
+
+\begin{align*}
+p_{1i} &= \frac{\uptau_{1n}^\alpha d_{1i}^{-\beta}}{\eta} \\
+\\
+p_{12} &= 0.60423 \\
+\mathbf{p_{14}} &= \mathbf{0.39577}
+\end{align*}
+
+$$
+\text{Tour} = \{4, 3, 1, 4, 5\}
+$$
+
+Note that traveling to $depot_1 = 4$ has triggered the ant to automatically move to $depot_2 = 5$, and thus the ant now uses $robot_2$'s cost function.
+
+% % %
+
+$$
+\mathbf{p_{52}} = \mathbf{1}
+$$
+
+$$
+\text{Tour} = \{4, 3, 1, 4, 5, 2, 5\} \qquad
+d_{tour} = 1.0210
+$$
+
+Update pheromones:
+
+$$
+\uptau_{ij} =
+\begin{tabular}{r | c c c c c}
+$i \setminus j$ & 1 & 2 & 3 & 4 & 5 \\
+\hline
+1 & $\emptyset$ & 0.90000 & 1.09916 & 1.09916 & 0.90000 \\
+2 & 0.90000 & $\emptyset$ & 0.90000 & 0.90000 & 1.29833 \\
+3 & 1.09916 & 0.90000 & $\emptyset$ & 1.09916 & 0.90000 \\
+4 & 1.09916 & 0.90000 & 1.09916 & $\emptyset$ & 1.09916 \\
+5 & 0.90000 & 1.29833 & 0.90000 & 1.09916 & $\emptyset$
+\end{tabular}
+$$
+
+
+
+\subsubsection{Iteration 2}
+
+$$
+\eta = \sum_{n \in N_4} \frac{\uptau_{4n}^\alpha}{d_{4n}^\beta} = 3.4884
+$$
+
+\begin{align*}
+p_{4i} &= \frac{\uptau_{4n}^\alpha d_{4i}^{-\beta}}{\eta} \\
+\\
+\mathbf{p_{41}} &= \mathbf{0.21204} \\
+p_{42} &= 0.22552 \\
+p_{43} &= 0.30444 \\
+p_{44} &= 0.25800
+\end{align*}
+
+$$
+\text{Tour} = \{4, 1\}
+$$
+
+% % %
+
+$$
+\eta = \sum_{n \in N_1} \frac{\uptau_{1n}^\alpha}{d_{1n}^\beta} = 2.5730
+$$
+
+\begin{align*}
+p_{1i} &= \frac{\uptau_{1n}^\alpha d_{1i}^{-\beta}}{\eta} \\
+\\
+\mathbf{p_{42}} &= \mathbf{0.33376} \\
+p_{43} &= 0.39924 \\
+p_{44} &= 0.26699
+\end{align*}
+
+$$
+\text{Tour} = \{4, 1, 2\}
+$$
+
+% % %
+
+$$
+\eta = \sum_{n \in N_2\setminus\{1\}} \frac{\uptau_{2n}^\alpha}{d_{2n}^\beta} = 1.5068
+$$
+
+\begin{align*}
+p_{2i} &= \frac{\uptau_{2n}^\alpha d_{1i}^{-\beta}}{\eta} \\
+\\
+p_{23} &= 0.54054 \\
+\mathbf{p_{24}} &= \mathbf{0.45946}
+\end{align*}
+
+$$
+\text{Tour} = \{4, 1, 2, 4, 5\}
+$$
+
+% % %
+
+\begin{align*}
+\mathbf{p_{53}} &= \mathbf{1}
+\end{align*}
+
+$$
+\text{Tour} = \{4, 1, 2, 4, 5, 3, 5\} \qquad d_{tour} = 0.8900
+$$
+
+$$
+\uptau_{ij} =
+\begin{tabular}{r | c c c c c}
+$i \setminus j$ & 1 & 2 & 3 & 4 & 5 \\
+\hline
+1 & $\emptyset$ & 1.01450 & 0.98925 & 1.19375 & 0.81000 \\
+2 & 1.01450 & $\emptyset$ & 0.81000 & 1.01450 & 1.16849 \\
+3 & 0.98925 & 0.81000 & $\emptyset$ & 0.98925 & 1.21900 \\
+4 & 1.19375 & 1.01450 & 0.98925 & $\emptyset$ & 1.19375 \\
+5 & 0.81000 & 1.16849 & 1.21900 & 1.19375 & $\emptyset$
+\end{tabular}
+$$
+
+\subsubsection{Result}
+
+$$
+\text{Tour}_{best} = \{4, 1, 2, 4, 5, 3, 5\} \qquad d_{best} = 0.8900
+$$
 
 \section{Performance Evaluation}
 

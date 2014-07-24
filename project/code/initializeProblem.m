@@ -1,4 +1,4 @@
-function initializeProblem(solution)
+function initializeProblem()
     global homes priority skill distance;
 
     homes = [ 4, 5 ];
@@ -21,6 +21,4 @@ function initializeProblem(solution)
                     0.6, 0.3, 0.1, 0,   0;
                     0.5, 0.4, 0.2, 0,   0
                 ];
-
-    cost(solution)
 end

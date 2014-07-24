@@ -39,8 +39,6 @@ function bestSolution = aco(iterations)
                 end
             end
 
-            neighbors
-
             % compute neighbor weights
             for j = 1 : length(neighbors)
                 n = neighbors(j);
@@ -54,6 +52,8 @@ function bestSolution = aco(iterations)
                 n = neighbors(j);
                 eta = eta + tau(currentNode, n)^alpha / neighborWeight(j); 
             end
+
+            eta
 
             cumlProb = [ ];
             for j = 1 : length(neighbors)
