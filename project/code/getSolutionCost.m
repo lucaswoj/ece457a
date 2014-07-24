@@ -22,19 +22,10 @@ function cost = getSolutionCost(solution)
 
     endfor
 
-function cost = getDistanceCost(robot, from, to)
-    global distances;
-    cost = distances(from, to);
-
-function cost = getSkillPriorityCost(robot, task)
-    global skills priorities;
-
-    % TODO should this be 1 - skill * priority instead?
-    cost = (1 - skills(robot, task)) * (1 - priorities(task));
-
 function cost = getPathCost(path, robot)
-    SKILL_PRIORITY_WEIGHT = 1;
-    DISTANCE_WEIGHT = 1;
+    SKILL_PRIORITY_WEIGHT = 0.5;
+    DISTANCE_WEIGHT = 1 - SKILL_PRIORITY_WEIGHT;
+    assert(SKILL_PRIORITY_WEIGHT + DISTANCE_WEIGHT == 1)
 
     cost = 0;
 
@@ -45,3 +36,13 @@ function cost = getPathCost(path, robot)
     for i = 1:(length(path) - 1)
         cost = cost + DISTANCE_WEIGHT * getDistanceCost(robot, path(i), path(i + 1));
     endfor
+
+function cost = getDistanceCost(robot, from, to)
+    global distances;
+    cost = distances(from, to);
+
+function cost = getSkillPriorityCost(robot, task)
+    global skills priorities;
+
+    % TODO should this be 1 - skill * priority instead?
+    cost = 1 - skills(robot, task) * priorities(task);

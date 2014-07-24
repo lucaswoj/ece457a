@@ -1,4 +1,4 @@
-function bestSolution = ts(iterations = 1000, tenure = 5)
+function [bestSolution, bestSolutionCost] = ts(iterations = 100, tenure = 5)
 
   global nTasks tasks nRobots robots nHomes homes priorities skills distances
 
@@ -9,14 +9,14 @@ function bestSolution = ts(iterations = 1000, tenure = 5)
   tabu = zeros(size(solution));
 
   for i = 1:iterations
-    neighbours = getSolutionNeighbours(solution, 10);
+    neighbours = getSolutionNeighbours(solution, 5);
 
     nontabuNeighbours = neighbours(isNontabu(neighbours, solution, tabu), :);
 
     [bestNeighbour, bestNeighbourCost] = getBestSolution(neighbours);
     [bestNontabuNeighbour, bestNontabuNeighbourCost] = getBestSolution(nontabuNeighbours);
 
-    if bestNontabuNeighbourCost < bestSolution
+    if bestNontabuNeighbourCost < bestSolutionCost
       nextSolution = bestNontabuNeighbour;
 
       bestSolution = bestNontabuNeighbour
@@ -34,7 +34,9 @@ function bestSolution = ts(iterations = 1000, tenure = 5)
     endif
 
     tabu(tabu > 0) = tabu(tabu > 0) - 1;
-    tabu(nextSolution != solution) += tenure;
+    tabu(nextSolution != solution) = tabu(nextSolution != solution) + tenure;
+
+    solution = nextSolution;
 
   endfor
 
