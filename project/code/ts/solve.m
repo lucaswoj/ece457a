@@ -1,4 +1,7 @@
-function [bestSolution, bestSolutionCost] = ts(iterations = 100, tenure = 5)
+function [bestSolution, bestSolutionCost] = solve()
+
+  iterations = 100;
+  tenure = 5;
 
   global nTasks tasks nRobots robots nHomes homes priorities skills distances
 

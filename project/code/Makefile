@@ -18,9 +18,9 @@ octave: octave-build
 
 ALGORITHMS = aco ga pso sa ts
 
-$(addsuffix -reduced.out, $(ALGORITHMS)): %-reduced.out: %.m octave-build
+$(addsuffix -reduced.out, $(ALGORITHMS)): %-reduced.out: %/solve.m octave-build
 	docker run \
 		--tty \
 		ece457a-project \
-		bash -c "octave --silent --path % --eval \"loadReducedProblem(); $*()\"" | \
+		bash -c "octave --silent --path $* --eval \"loadReducedProblem(); solve()\"" | \
 	tee $@

@@ -1,4 +1,4 @@
-function bestSolution = aco(iterations)
+function bestSolution = solve(iterations)
     initializeProblem();
 
     global homes;
@@ -50,7 +50,7 @@ function bestSolution = aco(iterations)
             eta = 0;
             for j = 1 : length(neighbors)
                 n = neighbors(j);
-                eta = eta + tau(currentNode, n)^alpha / neighborWeight(j); 
+                eta = eta + tau(currentNode, n)^alpha / neighborWeight(j);
             end
 
             eta

@@ -2,6 +2,8 @@ function loadReducedProblem()
 
     global nTasks tasks nRobots robots nHomes homes priorities skills distances;
 
+    % TODO remove unnescessary globals (tasks, robots)
+
     nTasks = 3;
     tasks = 1:nTasks;
 
