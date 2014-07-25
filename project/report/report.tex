@@ -120,11 +120,6 @@ This report makes use of the multiple Travelling Salesman Problem formulation as
 % FIND A PLACE FOR THIS
 % We will be ignoring the condition of the robot unlike the problem formulation given in [3] because these conditions can be considered exogenous []
 
-\subsection{Motivation \& Applications}
-Search and rescue, military surveillance, resource gathering.
-
-\subsection{Definition \& Categorization}
-
 \subsection{Challenges}
 Not all robots can perform all required tasks.\\
 How decompose tasks?\\
@@ -770,8 +765,18 @@ $$
 % quantitatively and qualitatively assess the performance of the developed
 % solution Identify the pros and cons of each method
 
-\section{Conclusions \& Recommendations}
+Each meta-heuristic will be evaluated quantitatively and qualitatively.
 
+The following instances of MRTA will be studied:
+\begin{enumerate}
+\item \textbf{Small scale}: Five tasks and three robots
+\item \textbf{Medium scale}: Fifteen tasks and five robots
+\item \textbf{Small scale}: Fifty tasks and fifteen robots
+\end{enumerate}
+
+The different scenarios will allow for qualitative analysis on the scalability of meta-heuristic techniques and where they are best applied. Within each scenario, each technique can be compared using some quantitative metrics. Badreldin et al. [3] identify two suitable measures: the computational time taken to find the best solution and the optimality of the best solution obtained by a meta-heuristic technique.
+
+\section{Conclusions \& Recommendations}
 % Report your observation and interpret obtained results. Briefly explain your
 % research work, and suggest how to improve the implemented solutions
 
@@ -780,6 +785,8 @@ $$
 % the proposed solution? You may organize ideas using lists or numbered points,
 % if appropriate, but avoid making your report into a check-list or a series of
 % encrypted notes.
+
+This paper has presented a comparative study of meta-heuristic algorithms used within an optimization based approach to solving the MRTA problem. Five meta-heuristics were considered: Tabu Search, Simulated Annealing, Genetic Algorithms, Particle Swarm optimization, and Ant Colony Optimization. RECAP RESULTS OF EXPERIMENTS.
 
 \section*{References}
 
