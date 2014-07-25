@@ -21,7 +21,7 @@
 \newcommand{\subsubsubsection}[1]{\paragraph{#1} \mbox{}}
 \newcommand{\subsubsubsubsection}[1]{\subparagraph{#1} \mbox{}}
 
-\newcommand\Forall{\mathop{\mbox{\Large $\mathsurround0pt\forall$}}}
+\newcommand{\Forall}{\mathop{\mbox{\Large $\mathsurround0pt\forall$}}\limits}
 
 
 \title{Complex Task Allocation: A Comparison of Metaheuristics}
@@ -179,6 +179,8 @@ How decompose tasks?\\
 
 \subsection{Problem Formulation}
 
+% TODO explicitly indicate that everything is 1 indexed
+
 Suppose we have a set of $n_\mathit{tasks}$ ``tasks" which need to be completed by a set of $n_\mathit{robots}$ ``robots".
 
 We seek a ``solution", $S$, that consists of an assignment of each robot an ordered set of tasks for it to complete, a ``tour", such that each task is performed exactly once and our overall cost is minimized. Each tour begins and ends at the robot's ``home"; for simplicity, we represent homes as tasks.
@@ -187,12 +189,20 @@ $$
 S(r) = \{ \mathit{home}(r), t_1, t_2, ..., t_n, \mathit{home}(r) \}
 $$
 
-We will consider a multi-objective cost function that accounts for
+We will consider a multi-objective cost function, $\mathit{cost}$, that accounts for
 \begin{enumerate}
 \item $\mathit{cost}_\mathit{time}$, how long it takes to complete all tasks, assuming the robots work in parallel
 \item $\mathit{cost}_\mathit{energy}$, whether or not each robot is able to complete its tour before running out of ``energy"
 \item $\mathit{cost}_\mathit{quality}$, how well the tasks are completed relative to their priorities
 \end{enumerate}
+
+We define overall $\mathit{cost}$ as a linear combination of these cost functions, introducing a constant, $\alpha \in [0 ,1]$, which allows tuning of the relative importance of time versus quality. $\mathit{cost}_\mathit{energy}$ is left untuned as represents a hard constraint, only evaluating to $0$ or $\infty$.
+$$
+\mathit{cost}(S) =
+  \left( (1-\alpha) \cdot \mathit{cost}_\mathit{time}(S) \right) +
+  \left( \alpha \cdot \mathit{cost}_\mathit{quality}(S) \right) +
+  \left( \mathit{cost}_\mathit{energy}(S) \right)
+$$
 
 \subsubsection{Time}
 
@@ -204,11 +214,22 @@ $$\mathit{distance}(t, u) > 0, \in \mathbb{R}$$
 Additionally, each robot, $r$ may complete each task, $t$, in a different amount of time.
 $$\mathit{task \, time}(r, t) > 0, \in \mathbb{R}$$
 
-The total amount of time it takes for a robot, $r$, to complete a tour, $t$, is given by
+The total amount of time it takes for a robot, $r$, to complete a tour, $o$, is given by
 $$
-\mathit{tour \, time}(r, t) =
-  \sum^|t|_{i=2}
-  \mathit{distance}(t, u)
+\mathit{tour \, time}(r, o) =
+  \left(
+    \sum^{|o|}_{t=2} \mathit{distance}(t - 1, t) \cdot \mathit{velocity}(r)
+  \right) +
+  \left(
+    \sum^{|o|}_{t=1} \mathit{task \, time}(r, t) \cdot \mathit{velocity}(r)
+  \right)
+$$
+
+We define $\mathit{cost}_\mathit{time}$ as the amount of time it takes to complete all tasks, assuming the robots work in parallel; effectively the max tour time across all robots.
+$$
+\mathit{cost}_\mathit{time}(S) =
+  \max_{r=1}^{n_\mathit{robots}}
+  \mathit{tour \, time}(r, S(r))
 $$
 
 \subsubsection{Energy}
@@ -216,7 +237,24 @@ $$
 Each robot, $r$, may be capable of a spending different amount of time on tour. One unit energy equates to the ability to spend one additional unit time on tour.
 $$\mathit{energy}(r) > 0, \in \mathbb{R}$$
 
+We define $\mathit{cost}_\mathit{energy}$ to evaluate to 0 if this hard constraint is met for all robots, and $\infty$ otherwise
+$$
+\mathit{cost}_\mathit{energy}(S) = \begin{cases}
+0 & \text{if } \mathop{\forall}\limits_{r=0}^{n_\mathit{robots}} \mathit{energy}(r) \geq \mathit{tour \, time}(r, S(r)) \\
+\infty & \text{otherwise}
+\end{cases}
+$$
+
 \subsubsection{Quality}
+
+We define $\mathit{cost}_\mathit{quality}$ to represent the skill with which each task was done relative to that task's priority. This is quantified as the sum of all the products of the skill with which a task was done by the priority that task had.
+$$
+\mathit{cost}_\mathit{quality}(S) =
+  \sum^{n_\mathit{robots}}_{r=1}
+  \sum^{|S(r)|}_{t=1}
+  1 - \mathit{priority}(r, t) \cdot \mathit{skill}(r)
+$$
+Since a performing a high priority task with a highly skilled robot is desirable and we want to treat minimize cost, we subtract the maximum possible value, 1, from the product of the priority and skill (recall that $\mathit{skill}(r) \in [1, 0]$ and $\mathit{priority}(r, t) \in [1, 0]$).
 
 \subsection{Representation}
 
