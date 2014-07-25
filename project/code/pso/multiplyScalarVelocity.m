@@ -1,0 +1,1 @@
+function product = multiplyScalarVelocity(scalar, velocity)
