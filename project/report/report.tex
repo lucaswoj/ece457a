@@ -13,6 +13,7 @@
 \usepackage{amssymb}
 \usepackage{upgreek}
 \usepackage{todonotes}
+\usepackage{csquotes}
 
 % Allow for sub^3sections and sub^4sections
 % http://pleasemakeanote.blogspot.com/2010/06/how-to-activate-subsubsubsection-in.html
@@ -55,18 +56,17 @@ If computation time needs to be minimized, then ALGORITHM is able to produce the
 
 In conclusions, this report recommends the use of ALGORITHM.
 \section{Introduction}
+As the digital revolution* leaves the second digital wave behind, and embraces the robotics wave, it is becoming increasingly important to prepare for the impending ubiquity of robots.
 
-% Summarize the importance of the problem you are trying to solve and the reason
-% that motivated you to select this project. Explain what was the problem or
-% challenge that you were given? state the purpose of the project and how did
-% you solve it? Enumerate the objectives of the project and describe in brief
-% the structure of the report.
+In particular, Multirobot Systems (MRS) are becoming a high interest subject. An MRS is a group of robots that are designed with the intent of performing a collective behavior.\\
+There are numerous advantages associated with a group of simple robots over a single multi-purpose robot. For example, it is simpler to design a robust single purpose robot than a robot with multiple abilities and configurations. Simple designs tend to be more robust and lead to more reliable robots. Another source of reliability is that a group of robots can accommodate some degree of redundancy in composition.  In addition, many complex tasks are distributed over a large area and would be incredibly slow to accomplish with a single-agent system. Examples of problems that can be solved by MRSs are search and rescue in burning builds, military surveillance and space construction.
 
-% Complex Task Allocation Problem: In mobile surveillance systems, complex
-% task allocation addresses how to optimally assign a set of surveillance
-% tasks to a set of mobile sensing agents to maximize overall expected
-% performance, taking into account the priorities of the tasks and the skill
-% ratings of the mobile robots.
+This report is specifically considering the problem of Complex Task Allocation to a MRS. The problem statement reads as follows:\\
+\blockquote{Complex Task Allocation Problem: In mobile surveillance systems, complex task allocation addresses how to optimally assign a set of surveillance tasks to a set of mobile sensing agents to maximize overall expected performance, taking into account the priorities of the tasks and the skill ratings of the mobile robots.}
+
+ [Alaa Khamis, Cooperative Multirobot Systems, Plenary Talk at IAC2014]
+% Summarize the importance of the problem you are trying to solve and the reason that motivated you to select this project. Explain what was the problem or challenge that you were given? state the purpose of the project and how did you solve it? Enumerate the objectives of the project and describe in brief the structure of the report.
+
 
 \section{Literature Review}
 The following papers were reviewed to obtain some perspective on different approaches to complex task allocation:
