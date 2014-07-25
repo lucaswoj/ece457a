@@ -114,6 +114,7 @@ The scope of this report will focus on a decompose-then allocate approach toward
 
 % Contrast our approach to mTSP to [3]'s approach to mTSP
 % we make task completion time a per-robot value rather than a per-task value
+This report makes use of the multiple Travelling Salesman Problem formulation as described by Badreldin, Hussein, and Khamis with some important differences. [3] Instead of including an aging factor feature in the robots to reduce tour lengths, an energy capacity feature has been identified to put a harder constraint on robot tour lengths. In addition, instead of considering a minimum task completion time that holds for all robots, each type of robot has its own task completion times. This explicitly decouples a robots skill at a task from the time it takes to complete the task. It also more accurately represents that different types of robots can have radically different methods for accomplishing the same task. To reconcile this change with the idea that tasks have certain requirements, a time of infinity is assigned to robots who lack any skill at a particular task.
 
 
 % FIND A PLACE FOR THIS
