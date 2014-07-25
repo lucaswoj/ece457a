@@ -60,7 +60,7 @@ In conclusions, this report recommends the use of ALGORITHM.
 As the digital revolution leaves the second digital wave behind, and embraces the robotics wave[1], it is becoming increasingly important to prepare for the impending ubiquity of robots.
 
 In particular, Multirobot Systems (MRS) are becoming a high interest subject. An MRS is a group of robots that are designed with the intent of performing a collective behavior.\\
-There are numerous advantages associated with a group of simple robots over a single multi-purpose robot. For example, it is simpler to design a robust single purpose robot than a robot with multiple abilities and configurations. Simple designs tend to be more robust and lead to more reliable robots. Another source of reliability is that a group of robots can accommodate some degree of redundancy in composition.  In addition, many complex tasks are distributed over a large area and would be slow to accomplish with a single-agent system. Examples of problems that can be solved by MRSs are search and rescue in burning builds, surveillance and space construction.\\
+There are numerous advantages associated with a group of simple robots over a single multi-purpose robot. For example, it is simpler to design a robust single purpose robot than a robot with multiple abilities and configurations. Simple designs tend to be more robust and lead to more reliable robots. Another source of reliability is that a group of robots can accommodate some degree of redundancy in composition.  In addition, many complex tasks are distributed over a large area and would be slow to accomplish with a single-agent system. Examples of problems that can be solved by MRSs are search and rescue in burning building, surveillance and space construction.\\
 
 % What is the problem
 \subsection{Multirobot Task Allocation}
@@ -71,7 +71,7 @@ This problem is important to solve because areas under surveillance usually poss
 
 % Enumeration of report objectives and report structure
 The purpose of this report is to categorize which meta-heuristic optimization techniques are effective within a given scenario. For example, which algorithms are better-suited for online analysis and which for offline analysis.
-The report will continue with a review of existing literature and identifying the commonalities and differences with the solution presented in this report. Then we will present a problem formulation and model from which we will implement our algorithms. The paper then describes how the well-known Traveling Salesman Problem can be reduced to Complex Task Allocation. From there, the report identifies the criteria upon which each meta heuristic technique's performance is evaluated. Then the results of running each technique are then presented against these performance criteria. From these results conclusions are drawn and recommendations for future work are suggested.
+The report will continue with a review of existing literature and identifying the commonalities and differences with the solution presented in this report. Then we will present a problem formulation and model from which we will implement our algorithms. The paper then describes how the well-known Traveling Salesman Problem can be reduced to Complex Task Allocation. From there, the report identifies the criteria upon which each meta heuristic technique's performance is evaluated. Then the results of running each technique are then presented against these performance criteria. From these results, conclusions are drawn and recommendations for future work are suggested.
 
 
 
@@ -80,14 +80,13 @@ The report will continue with a review of existing literature and identifying th
  [3] ``A comparative Study between Optimization and
 Market-based Approaches to Multi-robot Task Allocation''.
 [4] T. Bektas, “The multiple traveling salesman problem: an over- view of formulations and solution procedures,” Omega, vol. 34, no. 3, pp. 209–219, 2006.
-[5] Gerkey, B., Vaughan, R., Howard, A.: The player/stage project: tools for multi-robot and distrib- uted sensor systems. In: Proc. 11th Int. Conf. on Advanced Robotics, pp. 317–323 (2003)
-[5]
+[5] http://en.wikipedia.org/wiki/Mathematical\_optimization
 
 SECTION COMPARING AND CONTRASTING MARKET VS OPTIMZATION BASED APPROACHES.
 ``A comparative Study between Optimization and
 Market-based Approaches to Multi-robot Task Allocation''.
 
-SECTION SAYING WE ARE NOT DOING DYNAMIC TAKS ALLOCATION
+SECTION SAYING WE ARE NOT DOING DYNAMIC TASK ALLOCATION
 % Summarize the importance of the problem you are trying to solve and the reason that motivated you to select this project. Explain what was the problem or challenge that you were given? state the purpose of the project and how did you solve it? Enumerate the objectives of the project and describe in brief the structure of the report.
 
 
@@ -96,9 +95,24 @@ The following papers were reviewed to obtain some perspective on different appro
 ``Complex Task Allocation in Mobile Surveillance Systems'', ``A comparative Study between Optimization and
 Market-based Approaches to Multi-robot Task Allocation''.
 
-SECTION COMPARING AND CONTRASTING MARKET VS OPTIMZATION BASED APPROACHES.
-``A comparative Study between Optimization and
-Market-based Approaches to Multi-robot Task Allocation''.
+An examination of existing literature reveals two predominate schools of approach to solving Multirobot Task Allocation (MRTA). There are market-based and optimization-based approaches.
+The market-based approach is inspired from the development of market economies that have developed in human societies.
+Each robot is made analogous to an individual seeking profit within a market and as a result, effecting a redistribution of resources within the environment.
+The optimization-based approach is rooted in mathematics rather than socio-economic observation.
+The thrust is to identify an equation that captures the constrains contained in a problem and to find a solution that either maximizes the profit or minimizes the damage caused by a given solution.
+The goal of this report is to perform a comparative study of meta-heuristic techniques and so this directs the attention of this paper onto an optimization-based approach for solving MRTA.
+A comparison will be made to the results of market-based approaches as implemented by [2] \& [3].
+
+In [2] Khamis et al. describe a taxonomy for classifying MRTA problems examined in literature. From their taxonomy, the MRTA problem examined this report has the following classifications:
+
+\begin{enumerate}
+\item Multi-task robots: Each robot is able to perform various tasks, and has a certain skill at each type of task.
+\item Single-robot tasks: Each task can be completed by a single robot.
+\item Instantaneous Assignment: The assignment of tasks to robots will be calculated once and will not be updated dynamically as the robots execute their given task list.
+\end{enumerate}
+
+
+We will be ignoring the condition of the robot unlike the problem formulation given in [3] because these conditions can be considered exogenous []
 
 \subsection{Motivation \& Applications}
 Search and rescue, military surveillance, resource gathering.
