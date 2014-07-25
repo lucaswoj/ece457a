@@ -16,22 +16,12 @@ function bestSolution = solve()
 
 	while temperature > minTemperature && i < iterations
 
-		while true
-			newSolution = getSolutionNeighbours(solution, 1);
-			newSolutionCost = getSolutionCost(newSolution);
+		newSolution = getSolutionNeighbours(solution, 1);
+		newSolutionCost = getSolutionCost(newSolution);
 
-			if newSolutionCost < solutionCost
-				solution = newSolution;
-				solutionCost = newSolutionCost;
-				break
-			end
-
-			p = exp(1)^((solutionCost - newSolutionCost)/temperature);
-			if (rand() < p)
-				solution = newSolution;
-				solutionCost = newSolutionCost;
-				break
-			end
+		if newSolutionCost < solutionCost || exp(1)^((solutionCost - newSolutionCost)/temperature) > rand()
+			solution = newSolution;
+			solutionCost = newSolutionCost;
 		end
 
 		if solutionCost < bestSolutionCost
