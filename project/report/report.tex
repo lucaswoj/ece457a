@@ -305,57 +305,36 @@ In this section, we define a reduced size complex task allocation problem which
 will be used to perform hand-iterations of various optimization algorithms in
 the following sections.
 
-Suppose we have 2 robots
-$$\mathit{robots} = \left\{ \mathit{robot}_0, \mathit{robot}_1 \right\}$$
+Suppose we have two robots with the following attributes:
 
-These robots move at different velocities
-
-\begin{tabular}{ll}
-                   & $\mathit{velocity}$ \\
-$\mathit{robot}_0$ & 1 \\
-$\mathit{robot}_1$ & 2 \\
+\begin{tabular}{lll}
+        & \textbf{velocity} & \textbf{energy} \\
+\textbf{robot 1} & 0.9146   & 8.2024          \\
+\textbf{robot 2} & 0.6509   & 5.0418
 \end{tabular}
-\vspace{1.5em}
+\vspace{1em}
 
-These robots must collectively perform 3 tasks
-$$\mathit{tasks} = \left\{ \mathit{task}_0, \mathit{task}_1,  \mathit{task}_2 \right\}$$
+These robots must complete three tasks:
 
-The priority of each task is
-
-\begin{tabular}{llll}
-$\mathit{task}_0$  & 0.1 \\
-$\mathit{task}_1$  & 0.2 \\
-$\mathit{task}_2$  & 0.3 \\
+\begin{tabular}{llllll}
+                &                   & \textbf{robot 1} & \textbf{robot 1} & \textbf{robot 2} & \textbf{robot 2} \\
+                & \textbf{priority} & \textbf{skill}   & \textbf{time}    & \textbf{skill}   & \textbf{time} \\
+\textbf{task 1} & 0.7761            & 0.97195          & 0.25511          & 0.33896          & 0.61632       \\
+\textbf{task 2} & 0.3663            & 0.46364          & 0.88416          & 0.44659          & 0.37353       \\
+\textbf{task 3} & 0.8863            & 0.83202          & 0.61189          & 0.02791          & 0.30623
 \end{tabular}
-\vspace{1.5em}
+\vspace{1em}
 
-The skill of each robot  at each task is
+The distances between tasks and home locations are:
 
-\begin{tabular}{llll}
-                   & $\mathit{task}_0$ & $\mathit{task}_1$ & $\mathit{task}_2$ \\
-$\mathit{robot}_0$ & 0.1               & 0.4               & 0.5               \\
-$\mathit{robot}_1$ & 0.2               & 0.3               & 0.6               \\
+\begin{tabular}{llllll}
+                & \textbf{task 1} & \textbf{task 2} & \textbf{task 3} & \textbf{home 1} & \textbf{home 2} \\
+\textbf{task 1} & 8.6779          & 3.7604          & 6.2783          & 9.3271          & 1.4957 \\
+\textbf{task 2} & 8.0510          & 3.3071          & 8.4473          & 1.3190          & 4.9917 \\
+\textbf{task 3} & 3.2972          & 8.5977          & 2.7686          & 8.5270          & 0.4359 \\
+\textbf{home 1} & 2.5143          & 8.4739          & 4.6241          &    -            &    -   \\
+\textbf{home 2} & 1.2170          & 6.1530          & 3.9628          &    -            &    -
 \end{tabular}
-\vspace{1.5em}
-
-For the sake of the reduced size problem, we assume all distances are symmetric, though our algorithm does not require this. The distances between tasks are
-
-\begin{tabular}{llll}
-                   & $\mathit{task}_0$ & $\mathit{task}_1$ & $\mathit{task}_2$ \\
-$\mathit{task}_0$  & 0                 & 1                 & 2                 \\
-$\mathit{task}_1$  & 1                 & 0                 & 3                 \\
-$\mathit{task}_2$  & 2                 & 3                 & 0                 \\
-\end{tabular}
-\vspace{1.5em}
-
-The distance from each home to each task is
-
-\begin{tabular}{llll}
-                   & $\mathit{task}_0$ & $\mathit{task}_1$ & $\mathit{task}_2$ \\
-$\mathit{home}_0$ & 6                 & 3                 & 1                  \\
-$\mathit{home}_1$ & 5                 & 4                 & 2                  \\
-\end{tabular}
-\vspace{1.5em}
 
 \subsection{Real Problem}
 
