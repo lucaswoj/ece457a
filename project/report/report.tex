@@ -37,7 +37,7 @@
 % TODO Represent solutions as S_0^3
 % TODO All tasks must be 1-indexed
 % TODO All robots must be 1-indexed
-% TODO We must use a consistent naming convention for robots/sensors, depots/homes, tasks
+% TODO We must use a consistent naming convention for robots/sensors, homes/homes, tasks
 % TODO We must use a consistent formatting in representing solutions, esp sentinal values
 % TODO Do number equations and reference them by their number
 
@@ -132,75 +132,69 @@ How decompose tasks?\\
 % a need to explain background information regarding some supplementary methods
 % used in your formulation, do that here
 
-Suppose we have a number of mobile $\mathit{robot}$s
+Suppose we have a number of mobile ``robots"
 $$\mathit{robots} = \{ \mathit{robot}_i | i \in [1, n_\mathit{robots}] \}$$
+Each robot starts, and must end, at its home location. In particular, $\mathit{robot}_i$ starts and ends at $\mathit{home}_i$
 
-Using these $\mathit{robot}$s, we are to perform a number of tasks
+Using these robots, we are to perform a number of ``tasks"
 $$\mathit{tasks} = \{ \mathit{task}_i | i \in [1, n_\mathit{tasks}] \}$$
-
-Each task has a $\mathit{priority}$
+Each task has a ``priority"
 $$\text{priority}(\mathit{task}_i) \in [0 ,1]$$
-
-$\mathit{robot}$s are not homogeneous; some are more ``skilled" at certain tasks than others
+Some robots are more ``skilled" at certain tasks than others
 $$\text{skill}(\mathit{robot}_i, \mathit{task}_j) \in [0 ,1]$$
 
-Tasks are located some distance each other
+Tasks are located some ``distance" each other
 $$\mathit{distance}(\mathit{task}_i, \mathit{task}_j) > 0 \in \mathbb{R}$$
+Likewise, each ``home" is located a certain distance from each task.
+$$\mathit{distance}(\mathit{home}_i, \mathit{task}_j) > 0 \in \mathbb{R}$$
 
-Each $\mathit{robot}$ starts at some location, its $\mathit{depot}$. $\mathit{robot}_i$ starts at $\mathit{depot}_i$
-
-Each $\textit{depot}$ is located a certain distance from each task.
-$$\mathit{distance}(\mathit{depot}_i, \mathit{task}_j)$$
-
-$\mathit{task}$s are assigned to $\mathit{robot}$s.
-$$\mathit{task}_j \rightarrow \mathit{robot}_i$$
-
-We seek, for each $\mathit{robot}$, a path through the $\mathit{task}$s such that each $\mathit{task}$ is performed exactly once and our overall cost is minimized.
-
-A solution, $S$, consists of a mapping of $\mathit{robot}$s to paths through $\mathit{task}$s.
-$$S(\mathit{robot}_i) = \{\mathit{task}_0, \mathit{task}_1, ..., \mathit{task}_n\}$$
-
-
+We seek, for each robot, a ``tour" from its home, through the tasks, and back home such that each task is performed exactly once and our cost is minimized. Such a solution, $S$, consists of a mapping of each robot to a path of tasks.
+$$\forall{i=0}{n_\mathit{robots}} S(\mathit{robot}_i) = \{\mathit{home}_i, \mathit{task}_a, \mathit{task}_b, ..., \\mathit{home}_i\}$$
 
 \subsection{Cost Function}
 
-% TODO This could be rewritten a little more clearly
+We will use a multiobjective cost function to evaluate a solution, $S$. In particular, we consider
+\begin{itemize}
+\item The maximum distance traveled by any robot to complete its tour, $\mathit{cost}_\mathit{distance}$
+\item The priority of each task against the skill of the robot doing the task, $\mathit{cost}_\mathit{skill}$
+\end{itemize}
 
-
-The cost of some path, $S(i)$ is given by
+The $\mathit{cost}_\mathit{distance}$ is the maximum distance traveled by any robot to complete its tour.
 $$
-\text{cost}(S(i)) = w(i, S(i,|S(i)|), S(i,0)) + \sum_{t = 0}^{|S(i)|-1} w(i, S(i,t), S(i,t+1))
-$$
-
-% TODO does not not naturally follow from our cost function?
-Subject to the constraint
-$$
-n \notin S(i) \quad \text{if} \quad M_{skill}(i, n) = 0
-$$
-
-Therefore, the overall performance of a solution is:
-
-$$
-\sum_{i \in \mathit{robot}} \text{cost}_i
+\mathit{cost}_\mathit{distance}(S) =
+  \max_{i=1}^{n_\mathit{robots}}
+  \sum_{j=1}^{|S(i)|}
+  \mathit{distances}(S(i, j-1), S(i, j))
 $$
 
-Our weighted-distance function is defined as follows:
+The $\mathit{cost}_\mathit{skill}$ is a measure of the relationship between the skill of the robot doing each task and the task's priority. We calculate this as the sum of the product of each task's priority and robot's skill. Because a higher skill and priority is desirable, we subtract the product from 1 to transform it into a minimization problem.
 $$
-w(i, \mathit{src}, \mathit{dst}) = \begin{cases}
-(\alpha - \text{priority}(\mathit{dst}))^\gamma \times (\beta - \text{skill}(i, \mathit{dst})) \times \text{distance}(\mathit{src}, \mathit{dst}) & \mathit{dst} \ne S(i,0) \\
-\text{distance}(\mathit{src}, \mathit{dst}) & \text{otherwise}
-\end{cases}
+\mathit{cost}_\mathit{skill}(S) =
+  \sum_{i=1}^{n_\mathit{robots}}
+  \sum_{j=1}^{|S(i)|}
+  1 -
+  \mathit{priority}(S(i, j)) \cdot
+  \mathit{skill}(i, S(i, j))
 $$
 
-where $\alpha, \beta \geq 1$. These parameters are to ensure that the priority and skill factors are aligned with the minimization of the function.
+The overall cost of a solution, $\mathit{cost}(S)$, is some linear combination of $\mathit{cost}_\mathit{distance}$ and $\mathit{cost}_\mathit{skill}$. We introduce a constant, $\alpha \in [0 ,1]$, which allows tuning of the relative importance of each cost function.
+$$
+\mathit{cost}(S) =
+  \alpha \cdot \mathit{cost}_\mathit{skill}(S) +
+  (1-\alpha) \cdot \mathit{cost}_\mathit{distance}(S)
+$$
 
-$\gamma$ is used to tweak the relative importance of a task's priority, and has no constraints on it.
+\subsection{Representation}
 
-The $\text{distance}(\mathit{src}, \mathit{dst})$ function makes use of $D_\text{task-task}$, $D_\text{depot-task}$, and $D_\text{task-depot}$. $D_\text{task-task}$ is a square matrix that contains the distances between tasks i.e. the distance between task i and j is found at $D_\text{task-task}(i,j)$. $D_\text{depot-task}$ contains the distances from depots to tasks i.e. the distance from depot i to task j is $D_\text{task-task}(i,j)$. $D_\text{task-depot}$ contains the distances from the tasks to the depots i.e. the distance from task i to depot j is $D_\text{task-depot}(i,j)$
+Homes vector
 
-The $\text{priority}(\mathit{dst})$ function makes use of $P$. $P$ is a vector where the priority of $\text{task}_i$ is contained in $P(i)$.
+Priority vector
 
-The $\text{skill}(i, \mathit{dst})$ function makes use of the matrix $M_{skill}$. The skill of $\text{robot}_i$ at performing $\text{task}_j$ is contained in $M_{skill}(i,j)$
+Skill matrix
+
+Distance matrix
+
+Solution representation
 
 \subsection{Modeling as Traveling Salesman Problem}
 
@@ -214,7 +208,7 @@ The $\text{skill}(i, \mathit{dst})$ function makes use of the matrix $M_{skill}$
 % models for real-life problems such as school bus routing problem and complex
 % task allocation problem.
 
-Given a population of $\mathit{robots}$, a set of $\mathit{tasks}$, a set of $\mathit{depots}$ a priority for each task $P$, each robot's skill at performing each task $M_{skill}(r,t)$ and an ordered assignment of tasks to robots $S(r)$, for each $r \in \mathit{robots}$
+Given a population of $\mathit{robots}$, a set of $\mathit{tasks}$, a set of $\mathit{homes}$ a priority for each task $P$, each robot's skill at performing each task $M_{skill}(r,t)$ and an ordered assignment of tasks to robots $S(r)$, for each $r \in \mathit{robots}$
 we can create a directed, weighted graph as follows:
 
 We will model complex task allocation loosely on the traveling salesman problem.
@@ -223,17 +217,16 @@ Given a random initial solution, $S_0$,
 
 \begin{align*}
 	G &= (V, E) \\
-	V &= \mathit{depots} \cup \mathit{tasks} \\
-	E_{task_i, task_j} &= D_\text{task-task}(i,j) \qquad \forall t \in \mathit{tasks} \\
-  E_{depot_i, task_j} &= D_\text{depot-task}(i,j) \qquad \forall d \in \mathit{depots}\\
-	E_{task_i, depot_j} &= D_\text{task-depot}(i,j) \qquad \forall d \in \mathit{depots}\\
+	V &= \mathit{homes} \cup \mathit{tasks} \\
+	E_{task_i, task_j} &= D_\mathit{task-task}(i,j) \qquad \forall t \in \mathit{tasks} \\
+  E_{home_i, task_j} &= D_\mathit{home-task}(i,j) \qquad \forall d \in \mathit{homes}\\
+	E_{task_i, home_j} &= D_\mathit{task-home}(i,j) \qquad \forall d \in \mathit{homes}\\
 \end{align*}
 %
 
-That is, we create a graph that shows the distances between every task and the distances between every task and every depot.
+That is, we create a graph that shows the distances between every task and the distances between every task and every home.
 
-From here, we can run TSP on the created graph. The cost of taking each edge will be determined using $w$ which will take in the distance represented by that edge as an input. Every robot starts at their depot.
-
+From here, we can run TSP on the created graph. The cost of taking each edge will be determined using $w$ which will take in the distance represented by that edge as an input. Every robot starts at their home.
 
 \subsection{Reduced Size Problem}
 
@@ -283,13 +276,13 @@ $\mathit{task}_2$  & 0.2               & 0.3               & 0                 \
 \end{tabular}
 \vspace{1.5em}
 
-Each robot, $\mathit{robot}_i$, starts at a depot, $\mathit{depot}_i$. The
-distance from each depot to each task is
+Each robot, $\mathit{robot}_i$, starts at a home, $\mathit{home}_i$. The
+distance from each home to each task is
 
 \begin{tabular}{llll}
                    & $\mathit{task}_0$ & $\mathit{task}_1$ & $\mathit{task}_2$ \\
-$\mathit{depot}_0$ & 0.6               & 0.3               & 0.1               \\
-$\mathit{depot}_1$ & 0.5               & 0.4               & 0.2               \\
+$\mathit{home}_0$ & 0.6               & 0.3               & 0.1               \\
+$\mathit{home}_1$ & 0.5               & 0.4               & 0.2               \\
 \end{tabular}
 \vspace{1.5em}
 
@@ -309,8 +302,8 @@ As an initial solution, we will use
 $$S_0 = [0, 1, \mathit{sentinel}, 2 ]$$
 Which specifies the paths
 \begin{align*}
-\mathit{robot}_0: & \mathit{depot}_0 \rightarrow \mathit{task}_0 \rightarrow \mathit{task}_1 \rightarrow  \mathit{depot}_0
-\mathit{robot}_1: & \mathit{depot}_1 \rightarrow \mathit{task}_2 \rightarrow \mathit{depot}_1
+\mathit{robot}_0: & \mathit{home}_0 \rightarrow \mathit{task}_0 \rightarrow \mathit{task}_1 \rightarrow  \mathit{home}_0
+\mathit{robot}_1: & \mathit{home}_1 \rightarrow \mathit{task}_2 \rightarrow \mathit{home}_1
 \end{align*}
 
 % Once the problem is formulated and modeled, the five main algorithms studied
@@ -485,7 +478,7 @@ $$\mathit{gbest} = [1, 2, X, 3]$$
 % TODO use a more formal citation format
 % TODO set up bibtex
 For each position, $i$, we calculate $v_1^i$ using the following equation. Note that we redefine the subtraction of two positions, the addition of a velocity and a position, and the multiplication of a velocity by a scalar as defined in M. Clerc's paper, ``Discrete Particle Swarm Optimization."
-$$v_1^i = w v_0^i + c_1 r_1 (x_\text{lbest} - x_0^i) + c_2 r_2 (x_\text{gbest} - x_0^i)$$
+$$v_1^i = w v_0^i + c_1 r_1 (x_\mathit{lbest} - x_0^i) + c_2 r_2 (x_\mathit{gbest} - x_0^i)$$
 
 The resultant velocities are \mbox{}
 % TODO standardize tabular presentation, centered, bold headings
@@ -503,7 +496,7 @@ $S_0^2$ & $[1, X, 3, 2]$ & $1.7100$ & $[1, X, 3, 2]$   & $1.7100$     & $[]$    
 We choose $r_1 = 0.2351$ and $r_2 = 0.8262$ as random constants for this iteration.
 
 Applying the velocities calculated in iteration 1 to the positions in iteration 1, we obtain the positions for iteration 2. We calcuate the velocity of each using the same equation, generalized to calculate the velocity for solution $j$
-$$v_j^i = w v_{j-1}^i + c_1 r_1 (x_\text{lbest} - x_{j-1}^i) + c_2 r_2 (x_\text{gbest} - x_{j-1}^i)$$
+$$v_j^i = w v_{j-1}^i + c_1 r_1 (x_\mathit{lbest} - x_{j-1}^i) + c_2 r_2 (x_\mathit{gbest} - x_{j-1}^i)$$
 
 The resultant velocities are \mbox{}
 % TODO calculate these
