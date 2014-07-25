@@ -21,7 +21,7 @@
 \newcommand{\subsubsubsection}[1]{\paragraph{#1} \mbox{}}
 \newcommand{\subsubsubsubsection}[1]{\subparagraph{#1} \mbox{}}
 
-\newcommand{\Forall}{\mathop{\mbox{\Large $\mathsurround0pt\forall$}}\limits}
+\newcommand\Forall{\mathop{\mbox{\Large $\mathsurround0pt\forall$}}}
 
 
 \title{Complex Task Allocation: A Comparison of Metaheuristics}
@@ -48,7 +48,7 @@
 % The summary should be a brief version of the full report It should give the
 % reader an accurate overview Be brief, but be specific.
 This report is an analysis of the efficacy of different meta-heuristic algorithms in solving a complex task allocation problem.
-Complex task allocation is the assignment of complex and simple tasks to a group of robots. This paper is taking an optimization-based approach to solve a multi-task robot, single-robot task, instantaneous assignment version of the multirobot task assignment problem.
+Complex task allocation is the assignment of complex and simple tasks to a group of robots. This report is taking an optimization-based approach to solve a multi-task robot, single-robot task, instantaneous assignment version of the multirobot task assignment problem that adopts a decompose-then allocate strategy to handle complex tasks.
 
 Five meta-heuristic algorithms were tested for this report. They are: Taboo Search, Simulated Annealing, Genetic Algorithms, Particle Swarm Optimization, and Ant Colony Optimization.
 
@@ -86,11 +86,6 @@ The report will continue with a review of existing literature and identifying th
 % [4] T. Bektas, “The multiple traveling salesman problem: an over- view of formulations and solution procedures,” Omega, vol. 34, no. 3, pp. 209–219, 2006.
 % [5] http://en.wikipedia.org/wiki/Mathematical\_optimization
 
-SECTION COMPARING AND CONTRASTING MARKET VS OPTIMZATION BASED APPROACHES.
-``A comparative Study between Optimization and
-Market-based Approaches to Multi-robot Task Allocation''.
-
-SECTION SAYING WE ARE NOT DOING DYNAMIC TASK ALLOCATION
 % Summarize the importance of the problem you are trying to solve and the reason that motivated you to select this project. Explain what was the problem or challenge that you were given? state the purpose of the project and how did you solve it? Enumerate the objectives of the project and describe in brief the structure of the report.
 
 
@@ -115,8 +110,14 @@ In [2] Khamis et al. describe a taxonomy for classifying MRTA problems examined 
 \item Instantaneous Assignment: The assignment of tasks to robots will be calculated once and will not be updated dynamically as the robots execute their given task list.
 \end{enumerate}
 
+The scope of this report will focus on a decompose-then allocate approach towards complex tasks. That is, all complex tasks will be broken up into subtasks that will then be assigned out to particular robots. This makes a strong assumption about the independence of the subtasks, but is not without precedence in the literature.[2]\\
 
-We will be ignoring the condition of the robot unlike the problem formulation given in [3] because these conditions can be considered exogenous []
+% Contrast our approach to mTSP to [3]'s approach to mTSP
+% we make task completion time a per-robot value rather than a per-task value
+
+
+% FIND A PLACE FOR THIS
+% We will be ignoring the condition of the robot unlike the problem formulation given in [3] because these conditions can be considered exogenous []
 
 \subsection{Motivation \& Applications}
 Search and rescue, military surveillance, resource gathering.
@@ -179,8 +180,6 @@ How decompose tasks?\\
 
 \subsection{Problem Formulation}
 
-% TODO explicitly indicate that everything is 1 indexed
-
 Suppose we have a set of $n_\mathit{tasks}$ ``tasks" which need to be completed by a set of $n_\mathit{robots}$ ``robots".
 
 We seek a ``solution", $S$, that consists of an assignment of each robot an ordered set of tasks for it to complete, a ``tour", such that each task is performed exactly once and our overall cost is minimized. Each tour begins and ends at the robot's ``home"; for simplicity, we represent homes as tasks.
@@ -189,20 +188,12 @@ $$
 S(r) = \{ \mathit{home}(r), t_1, t_2, ..., t_n, \mathit{home}(r) \}
 $$
 
-We will consider a multi-objective cost function, $\mathit{cost}$, that accounts for
+We will consider a multi-objective cost function that accounts for
 \begin{enumerate}
 \item $\mathit{cost}_\mathit{time}$, how long it takes to complete all tasks, assuming the robots work in parallel
 \item $\mathit{cost}_\mathit{energy}$, whether or not each robot is able to complete its tour before running out of ``energy"
 \item $\mathit{cost}_\mathit{quality}$, how well the tasks are completed relative to their priorities
 \end{enumerate}
-
-We define overall $\mathit{cost}$ as a linear combination of these cost functions, introducing a constant, $\alpha \in [0 ,1]$, which allows tuning of the relative importance of time versus quality. $\mathit{cost}_\mathit{energy}$ is left untuned as represents a hard constraint, only evaluating to $0$ or $\infty$.
-$$
-\mathit{cost}(S) =
-  \left( (1-\alpha) \cdot \mathit{cost}_\mathit{time}(S) \right) +
-  \left( \alpha \cdot \mathit{cost}_\mathit{quality}(S) \right) +
-  \left( \mathit{cost}_\mathit{energy}(S) \right)
-$$
 
 \subsubsection{Time}
 
@@ -214,22 +205,11 @@ $$\mathit{distance}(t, u) > 0, \in \mathbb{R}$$
 Additionally, each robot, $r$ may complete each task, $t$, in a different amount of time.
 $$\mathit{task \, time}(r, t) > 0, \in \mathbb{R}$$
 
-The total amount of time it takes for a robot, $r$, to complete a tour, $o$, is given by
+The total amount of time it takes for a robot, $r$, to complete a tour, $t$, is given by
 $$
-\mathit{tour \, time}(r, o) =
-  \left(
-    \sum^{|o|}_{t=2} \mathit{distance}(t - 1, t) \cdot \mathit{velocity}(r)
-  \right) +
-  \left(
-    \sum^{|o|}_{t=1} \mathit{task \, time}(r, t) \cdot \mathit{velocity}(r)
-  \right)
-$$
-
-We define $\mathit{cost}_\mathit{time}$ as the amount of time it takes to complete all tasks, assuming the robots work in parallel; effectively the max tour time across all robots.
-$$
-\mathit{cost}_\mathit{time}(S) =
-  \max_{r=1}^{n_\mathit{robots}}
-  \mathit{tour \, time}(r, S(r))
+\mathit{tour \, time}(r, t) =
+  \sum^|t|_{i=2}
+  \mathit{distance}(t, u)
 $$
 
 \subsubsection{Energy}
@@ -237,24 +217,7 @@ $$
 Each robot, $r$, may be capable of a spending different amount of time on tour. One unit energy equates to the ability to spend one additional unit time on tour.
 $$\mathit{energy}(r) > 0, \in \mathbb{R}$$
 
-We define $\mathit{cost}_\mathit{energy}$ to evaluate to 0 if this hard constraint is met for all robots, and $\infty$ otherwise
-$$
-\mathit{cost}_\mathit{energy}(S) = \begin{cases}
-0 & \text{if } \mathop{\forall}\limits_{r=0}^{n_\mathit{robots}} \mathit{energy}(r) \geq \mathit{tour \, time}(r, S(r)) \\
-\infty & \text{otherwise}
-\end{cases}
-$$
-
 \subsubsection{Quality}
-
-We define $\mathit{cost}_\mathit{quality}$ to represent the skill with which each task was done relative to that task's priority. This is quantified as the sum of all the products of the skill with which a task was done by the priority that task had.
-$$
-\mathit{cost}_\mathit{quality}(S) =
-  \sum^{n_\mathit{robots}}_{r=1}
-  \sum^{|S(r)|}_{t=1}
-  1 - \mathit{priority}(r, t) \cdot \mathit{skill}(r)
-$$
-Since a performing a high priority task with a highly skilled robot is desirable and we want to treat minimize cost, we subtract the maximum possible value, 1, from the product of the priority and skill (recall that $\mathit{skill}(r) \in [1, 0]$ and $\mathit{priority}(r, t) \in [1, 0]$).
 
 \subsection{Representation}
 
@@ -286,6 +249,22 @@ The area of interest for the robots in the MRS can be represented as a two dimen
 \item \textbf{Number of salesmen}: The number of robots can vary between instances of this problem, but is static for the duration of any given instance.
 \item \textbf{City time frame}: Robots take a certain amount of time to complete a task and therefore spend a certain amount of time at a given node.
 \item \textbf{Fair division of salesmen}: There are constraints on the maximum amount of work that a robot can perform on their tour and so the required traveling should be distributed amongst the available agents in a relatively fair manner as defined by the problem parameters.
+\end{enumerate}
+
+In an MRS, there is heterogeneity in robot composition. This requires the augmentation of the ``salesman'' idea to support some differentiating factors. This report has identified 3 main features:
+
+\begin{enumerate}
+\item \textbf{Velocity}: Each robot has a speed at which they travel between tasks.
+\item \textbf{Energy}: Each robot has an energy capacity that restricts how long it can be away from its home node.
+\item \textbf{Skill}: Each robot has a skill rating that represents its ability to complete a task.
+\item \textbf{Task Completion Time}: Robots do not necessarily take the same amount requires a different amount of time to complete
+
+\end{enumerate}
+
+In this MRTA problem, there is also heterogeneity in the tasks that area assigned to visit. For this reason, the idea of ``cities'' have been augmented with the following features:
+
+\begin{enumerate}
+\item \textbf{Priority}: Some tasks are more important that others and should be considered first.
 \end{enumerate}
 
 The next section describes the graph that will be constructed for use with mTSP.
