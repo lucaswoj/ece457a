@@ -21,6 +21,9 @@
 \newcommand{\subsubsubsection}[1]{\paragraph{#1} \mbox{}}
 \newcommand{\subsubsubsubsection}[1]{\subparagraph{#1} \mbox{}}
 
+\newcommand\Forall{\mathop{\mbox{\Large $\mathsurround0pt\forall$}}}
+
+
 \title{Complex Task Allocation: A Comparison of Metaheuristics}
 \author{
 	Group 27 \\
@@ -55,6 +58,7 @@ The results of experimentation are as follows. The algorithm that produced the m
 If computation time needs to be minimized, then ALGORITHM is able to produce the most optimal solution in SMALLER NUMBER of ITERATIONS.
 
 In conclusions, this report recommends the use of ALGORITHM.
+
 \section{Introduction}
 % Why is the problem important
 As the digital revolution leaves the second digital wave behind, and embraces the robotics wave[1], it is becoming increasingly important to prepare for the impending ubiquity of robots.
@@ -173,57 +177,46 @@ How decompose tasks?\\
 % a need to explain background information regarding some supplementary methods
 % used in your formulation, do that here
 
-Suppose we have a number of mobile ``robots"
-$$\mathit{robots} = \{ \mathit{robot}_i | i \in [1, n_\mathit{robots}] \}$$
-Each robot starts, and must end, at its home location. In particular, $\mathit{robot}_i$ starts and ends at $\mathit{home}_i$
+\subsection{Problem Formulation}
 
-Using these robots, we are to perform a number of ``tasks"
-$$\mathit{tasks} = \{ \mathit{task}_i | i \in [1, n_\mathit{tasks}] \}$$
-Each task has a ``priority"
-$$\text{priority}(\mathit{task}_i) \in [0 ,1]$$
-Some robots are more ``skilled" at certain tasks than others
-$$\text{skill}(\mathit{robot}_i, \mathit{task}_j) \in [0 ,1]$$
+Suppose we have a set of $n_\mathit{tasks}$ ``tasks" which need to be completed by a set of $n_\mathit{robots}$ ``robots".
 
-Tasks are located some ``distance" each other
-$$\mathit{distance}(\mathit{task}_i, \mathit{task}_j) > 0 \in \mathbb{R}$$
-Likewise, each ``home" is located a certain distance from each task.
-$$\mathit{distance}(\mathit{home}_i, \mathit{task}_j) > 0 \in \mathbb{R}$$
-
-We seek, for each robot, a ``tour" from its home, through the tasks, and back home such that each task is performed exactly once and our cost is minimized. Such a solution, $S$, consists of a mapping of each robot to a path of tasks.
-$$\forall{i=0}{n_\mathit{robots}} S(\mathit{robot}_i) = \{\mathit{home}_i, \mathit{task}_a, \mathit{task}_b, ..., \\mathit{home}_i\}$$
-
-\subsection{Cost Function}
-
-We will use a multiobjective cost function to evaluate a solution, $S$. In particular, we consider
-\begin{itemize}
-\item The maximum distance traveled by any robot to complete its tour, $\mathit{cost}_\mathit{distance}$
-\item The priority of each task against the skill of the robot doing the task, $\mathit{cost}_\mathit{skill}$
-\end{itemize}
-
-The $\mathit{cost}_\mathit{distance}$ is the maximum distance traveled by any robot to complete its tour.
+We seek a ``solution", $S$, that consists of an assignment of each robot an ordered set of tasks for it to complete, a ``tour", such that each task is performed exactly once and our overall cost is minimized. Each tour begins and ends at the robot's ``home"; for simplicity, we represent homes as tasks.
 $$
-\mathit{cost}_\mathit{distance}(S) =
-  \max_{i=1}^{n_\mathit{robots}}
-  \sum_{j=1}^{|S(i)|}
-  \mathit{distances}(S(i, j-1), S(i, j))
+\Forall_{r=0}^{n_\mathit{robots}}
+S(r) = \{ \mathit{home}(r), t_1, t_2, ..., t_n, \mathit{home}(r) \}
 $$
 
-The $\mathit{cost}_\mathit{skill}$ is a measure of the relationship between the skill of the robot doing each task and the task's priority. We calculate this as the sum of the product of each task's priority and robot's skill. Because a higher skill and priority is desirable, we subtract the product from 1 to transform it into a minimization problem.
+We will consider a multi-objective cost function that accounts for
+\begin{enumerate}
+\item $\mathit{cost}_\mathit{time}$, how long it takes to complete all tasks, assuming the robots work in parallel
+\item $\mathit{cost}_\mathit{energy}$, whether or not each robot is able to complete its tour before running out of ``energy"
+\item $\mathit{cost}_\mathit{quality}$, how well the tasks are completed relative to their priorities
+\end{enumerate}
+
+\subsubsection{Time}
+
+The time it takes to travel between tasks is a function of ``distance" and ``velocity." Each robot, $r$, may travel at a different velocity, measured in units distance per units time.
+$$\mathit{velocity}(r) > 0, \in \mathbb{R}$$
+Each task, $t$, may be a different distance from each other task, $u$. For simplicity, we represent home locations as tasks.
+$$\mathit{distance}(t, u) > 0, \in \mathbb{R}$$
+
+Additionally, each robot, $r$ may complete each task, $t$, in a different amount of time.
+$$\mathit{task \, time}(r, t) > 0, \in \mathbb{R}$$
+
+The total amount of time it takes for a robot, $r$, to complete a tour, $t$, is given by
 $$
-\mathit{cost}_\mathit{skill}(S) =
-  \sum_{i=1}^{n_\mathit{robots}}
-  \sum_{j=1}^{|S(i)|}
-  1 -
-  \mathit{priority}(S(i, j)) \cdot
-  \mathit{skill}(i, S(i, j))
+\mathit{tour \, time}(r, t) =
+  \sum^|t|_{i=2}
+  \mathit{distance}(t, u)
 $$
 
-The overall cost of a solution, $\mathit{cost}(S)$, is some linear combination of $\mathit{cost}_\mathit{distance}$ and $\mathit{cost}_\mathit{skill}$. We introduce a constant, $\alpha \in [0 ,1]$, which allows tuning of the relative importance of each cost function.
-$$
-\mathit{cost}(S) =
-  \alpha \cdot \mathit{cost}_\mathit{skill}(S) +
-  (1-\alpha) \cdot \mathit{cost}_\mathit{distance}(S)
-$$
+\subsubsection{Energy}
+
+Each robot, $r$, may be capable of a spending different amount of time on tour. One unit energy equates to the ability to spend one additional unit time on tour.
+$$\mathit{energy}(r) > 0, \in \mathbb{R}$$
+
+\subsubsection{Quality}
 
 \subsection{Representation}
 
@@ -286,6 +279,15 @@ the following sections.
 Suppose we have 2 robots
 $$\mathit{robots} = \left\{ \mathit{robot}_0, \mathit{robot}_1 \right\}$$
 
+These robots move at different velocities
+
+\begin{tabular}{ll}
+                   & $\mathit{velocity}$ \\
+$\mathit{robot}_0$ & 1 \\
+$\mathit{robot}_1$ & 2 \\
+\end{tabular}
+\vspace{1.5em}
+
 These robots must collectively perform 3 tasks
 $$\mathit{tasks} = \left\{ \mathit{task}_0, \mathit{task}_1,  \mathit{task}_2 \right\}$$
 
@@ -311,19 +313,18 @@ For the sake of the reduced size problem, we assume all distances are symmetric,
 
 \begin{tabular}{llll}
                    & $\mathit{task}_0$ & $\mathit{task}_1$ & $\mathit{task}_2$ \\
-$\mathit{task}_0$  & 0                 & 0.1               & 0.2               \\
-$\mathit{task}_1$  & 0.1               & 0                 & 0.3               \\
-$\mathit{task}_2$  & 0.2               & 0.3               & 0                 \\
+$\mathit{task}_0$  & 0                 & 1                 & 2                 \\
+$\mathit{task}_1$  & 1                 & 0                 & 3                 \\
+$\mathit{task}_2$  & 2                 & 3                 & 0                 \\
 \end{tabular}
 \vspace{1.5em}
 
-Each robot, $\mathit{robot}_i$, starts at a home, $\mathit{home}_i$. The
-distance from each home to each task is
+The distance from each home to each task is
 
 \begin{tabular}{llll}
                    & $\mathit{task}_0$ & $\mathit{task}_1$ & $\mathit{task}_2$ \\
-$\mathit{home}_0$ & 0.6               & 0.3               & 0.1               \\
-$\mathit{home}_1$ & 0.5               & 0.4               & 0.2               \\
+$\mathit{home}_0$ & 6                 & 3                 & 1                  \\
+$\mathit{home}_1$ & 5                 & 4                 & 2                  \\
 \end{tabular}
 \vspace{1.5em}
 
