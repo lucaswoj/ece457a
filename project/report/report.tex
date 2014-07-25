@@ -79,12 +79,12 @@ The report will continue with a review of existing literature and identifying th
 
 
 
- [1][Alaa Khamis, Cooperative Multirobot Systems, Plenary Talk at IAC2014]
- [2]``Complex Task Allocation in Mobile Surveillance Systems'',
- [3] ``A comparative Study between Optimization and
-Market-based Approaches to Multi-robot Task Allocation''.
-[4] T. Bektas, “The multiple traveling salesman problem: an over- view of formulations and solution procedures,” Omega, vol. 34, no. 3, pp. 209–219, 2006.
-[5] http://en.wikipedia.org/wiki/Mathematical\_optimization
+%  [1][Alaa Khamis, Cooperative Multirobot Systems, Plenary Talk at IAC2014]
+%  [2]``Complex Task Allocation in Mobile Surveillance Systems'',
+%  [3] ``A comparative Study between Optimization and
+% Market-based Approaches to Multi-robot Task Allocation''.
+% [4] T. Bektas, “The multiple traveling salesman problem: an over- view of formulations and solution procedures,” Omega, vol. 34, no. 3, pp. 209–219, 2006.
+% [5] http://en.wikipedia.org/wiki/Mathematical\_optimization
 
 SECTION COMPARING AND CONTRASTING MARKET VS OPTIMZATION BASED APPROACHES.
 ``A comparative Study between Optimization and
@@ -230,7 +230,7 @@ Distance matrix
 
 Solution representation
 
-\subsection{Modeling as Traveling Salesman Problem}
+\subsection{Modeling as Traveling Salesman Problem (TSP)}
 
 % In this important step, an abstract mathematical model is built for the
 % problem. The modeler can be inspired by similar models in the literature.
@@ -241,7 +241,18 @@ Solution representation
 % (TSP) and multiple travelling salesman problem (mTSP) are commonly used as
 % models for real-life problems such as school bus routing problem and complex
 % task allocation problem.
+\subsubsection{Adaptation}
+The area of interest for the robots in the MRS can be represented as a two dimensional bounded space. Within this space, the location of tasks and robot home locations can be represented as a graph. As described in the previous section, the goal is to create an assignment of tasks to robots which minimizes the total cost of travel. This makes the MRTA problem a good fit for reduction to the mTSP problem. This report will be making use of some well-studied variations of mTSP [3].
+\begin{enumerate}
+\item \textbf{Salesmen starting node}: Robots are not guaranteed to start from the same node and must end their tour by returning to their starting node.
+\item \textbf{Number of salesmen}: The number of robots can vary between instances of this problem, but is static for the duration of any given instance.
+\item \textbf{City time frame}: Robots take a certain amount of time to complete a task and therefore spend a certain amount of time at a given node.
+\item \textbf{Fair division of salesmen}: There are constraints on the maximum amount of work that a robot can perform on their tour and so the required traveling should be distributed amongst the available agents in a relatively fair manner as defined by the problem parameters.
+\end{enumerate}
 
+The next section describes the graph that will be constructed for use with mTSP.
+
+\subsubsection{The Graph}
 Given a population of $\mathit{robots}$, a set of $\mathit{tasks}$, a set of $\mathit{homes}$ a priority for each task $P$, each robot's skill at performing each task $M_{skill}(r,t)$ and an ordered assignment of tasks to robots $S(r)$, for each $r \in \mathit{robots}$
 we can create a directed, weighted graph as follows:
 
