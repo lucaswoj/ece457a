@@ -1,30 +1,44 @@
-function difference = subtractPositions(position1, position2)
-  assert(length(position1) == length(position2))
+function swaps = subtractPositions(p1, p2)
+  assert(length(p1) == length(p2))
+  pLength = length(p1)
 
-  % Find the indicies of all nonmatching elements in the positions
-  positionIndicies = find(position1 ~= position2)
+  % Create a "directory" of mismatched elements
+  p1Indicies = find(p1 ~= p2)
+  p2Indicies = p1Indicies
 
-  % Allocate a matrix to store the difference
-  assert(mod(length(positionIndicies), 2) == 0)
-  difference = zeros(positionIndicies / 2)'
-  differenceNextIndex = 1
+  % Allocate space for the answer
+  swaps = zeros(pLength - 1, 2)
+  swapsIndex = 1
 
-  for i = 1:length(positionIndicies)
-    for j = (i + 1):length(positionIndicies)
+  while length(p1Indicies) > 0
 
-      if positionIndicies(j) == 0
-        continue
+    p1Index = p1Indicies(1)
+    p1IndexStart = p1Index
+
+    while true
+
+      p2Index = 0
+      for i = 1:length(p2Indicies)
+        if p1(p1Index) == p2(p2Indicies(i))
+          p2Index = p2Indicies(i);
+        endif
+      endfor
+
+      assert(p2Index ~= 0)
+
+      p1Indicies = p1Indicies(p1Indicies != p1Index)
+      p2Indicies = p2Indicies(p2Indicies != p2Index)
+
+      if p2Index == p1IndexStart
+        break;
       endif
 
-      if position1(positionIndicies(j)) == position2(positionIndicies(i)) && position2(positionIndicies(j)) == position1(positionIndicies(i))
+      swaps(swapsIndex, :) = [p1Index, p2Index]
+      swapsIndex = swapsIndex + 1
 
-        difference(differenceNextIndex) = [i, j]
-        differenceNextIndex = differenceNextIndex + 1
+      p1Index = p2Index
 
-        positionIndicies(j) = 0
+    endwhile
 
-        break
+  endwhile
 
-      endif
-    endfor
-  endfor
