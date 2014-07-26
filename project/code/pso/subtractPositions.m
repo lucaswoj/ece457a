@@ -21,6 +21,7 @@ function swaps = subtractPositions(p1, p2)
       for i = 1:length(p2Indicies)
         if p1(p1Index) == p2(p2Indicies(i))
           p2Index = p2Indicies(i);
+          break
         endif
       endfor
 
