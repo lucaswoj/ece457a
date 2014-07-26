@@ -30,6 +30,7 @@ function bestSolution = solve()
 		end
 
 		temperature = temperature * coolingFactor;
+		i = i + 1;
 	end
 
 end
