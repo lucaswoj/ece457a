@@ -1,4 +1,4 @@
-function swaps = subtractPositions(p1, p2)
+function swaps = subtractPositions(p2, p1)
   assert(length(p1) == length(p2))
   pLength = length(p1)
 
