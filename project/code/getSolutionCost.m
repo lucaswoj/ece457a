@@ -1,11 +1,13 @@
-function cost = getSolutionCost(solution)
+function cost = getSolutionCost(solution, alpha = 0.5)
 
-    global nTasks tasks nRobots robots nHomes homes priorities skills distances
+    global nRobots velocities energy homes nTasks priorities skills taskTimes distances;
 
-    cost = 0;
+    costEnergy = 0;
+    costTime = 0;
+    costQuality = 0;
+
     solution = [0, solution, 0];
 
-    solution;
     homeIndicies = find(solution == 0);
     assert(length(homeIndicies) == nRobots + 1);
 
@@ -13,36 +15,19 @@ function cost = getSolutionCost(solution)
 
         % Extract one path (home -> home) from the overall solution
         solutionIndicies = homeIndicies(robot):homeIndicies(robot + 1);
-        path = solution(solutionIndicies);
+        tour = solution(solutionIndicies);
 
         % Replace the first and last sentinal values with this robot's home
-        path([1, length(path)]) = homes([robot, robot]);
+        tour([1, length(tour)]) = homes([robot, robot]);
 
-        cost = cost + getPathCost(path, robot);
+        tourTime = getTourTime(robot, tour);
 
+        costTime = max(costTime, tourTime);
+        costQuality = costQuality + sum(skills(robot, tour) .* priorities(tour));
+        if tourTime > energy(robot)
+            costEnergy = Inf;
+        endif
     endfor
 
-function cost = getPathCost(path, robot)
-    SKILL_PRIORITY_WEIGHT = 0.5;
-    DISTANCE_WEIGHT = 1 - SKILL_PRIORITY_WEIGHT;
-    assert(SKILL_PRIORITY_WEIGHT + DISTANCE_WEIGHT == 1)
+    cost = costEnergy + costTime + costQuality;
 
-    cost = 0;
-
-    for i = 1:length(path)
-        cost = cost + SKILL_PRIORITY_WEIGHT * getSkillPriorityCost(robot, path(i));
-    endfor
-
-    for i = 1:(length(path) - 1)
-        cost = cost + DISTANCE_WEIGHT * getDistanceCost(robot, path(i), path(i + 1));
-    endfor
-
-function cost = getDistanceCost(robot, from, to)
-    global distances;
-    cost = distances(from, to);
-
-function cost = getSkillPriorityCost(robot, task)
-    global skills priorities;
-
-    % TODO should this be 1 - skill * priority instead?
-    cost = 1 - skills(robot, task) * priorities(task);

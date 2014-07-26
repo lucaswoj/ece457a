@@ -201,11 +201,17 @@ $$\mathit{distance}(t, u) > 0, \in \mathbb{R}$$
 Additionally, each robot, $r$ may complete each task, $t$, in a different amount of time.
 $$\mathit{task \, time}(r, t) > 0, \in \mathbb{R}$$
 
-The total amount of time it takes for a robot, $r$, to complete a tour, $t$, is given by
+The total amount of time it takes for a robot, $r$, to complete a tour, $o$, is given by
 $$
-\mathit{tour \, time}(r, t) =
-  \sum^|t|_{i=2}
-  \mathit{distance}(t, u)
+\mathit{tour \, time}(r, o) =
+  \left(
+    \sum^|t|_{i=2}
+    \mathit{distance}(o(i - 1), o(i)) \cdot \mathit{velocity}(r)
+  \right) +
+  \left(
+    \sum^|t|_{i=1}
+    \mathit{time}(r, o(i))
+  \right)
 $$
 
 \subsubsection{Energy}
@@ -304,8 +310,8 @@ Suppose we have two robots with the following attributes:
 
 \begin{tabular}{lll}
         & \textbf{velocity} & \textbf{energy} \\
-\textbf{robot 1} & 0.9146   & 8.2024          \\
-\textbf{robot 2} & 0.6509   & 5.0418
+\textbf{robot 1} & 0.9146   & 50          \\
+\textbf{robot 2} & 0.6509   & 50
 \end{tabular}
 \vspace{1em}
 
@@ -321,6 +327,8 @@ These robots must complete three tasks:
 \vspace{1em}
 
 The distances between tasks and home locations are:
+
+
 
 \begin{tabular}{llllll}
                 & \textbf{task 1} & \textbf{task 2} & \textbf{task 3} & \textbf{home 1} & \textbf{home 2} \\
