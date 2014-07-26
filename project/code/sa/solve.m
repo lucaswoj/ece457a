@@ -1,8 +1,9 @@
 function bestSolution = solve()
-	iterations = 100;
-	initialTemperature = 100;
-	minTemperature = 0.000001;
-	coolingFactor = 0.8;
+	iterations = 10000;				% Max # of iterations
+	initialTemperature = 1000;		% Starting temperature (better to be too high than too low)
+	minTemperature = 0.01;			% Terminate after reaching this temperature
+	coolingFactor = 0.85;			% (0, 1), typically between 0.7 and 0.95. Higher = slower cooling
+	iterationsPerTemperature = 3;	% Decrease temperature every X iterations
 
 	global nTasks tasks nRobots robots nHomes homes priorities skills distances
 
@@ -29,7 +30,10 @@ function bestSolution = solve()
 			bestSolutionCost = solutionCost;
 		end
 
-		temperature = temperature * coolingFactor;
+		if mod(i, iterationsPerTemperature) == 0
+			temperature = temperature * coolingFactor;
+		end
+
 		i = i + 1;
 	end
 
