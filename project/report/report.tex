@@ -61,48 +61,47 @@ In conclusions, this report recommends the use of ALGORITHM.
 
 \section{Introduction}
 % Why is the problem important
-As the digital revolution leaves the second digital wave behind, and embraces the robotics wave[1], it is becoming increasingly important to prepare for the impending ubiquity of robots.
+\subsection{Problem Context}
+As the digital revolution leaves the second digital wave behind, and embraces the robotics wave[1], it is becoming increasingly important to prepare for the multitude of situations where robots will be available to complete various tasks.
 
 In particular, Multirobot Systems (MRS) are becoming a high interest subject. An MRS is a group of robots that are designed with the intent of performing a collective behavior.\\
 There are numerous advantages associated with a group of simple robots over a single multi-purpose robot. For example, it is simpler to design a robust single purpose robot than a robot with multiple abilities and configurations. Simple designs tend to be more robust and lead to more reliable robots. Another source of reliability is that a group of robots can accommodate some degree of redundancy in composition.  In addition, many complex tasks are distributed over a large area and would be slow to accomplish with a single-agent system. Examples of problems that can be solved by MRSs are search and rescue in burning building, surveillance and space construction.\\
 
 % What is the problem
 \subsection{Multirobot Task Allocation}
-This report is specifically considering the problem of Complex Task Allocation for an MRS. The problem statement reads as follows:\\
+This report is specifically considering the problem of Complex Task Allocation for an MRS where the tasks are related to surveillance. The problem statement reads as follows:\\
 \blockquote{In mobile surveillance systems, complex task allocation addresses how to optimally assign a set of surveillance tasks to a set of mobile sensing agents to maximize overall expected performance, taking into account the priorities of the tasks and the skill ratings of the mobile robots.}
-This problem is important to solve because areas under surveillance usually possess some degree of danger. Being able to replace human sentinels with robots has the potential to save the lives of the surveyors and of nearby civilians by providing advanced warning of incoming threats. The task allocation problem specifically is important because an optimal solution represents an effective assignment of robots to tasks and improves the overall efficacy of the MRS. Colloquially speaking, this report answers the question of ``which robot should perform which task?''[3]
+This problem is important to solve because areas under surveillance usually possess some degree of danger. Being able to replace human sentinels with robots has the potential to save the lives of the surveyors and of nearby civilians by providing advanced warning of incoming threats. The task allocation problem within the broader scope of surveillance is important because an optimal solution represents an effective assignment of robots to tasks and improves the overall efficacy of the MRS. Colloquially speaking, this report answers the question of ``which robot should perform which task?''[3]
 
 
 % Enumeration of report objectives and report structure
+\subsection{Report Structure and Direction}
 The purpose of this report is to categorize which meta-heuristic optimization techniques are effective within a given scenario. For example, which algorithms are better-suited for online analysis and which for offline analysis.
-The report will continue with a review of existing literature and identifying the commonalities and differences with the solution presented in this report. Then we will present a problem formulation and model from which we will implement our algorithms. The paper then describes how the well-known Traveling Salesman Problem can be reduced to Complex Task Allocation. From there, the report identifies the criteria upon which each meta heuristic technique's performance is evaluated. Then the results of running each technique are then presented against these performance criteria. From these results, conclusions are drawn and recommendations for future work are suggested.
+The report will continue with a review of existing literature and identifying the commonalities and differences with the solution presented in this report. Then we will present a problem formulation and model from which we will implement our algorithms. The paper then describes how the well-known Traveling Salesman Problem can be adjusted for use with Complex Task Allocation. From there, the report identifies the criteria upon which each meta heuristic technique's performance is evaluated. Then the results of running each technique are then presented against these performance criteria. From these results, conclusions are drawn and recommendations for future work are suggested.
 
 
 
-%  [1][Alaa Khamis, Cooperative Multirobot Systems, Plenary Talk at IAC2014]
+%  [1] [Alaa Khamis, Cooperative Multirobot Systems, Plenary Talk at IAC2014]
 %  [2]``Complex Task Allocation in Mobile Surveillance Systems'',
-%  [3] ``A comparative Study between Optimization and
-% Market-based Approaches to Multi-robot Task Allocation''.
-% [4] T. Bektas, “The multiple traveling salesman problem: an over- view of formulations and solution procedures,” Omega, vol. 34, no. 3, pp. 209–219, 2006.
-% [5] http://en.wikipedia.org/wiki/Mathematical\_optimization
+%  [3] ``A comparative Study between Optimization and Market-based Approaches to Multi-robot Task Allocation''.
+%  [4] A Framework For Studying Multirobot Task Allocation (mrs03.pdf)Brian P. Gerkey, Maja J. Mataric
 
 % Summarize the importance of the problem you are trying to solve and the reason that motivated you to select this project. Explain what was the problem or challenge that you were given? state the purpose of the project and how did you solve it? Enumerate the objectives of the project and describe in brief the structure of the report.
 
 
 \section{Literature Review}
-The following papers were reviewed to obtain some perspective on different approaches to complex task allocation:
-``Complex Task Allocation in Mobile Surveillance Systems'', ``A comparative Study between Optimization and
-Market-based Approaches to Multi-robot Task Allocation''.
+% The following papers were reviewed to obtain some perspective on different approaches to complex task allocation:
+% ``Complex Task Allocation in Mobile Surveillance Systems'', ``A comparative Study between Optimization and
+% Market-based Approaches to Multi-robot Task Allocation''.
 
 An examination of existing literature reveals two predominate schools of approach to solving Multirobot Task Allocation (MRTA). There are market-based and optimization-based approaches.
 The market-based approach is inspired from the development of market economies that have developed in human societies.
 Each robot is made analogous to an individual seeking profit within a market and as a result, effecting a redistribution of resources within the environment.
 The optimization-based approach is rooted in mathematics rather than socio-economic observation.
 The thrust is to identify an equation that captures the constrains contained in a problem and to find a solution that either maximizes the profit or minimizes the damage caused by a given solution.
-The goal of this report is to perform a comparative study of meta-heuristic techniques and so this directs the attention of this paper onto an optimization-based approach for solving MRTA.
-A comparison will be made to the results of market-based approaches as implemented by [2] \& [3].
+The goal of this report is to perform a comparative study of meta-heuristic techniques and so this directs the attention of this paper onto an optimization-based approach for solving MRTA. Though Khamis et al. [2] propose a method for using a market-based approach to generate candidate solutions that that then fed into a meta-heuristic algorithm.\\
 
-In [2] Khamis et al. describe a taxonomy for classifying MRTA problems examined in literature. From their taxonomy, the MRTA problem examined this report has the following classifications:
+In [2] Khamis et al. describe a taxonomy for classifying MRTA problems examined in literature. From their taxonomy, the MRTA problem examined by this report has the following classifications:
 
 \begin{enumerate}
 \item Multi-task robots: Each robot is able to perform various tasks, and has a certain skill at each type of task.
@@ -112,13 +111,11 @@ In [2] Khamis et al. describe a taxonomy for classifying MRTA problems examined 
 
 The scope of this report will focus on a decompose-then allocate approach towards complex tasks. That is, all complex tasks will be broken up into subtasks that will then be assigned out to particular robots. This makes a strong assumption about the independence of the subtasks, but is not without precedence in the literature.[2]\\
 
+In Gerkey's Framework for Studying Multirobot Task Allocation [4], he identifies MRTA as an instance of the Optimal Assignment Problem (OAP). The OAP considers $n$ workers who have various skills levels at $m$ jobs that must be completed and seeks a mapping of workers to jobs that optimizes overall performance. At first this seems like an ideal problem to map MRTA onto, but there are a few shortcomings for the particular instance of MRTA being studied in this report. Robots are not being assigned to a single task, but rather are given a tour of several tasks through a given area of interest. The importance of considering distance traveled in addition to the cost associated in a task-robot mapping make the Traveling Salesmen Problem a more natural problem to map this instance of MRTA onto.\\
+
 % Contrast our approach to mTSP to [3]'s approach to mTSP
 % we make task completion time a per-robot value rather than a per-task value
-This report makes use of the multiple Travelling Salesman Problem formulation as described by Badreldin, Hussein, and Khamis with some important differences. [3] Instead of including an aging factor feature in the robots to reduce tour lengths, an energy capacity feature has been identified to put a harder constraint on robot tour lengths. In addition, instead of considering a minimum task completion time that holds for all robots, each type of robot has its own task completion times. This explicitly decouples a robots skill at a task from the time it takes to complete the task. It also more accurately represents that different types of robots can have radically different methods for accomplishing the same task. To reconcile this change with the idea that tasks have certain requirements, a time of infinity is assigned to robots who lack any skill at a particular task.
-
-
-% FIND A PLACE FOR THIS
-% We will be ignoring the condition of the robot unlike the problem formulation given in [3] because these conditions can be considered exogenous []
+This report makes use of the multiple Travelling Salesman Problem formulation as described by Badreldin, Hussein, and Khamis with some important differences. [3] Instead of including an aging factor feature of the robots, an energy capacity feature has been identified to put a harder constraint on robot tour lengths. In addition, instead of considering a minimum task completion time that holds for all robots, each type of robot has its own task completion times. This explicitly decouples a robots skill at a task from the time it takes to complete the task. It also more accurately represents that different types of robots can have radically different methods for accomplishing the same task. To reconcile this change with the idea that tasks have certain requirements, a time of infinity is assigned to robots who lack any skill at a particular task.
 
 \subsection{Challenges}
 Not all robots can perform all required tasks.\\
