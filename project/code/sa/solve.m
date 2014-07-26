@@ -5,8 +5,6 @@ function bestSolution = solve()
 	coolingFactor = 0.85;			% (0, 1), typically between 0.7 and 0.95. Higher = slower cooling
 	iterationsPerTemperature = 3;	% Decrease temperature every X iterations
 
-	global nTasks tasks nRobots robots nHomes homes priorities skills distances
-
 	solution = getRandomSolution();
 	solutionCost = getSolutionCost(solution);
 	bestSolution = solution;
