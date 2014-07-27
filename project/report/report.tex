@@ -121,11 +121,6 @@ In Gerkey's Framework for Studying Multirobot Task Allocation \cite{Gerkey}, he 
 % we make task completion time a per-robot value rather than a per-task value
 This report makes use of the multiple Travelling Salesman Problem formulation as described by Badreldin, Hussein, and Khamis with some important differences. \cite{Badreldin} Instead of including an aging factor feature of the robots, an energy capacity feature has been identified to put a harder constraint on robot tour lengths. In addition, instead of considering a minimum task completion time that holds for all robots, each type of robot has its own task completion times. This explicitly decouples a robots skill at a task from the time it takes to complete the task. It also more accurately represents that different types of robots can have radically different methods for accomplishing the same task. To reconcile this change with the idea that tasks have certain requirements, a time of infinity is assigned to robots who lack any skill at a particular task.
 
-\subsection{Challenges}
-Not all robots can perform all required tasks.\\
-How decompose tasks?\\
-
-
 % Conduct a critical survey on different/similar solutions and explain how your
 % solution extends or differs from these solutions.
 
@@ -179,13 +174,18 @@ How decompose tasks?\\
 
 % TODO explicitly indicate that everything is 1 indexed
 
-Suppose we have a set of $n_\mathit{tasks}$ ``tasks" which need to be completed by a set of $n_\mathit{robots}$ ``robots".
+Suppose we have a set of ``tasks", $\{1, 2, ..., n_\mathit{tasks}\}$, which need to be completed by a set of ``robots", $\{1, 2, ..., n_\mathit{robots}\}$.
 
-We seek a ``solution", $S$, that consists of an assignment of each robot an ordered set of tasks for it to complete, a ``tour", such that each task is performed exactly once and our overall cost is minimized. Each tour begins and ends at the robot's ``home"; for simplicity, we represent homes as tasks.
+We seek a ``solution", $S$, that consists of an assignment of each robot an ordered set of tasks for it to complete, a ``tour", such that each task is performed exactly once and our overall cost is minimized. Each tour begins and ends at the robot's ``home".
 $$
 \Forall_{r=0}^{n_\mathit{robots}}
 S(r) = \{ \mathit{home}(r), t_1, t_2, ..., t_n, \mathit{home}(r) \}
 $$
+
+For simplicity, we represent homes as tasks.
+$$\mathit{home}(r) = n_\mathit{tasks} + r$$
+
+\subsubsection{Overall Cost}
 
 We will consider a multi-objective cost function, $\mathit{cost}$, that accounts for
 \begin{enumerate}
@@ -197,16 +197,16 @@ We will consider a multi-objective cost function, $\mathit{cost}$, that accounts
 We define overall $\mathit{cost}$ as a linear combination of these cost functions, introducing two constants, $\alpha$ and $\beta$.
 $$
 \mathit{cost}(S) =
-  \left( \alpha \beta \cdot \mathit{cost}_\mathit{time}(S) \right) +
-  \left( (1-\alpha) \cdot \mathit{cost}_\mathit{quality}(S) \right) +
-  \left( \mathit{cost}_\mathit{energy}(S) \right)
+  \alpha \beta \, \mathit{cost}_\mathit{time}(S) +
+  (1-\alpha) \mathit{cost}_\mathit{quality}(S) +
+  \mathit{cost}_\mathit{energy}(S)
 $$
 
 $\alpha$ is a tuning parameter allowing for the relative importance of quality vs time to be adjusted. $\alpha = 1$ places all emphasis on time; $\alpha = 0$ places all emphasis on quality.
 
-$\beta$ is a normalization parameter that makes $\mathit{cost}_\mathit{time}$ directly comparable to $\mathit{cost}_\mathit{quality}$. Its calculation is discussed in the next section.
+$\beta$ is a normalization parameter that makes $\mathit{cost}_\mathit{time}$ directly comparable to $\mathit{cost}_\mathit{quality}$. It is discussed in further the next section.
 
-\subsubsection{Time}
+\subsubsection{Time Cost}
 
 The time it takes to travel between tasks is a function of ``distance" and ``velocity." Each robot, $r$, may travel at a different velocity, measured in units distance per units time.
 $$\mathit{velocity}(r) > 0, \in \mathbb{R}$$
@@ -250,7 +250,7 @@ $$
       }
 $$
 
-\subsubsection{Energy}
+\subsubsection{Energy Cost}
 
 Each robot, $r$, may be capable of a spending different amount of time on tour. One unit energy equates to the ability to spend one additional unit time on tour.
 $$\mathit{energy}(r) > 0, \in \mathbb{R}$$
@@ -263,7 +263,7 @@ $$
 \end{cases}
 $$
 
-\subsubsection{Quality}
+\subsubsection{Quality Cost}
 
 We define $\mathit{cost}_\mathit{quality}$ to represent the skill with which each task was done relative to that task's priority. This is quantified as the sum of all the products of the skill with which a task was done by the priority that task had.
 $$
