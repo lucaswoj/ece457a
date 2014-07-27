@@ -18,7 +18,7 @@ function bestSolution = solve()
 		newSolution = getSolutionNeighbours(solution, 1);
 		newSolutionCost = getSolutionCost(newSolution);
 
-		if newSolutionCost < solutionCost || exp(1)^((solutionCost - newSolutionCost)/temperature) > rand()
+		if newSolutionCost < solutionCost || exp(1)^((solutionCost - newSolutionCost) / temperature) > rand()
 			solution = newSolution;
 			solutionCost = newSolutionCost;
 		end
