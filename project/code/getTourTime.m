@@ -8,6 +8,6 @@ function time = getTourTime(robot, tour)
     for i=2:length(tour)
       distance = distance + distances(tour(i-1), tour(i));
     endfor
-    travelTime = distance * velocities(robot);
+    travelTime = distance / velocities(robot);
 
     time = taskTime + travelTime
