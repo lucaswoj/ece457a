@@ -2,7 +2,7 @@ function time = getTourTime(robot, tour)
 
     global nRobots velocities energy homes nTasks priorities skills taskTimes distances;
 
-    taskTime = sum(times(robot, tour));
+    taskTime = sum(taskTimes(robot, tour));
 
     distance = 0;
     for i=2:length(tour)
@@ -10,4 +10,4 @@ function time = getTourTime(robot, tour)
     endfor
     travelTime = distance * velocities(robot);
 
-    time = taskTime + travelTime;
+    time = taskTime + travelTime
