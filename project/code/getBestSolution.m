@@ -12,3 +12,7 @@ function [bestSolution, bestCost] = getBestSolution(solutions)
       bestSolution = solution;
     endif
   endfor
+
+% function [bestSolution, bestSolutionCost] = getBestSolution(solutions)
+%   [bestSolutionCost, bestSolutionIndex] = min(getSolutionCost(solutions))
+%   bestSolution = solutions(bestSolutionIndex)

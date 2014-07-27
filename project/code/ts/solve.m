@@ -22,17 +22,20 @@ function [bestSolution, bestSolutionCost] = solve()
     if bestNontabuNeighbourCost < bestSolutionCost
       nextSolution = bestNontabuNeighbour;
 
-      bestSolution = bestNontabuNeighbour
-      bestSolutionCost = bestNontabuNeighbourCost
+      bestSolution = bestNontabuNeighbour;
+      bestSolutionCost = bestNontabuNeighbourCost;
 
     elseif bestNeighbourCost < bestSolutionCost
       nextSolution = bestNeighbour;
 
-      bestSolution = bestNeighbour
-      bestSolutionCost = bestNeighbourCost
+      bestSolution = bestNeighbour;
+      bestSolutionCost = bestNeighbourCost;
+
+    elseif bestNontabuNeighbourCost ~= Inf
+      nextSolution = bestNontabuNeighbour;
 
     else
-      nextSolution = bestNontabuNeighbour;
+      nextSolution = solution;
 
     endif
 
@@ -40,6 +43,8 @@ function [bestSolution, bestSolutionCost] = solve()
     tabu(nextSolution != solution) = tabu(nextSolution != solution) + tenure;
 
     solution = nextSolution;
+
+    printIteration('ts', i, bestSolutionCost);
 
   endfor
 

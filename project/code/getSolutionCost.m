@@ -1,5 +1,6 @@
 function cost = getSolutionCost(solution, alpha = 0.5)
 
+    % TODO support accepting an array of solutions
     global nRobots velocities energy homes nTasks priorities skills taskTimes distances;
 
     costEnergy = 0;

@@ -21,5 +21,5 @@ $(addsuffix -reduced.out, $(ALGORITHMS)): %-reduced.out: %/solve.m octave-build
 	docker run \
 		--tty \
 		ece457a-project \
-		bash -c "octave --silent --path $* --eval \"loadReducedProblem(); solve()\"" | \
+		bash -c "octave --silent --path $* --eval \"loadReducedProblem(); solve();\"" | \
 	tee $@
