@@ -9,7 +9,7 @@ function [bestsol,  bestfun,  count] = solve()
     range = [ -1 1]; % Range/Domain
 
     % Converting to an inline function
-    f = @func; 
+    %f = @func; 
 
     % Initializing the parameters
     rand('state' , 0'); % Reset the random generator
@@ -63,6 +63,7 @@ function [bestsol,  bestfun,  count] = solve()
     subplot (2, 1, 1); plot(bestsol); title('Best estimates');
     subplot(2, 1, 2); plot(bestfun); title('Fitness');
     bestsol(MaxGen)
+end
 
 
 % All the sub functions
@@ -70,8 +71,9 @@ function [bestsol,  bestfun,  count] = solve()
 function pop = init_gen(numPopulation)
     for i = 1:numPopulation,
         solution = getRandomSolution();
-        pop(i) = solution;
+        pop(i,:) = solution;
     end
+end
 
 
 % Evolving the new generation
@@ -83,6 +85,7 @@ function evolve(j)
         pop(j,  : ) = popnew(j,  : );
         sol(j) = solnew(j);
     end
+end
 
 % Crossover operator, using the Order 1 crossover algorithm
 function [c, d] = crossover(a, b)
@@ -103,26 +106,28 @@ function [c, d] = crossover(a, b)
     d(cPointLow : cPointHigh) = a(cPointLow : cPointHigh);   
     c = finishCrossover(c, b, cPointHigh, cPointLow);
     d = finishCrossover(d, a, cPointHigh, cPointLow);
+end
 
 function halfChild = finishCrossover(halfChild, parent, cPointHigh, cPointLow)
     childIndex = cPointHigh + 1;
     parentIndex = cPointHigh + 1;
     while childIndex ~= cPointLow,
-        if any(halfChild == parent(parentIndex)),
+        if parentIndex > length(parent)
+            parentIndex = parentIndex - length(parent);
+        end
+        if childIndex > length(parent)
+            childIndex = childIndex - length(parent);
+        end
+        %If the child already has that value, just move on to the next index
+        if ~isempty(find(halfChild == parent(parentIndex))),
             parentIndex = parentIndex + 1;
         else
             halfChild(childIndex) = parent(parentIndex);
             childIndex = childIndex + 1;
-            parentIndex = parentIndex + 1;
-            if parentIndex > length(parent)
-                parentIndex = parentIndex - length(parent);
-            end
-            if childIndex > length(parent)
-                childIndex = childIndex - length(parent);
-            end
+            parentIndex = parentIndex + 1;            
         end
     end
-
+end
 
 % Mutatation operator, doing a swap mutation
 function anew = mutate(a)
@@ -131,4 +136,4 @@ function anew = mutate(a)
     k = floor(rand * nn) + 1;
     anew(j) = a(k);
     anew(k) = a(j);
-
+end
