@@ -194,10 +194,7 @@ We will consider a multi-objective cost function, $\mathit{cost}$, that accounts
 \item $\mathit{cost}_\mathit{quality}$, how well the tasks are completed relative to their priorities
 \end{enumerate}
 
-We define overall $\mathit{cost}$ as a linear combination of these cost functions, introducing a constant, $\alpha \in [0 ,1]$, which allows tuning of the relative importance of time versus quality. $\mathit{cost}_\mathit{energy}$ is left untuned as represents a hard constraint, only evaluating to $0$ or $\infty$.
-
-% TODO discuss choosing alpha to create a balanced cost function
-
+We define overall $\mathit{cost}$ as a linear combination of these cost functions, introducing two constants, $\alpha$ and $\beta$.
 $$
 \mathit{cost}(S) =
   \left( \alpha \beta \cdot \mathit{cost}_\mathit{time}(S) \right) +
@@ -205,7 +202,9 @@ $$
   \left( \mathit{cost}_\mathit{energy}(S) \right)
 $$
 
-While $\alpha$ may be tuned to account for the relative importance of skill vs time for your specific application, as a baseline we reccomend choosing a value that balances
+$\alpha$ is a tuning parameter allowing for the relative importance of quality vs time to be adjusted. $\alpha = 1$ places all emphasis on time; $\alpha = 0$ places all emphasis on quality.
+
+$\beta$ is a normalization parameter that makes $\mathit{cost}_\mathit{time}$ directly comparable to $\mathit{cost}_\mathit{quality}$. Its calculation is discussed in the next section.
 
 \subsubsection{Time}
 
@@ -235,6 +234,17 @@ $$
   \mathit{tour \, time}(r, S(r))
 $$
 
+In the overall cost function, $\beta$ is a normalization parameter that makes $\mathit{cost}_\mathit{time}$ directly comparable to $\mathit{cost}_\mathit{quality}$. Because skills and priorities are bounded $\in [0, 1]$, we are garunteed that, for some tour $o$ and some robot $r$, $\mathit{cost}_\mathit{quality}(r, o) \in [0, |o|]$. To make $\mathit{cost}_\mathit{time}$ directly comparable to $\mathit{cost}_\mathit{quality}$, we must scale $\mathit{cost}_\mathit{time}$ using $\beta$ such that it has the same bounds, $\in [0, |o|]$. Such a $\beta$ may be calculated as
+$$
+\beta =
+    \left( 2 \cdot \max \left(
+      \frac
+        { \max\limits_{r=1}^{n_\mathit{robots}} \max\limits_{t=1}^{n_\mathit{tasks}} \mathit{distance}(r, t) }
+        { \min\limits_{r=1}^{n_\mathit{robots}} \mathit{velocity}(r) },
+      \max_{r=1}^{n_\mathit{robots}} \max_{t=1}^{n_\mathit{tasks}} \mathit{task \, time}(r, t)
+    \right) \right)^{-1}
+$$
+
 \subsubsection{Energy}
 
 Each robot, $r$, may be capable of a spending different amount of time on tour. One unit energy equates to the ability to spend one additional unit time on tour.
@@ -259,17 +269,27 @@ $$
 $$
 Since a performing a high priority task with a highly skilled robot is desirable and we want to treat minimize cost, we subtract the maximum possible value, 1, from the product of the priority and skill (recall that $\mathit{skill}(r) \in [1, 0]$ and $\mathit{priority}(r, t) \in [1, 0]$).
 
-\subsection{Representation}
+% \subsection{Normalization}
 
-Homes vector
+% Note that many of the above quantities ($\mathit{priority}$, $\mathit{skill}$, $\mathit{distance}$, $\mathit{velocity}$, and $\mathit{taskTime}$) must be $\in [0 ,1]$. Raw data must be normalized to be within this rage.
 
-Priority vector
+% This is trivial for $\mathit{priority}$ and $\mathit{skill}$: divide all
+% priorities by the max priority. Skills may be treated likewise.
 
-Skill matrix
+% Normalizing the $\mathit{distance}$, $\mathit{velocity}$, and
+% $\mathit{taskTime}$, however, is a little more tricky.
 
-Distance matrix
+% Suppose you have unnormalized $\mathit{distance}'$, $\mathit{velocity}'$, and
+% $\mathit{taskTime}'$ Calculate $\beta$ as
 
-Solution representation
+
+% We can then obtain normalized $\mathit{distance}'$, $\mathit{velocity}'$, and
+% $\mathit{task \, time}'$ as
+% \begin{align*}
+% \mathit{distance} & = \mathit{distance}' \cdot \frac{1}{\beta} \\
+% \mathit{velocity} & = \mathit{velocity}' \cdot \frac{1}{\beta} \\
+% \mathit{task \, time} & = \mathit{task \, time}' \cdot \frac{1}{\beta}
+% \end{align*}
 
 \subsection{Modeling as Traveling Salesman Problem (TSP)}
 
@@ -358,9 +378,9 @@ These robots must complete three tasks:
 \begin{tabular}{llllll}
                 &                   & \textbf{robot 1} & \textbf{robot 1} & \textbf{robot 2} & \textbf{robot 2} \\
                 & \textbf{priority} & \textbf{skill}   & \textbf{time}    & \textbf{skill}   & \textbf{time} \\
-\textbf{task 1} & 0.7761            & 0.97195          & 0.25511          & 0.33896          & 0.61632       \\
-\textbf{task 2} & 0.3663            & 0.46364          & 0.88416          & 0.44659          & 0.37353       \\
-\textbf{task 3} & 0.8863            & 0.83202          & 0.61189          & 0.02791          & 0.30623
+\textbf{task 1} & 0.7761            & 0.97195          & 2.5511           & 0.33896          & 6.1632        \\
+\textbf{task 2} & 0.3663            & 0.46364          & 8.8416           & 0.44659          & 3.7353        \\
+\textbf{task 3} & 0.8863            & 0.83202          & 6.1189           & 0.02791          & 3.0623
 \end{tabular}
 \vspace{1em}
 
