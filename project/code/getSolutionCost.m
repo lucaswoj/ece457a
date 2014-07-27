@@ -1,4 +1,4 @@
-function cost = getSolutionCost(solution, alpha = 0.5)
+function cost = getSolutionCost(solution, alpha = 0.5, beta = 0.03785314677181)
 
     global nRobots velocities energy homes nTasks priorities skills taskTimes distances;
 
@@ -29,5 +29,5 @@ function cost = getSolutionCost(solution, alpha = 0.5)
         endif
     endfor
 
-    cost = costEnergy + costTime + costQuality;
+    cost = costEnergy + alpha * beta * costTime + (1 - alpha) * costQuality;
 
