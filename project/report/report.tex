@@ -237,12 +237,17 @@ $$
 In the overall cost function, $\beta$ is a normalization parameter that makes $\mathit{cost}_\mathit{time}$ directly comparable to $\mathit{cost}_\mathit{quality}$. Because skills and priorities are bounded $\in [0, 1]$, we are garunteed that, for some tour $o$ and some robot $r$, $\mathit{cost}_\mathit{quality}(r, o) \in [0, |o|]$. To make $\mathit{cost}_\mathit{time}$ directly comparable to $\mathit{cost}_\mathit{quality}$, we must scale $\mathit{cost}_\mathit{time}$ using $\beta$ such that it has the same bounds, $\in [0, |o|]$. Such a $\beta$ may be calculated as
 $$
 \beta =
-    \left( 2 \cdot \max \left(
-      \frac
-        { \max\limits_{r=1}^{n_\mathit{robots}} \max\limits_{t=1}^{n_\mathit{tasks}} \mathit{distance}(r, t) }
-        { \min\limits_{r=1}^{n_\mathit{robots}} \mathit{velocity}(r) },
-      \max_{r=1}^{n_\mathit{robots}} \max_{t=1}^{n_\mathit{tasks}} \mathit{task \, time}(r, t)
-    \right) \right)^{-1}
+    \frac
+      {n_\textit{robots}}
+      {
+        2 \cdot
+        \max \left(
+          \frac
+            { \max\limits_{r=1}^{n_\mathit{robots}} \max\limits_{t=1}^{n_\mathit{tasks}} \mathit{distance}(r, t) }
+            { \min\limits_{r=1}^{n_\mathit{robots}} \mathit{velocity}(r) },
+          \max\limits_{r=1}^{n_\mathit{robots}} \max\limits_{t=1}^{n_\mathit{tasks}} \mathit{task \, time}(r, t)
+        \right)
+      }
 $$
 
 \subsubsection{Energy}

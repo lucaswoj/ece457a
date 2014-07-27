@@ -2,12 +2,12 @@ function beta = getBeta()
 
     global nRobots velocities energy homes nTasks priorities skills taskTimes distances;
 
-    [maxDistance, _] = max(distances(:))
-    [maxVelocity, _] = min(velocities)
-    [maxTaskTime, _] = max(taskTimes(:))
+    [maxDistance, _] = max(distances(:));
+    [maxVelocity, _] = min(velocities);
+    [maxTaskTime, _] = max(taskTimes(:));
 
-    maxTravelTime = maxDistance / maxVelocity
+    maxTravelTime = maxDistance / maxVelocity;
 
-    [maxTime, _] = max([maxTravelTime, maxTaskTime])
+    [maxTime, _] = max([maxTravelTime, maxTaskTime]);
 
-    beta = 1 / 2 / maxTime
+    beta = nRobots / 2 / maxTime;
