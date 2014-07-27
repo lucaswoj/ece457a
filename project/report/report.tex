@@ -398,9 +398,9 @@ The distances between tasks and home locations are:
 \begin{center}
 \begin{tabular}{llllll}
                 & \textbf{task 1} & \textbf{task 2} & \textbf{task 3} & \textbf{home 1} & \textbf{home 2} \\
-\textbf{task 1} & 8.6779          & 3.7604          & 6.2783          & 9.3271          & 1.4957 \\
-\textbf{task 2} & 8.0510          & 3.3071          & 8.4473          & 1.3190          & 4.9917 \\
-\textbf{task 3} & 3.2972          & 8.5977          & 2.7686          & 8.5270          & 0.4359 \\
+\textbf{task 1} &   -             & 3.7604          & 6.2783          & 9.3271          & 1.4957 \\
+\textbf{task 2} & 8.0510          &   -             & 8.4473          & 1.3190          & 4.9917 \\
+\textbf{task 3} & 3.2972          & 8.5977          &   -             & 8.5270          & 0.4359 \\
 \textbf{home 1} & 2.5143          & 8.4739          & 4.6241          &    -            &    -   \\
 \textbf{home 2} & 1.2170          & 6.1530          & 3.9628          &    -            &    -
 \end{tabular}
@@ -536,7 +536,7 @@ We decrement the tenure of all elements in the tabu list. Since this solution wa
 \end{center}
 \vspace{1.5em}
 
-After two iterations, our best solution is
+After two iterations, we have
 $$S_{\text{best}} = [2, 0, 1, 3], \; \textit{cost}(S_{\text{best}}) = 2.9759$$
 
 \subsection{Simulated Annealing Algorithm} % Dane
@@ -588,69 +588,90 @@ $$S_\mathit{best} = S_2 = [ 3, 2, 1, 0 ], \; \mathit{cost}(S_\mathit{best}) = 4.
 \subsubsection{Hand Iterations}
 
 % TODO don't say "in this course", find the actual citation.
-As per the recommendations in this course, we initialize $c_1 = c_2 = 1.4944$ and $w = 0.792$.
+As per the recommendations in this course, we set the following constants
+\begin{align*}
+c_1 = c_2 & = 1.4944 \\
+w & = 0.792
+\end{align*}
 
 \subsubsubsection{Iteration 1}
 
-We choose $r_1 = 0.7426$ and $r_2 = 0.4276$ as random constants for this iteration.
+Let $r_1 = 0.7426$ and $r_2 = 0.4276$ as random constants for this iteration.
 
-We start with two randomly selected initial positions (solutions)
-% TODO use this solution notation consistently
-% TODO use 1-indexing consistently
+We start with three randomly selected initial positions (solutions)
 \begin{align*}
-S_0^1 = [1, 2, X, 3], & \qquad cost(S_0^1) = 1.0900 \\
-S_0^2 = [3, 2, X, 1], & \qquad cost(S_0^2) = 1.3300 \\
-S_0^3 = [1, X, 3, 2], & \qquad cost(S_0^3) = 1.5940
+S_{1,1} = [1, 2, 0, 3], & \; cost(S_{1,1}) = 3.1617 \\
+S_{1,2} = [3, 2, 0, 1], & \; cost(S_{1,2}) = 3.6619 \\
+S_{1,3} = [1, 0, 3, 2], & \; cost(S_{1,3}) = 3.6494
 \end{align*}
 
-Observe that $S_0^1$ has the lowest initial score. This becomes our initial $\mathit{gbest}$.
-$$\mathit{gbest} = [1, 2, X, 3]$$
+Observe that $S_{1,1}$ has the lowest initial score. This becomes our initial $S_\mathit{gbest}$.
+$$S_\mathit{gbest} = [1, 2, 0, 3], \; cost(S_\mathit{gbest}) = 3.1617$$
 
-% TODO use a more formal citation format
-% TODO set up bibtex
-For each position, $i$, we calculate $v_1^i$ using the following equation. Note that we redefine the subtraction of two positions, the addition of a velocity and a position, and the multiplication of a velocity by a scalar as defined in M. Clerc's paper, ``Discrete Particle Swarm Optimization."
-$$v_1^i = w v_0^i + c_1 r_1 (x_\mathit{lbest} - x_0^i) + c_2 r_2 (x_\mathit{gbest} - x_0^i)$$
+For this algorithm, we track not only the best solution seen globally,
+$S_\mathit{gbest}$, but the best solution seen by each particle, $i$, as
+$S_{\mathit{lbest}, i}$.
 
-The resultant velocities are \mbox{}
-% TODO standardize tabular presentation, centered, bold headings
+% TODO create a proper citation to paper
+For each position, $i$, we calculate
+$v_{1,i}$ using the following equation. Note that we redefine the subtraction of
+two positions, the addition of a velocity and a position, and the multiplication
+of a velocity by a scalar as defined in M. Clerc's paper, ``Discrete Particle
+Swarm Optimization."
+$$
+v_{j,i} =
+  w v_{j-1, i} +
+  c_1 r_1 (S_{\mathit{lbest}, i} - S_{j-1, i}) +
+  c_2 r_2 (S_\mathit{gbest} - S_{j-1, i})
+$$
+
 \begin{center}
 \begin{tabular}{lllllll}
-        & position     & cost   & lbest position & lbest cost & $v_0$  & $v_1$    \\
-$S_0^1$ & $[1, 2, X, 3]$ & $1.0900$ & $[1, 2, X, 3]$   & $1.0900$     & $[]$     & $[]      $ \\
-$S_0^2$ & $[3, 2, X, 1]$ & $1.3300$ & $[3, 2, X, 1]$   & $1.0900$     & $[]$     & $[(1, 4)]$ \\
-$S_0^2$ & $[1, X, 3, 2]$ & $1.7100$ & $[1, X, 3, 2]$   & $1.7100$     & $[]$     & $[(2, 4)]$ \\
+          & \textbf{position} & \textbf{cost} & \textbf{lbest position} & \textbf{lbest cost} & $v_1$ & $v_2$            \\
+$S_{1,1}$ & $[1, 2, 0, 3]$    & $3.1617$      & $[1, 2, 0, 3]$          & $3.1617$            & $[]$  & $[]      $ \\
+$S_{1,2}$ & $[3, 2, 0, 1]$    & $3.6619$      & $[3, 2, 0, 1]$          & $3.6619$            & $[]$  & $[(1, 4)]$ \\
+$S_{1,3}$ & $[1, 0, 3, 2]$    & $3.6494$      & $[1, 0, 3, 2]$          & $3.6494$            & $[]$  & $[(2, 4)]$ \\
 \end{tabular}
 \end{center}
+\vspace{1.5em}
 
 \subsection{Iteration 2}
 
-We choose $r_1 = 0.2351$ and $r_2 = 0.8262$ as random constants for this iteration.
+We choose $r_1 = 0.2351$ and $r_2 = 0.8262$ as random constants for this
+iteration.
 
-Applying the velocities calculated in iteration 1 to the positions in iteration 1, we obtain the positions for iteration 2. We calcuate the velocity of each using the same equation, generalized to calculate the velocity for solution $j$
-$$v_j^i = w v_{j-1}^i + c_1 r_1 (x_\mathit{lbest} - x_{j-1}^i) + c_2 r_2 (x_\mathit{gbest} - x_{j-1}^i)$$
-
-The resultant velocities are \mbox{}
-% TODO calculate these
+Applying the $v_2$ velocities calculated in iteration 1 to the positions in
+iteration 1, we obtain the positions for iteration 2 and calculate new
+velocities accordingly
 \begin{center}
 \begin{tabular}{lllllll}
-        & position       & cost     & lbest position   & lbest cost   & $v_1$      & $v_2$    \\
-$S_1^1$ & $[1, 2, X, 3]$ & $1.0900$ & $[1, 2, X, 3]$   & $1.0900$     & $[]      $ & ? \\
-$S_1^2$ & $[1, 2, X, 3]$ & $1.0900$ & $[1, 2, X, 3]$   & $1.0900$     & $[(1, 4)]$ & ? \\
-$S_1^2$ & $[1, 3, X, 2]$ & $1.2800$ & $[1, X, 3, 2]$   & $1.2800$     & $[(2, 4)]$ & ? \\
+          & \textbf{position} & \textbf{cost} & \textbf{lbest position} & \textbf{lbest cost} & $v_1$      & $v_2$            \\
+$S_{2,1}$ & $[1, 2, 0, 3]$    & $3.1617$      & $[1, 2, 0, 3]$          & $3.1617$            & $[]      $ & $[]$             \\
+$S_{2,2}$ & $[1, 2, 0, 3]$    & $3.1617$      & $[1, 2, 0, 3]$          & $3.1617$            & $[(1, 4)]$ & $[]$             \\
+$S_{2,3}$ & $[1, 2, 3, 0]$    & $4.3288$      & $[1, 0, 3, 2]$          & $3.6494$            & $[(2, 4)]$ & $[(3,4), (3,4)]$ \\
 \end{tabular}
 \end{center}
+\vspace{1.5em}
 
-Observe that $S_0^1$ has the still has lowest global score. Our $\mathit{gbest}$ is unchanged.
+After two iterations, we have
+$$S_\mathit{gbest} = [1, 2, 0, 3], \; cost(S_\mathit{gbest}) = 3.1617$$
 
 \subsection{Ant Colony Optimization Algorithm} % Sandy
 
-To model this problem with ACO, we will first transform it into a single-agent TSP problem, and subsequently carry out ACS on the resulting graph.
+To model this problem with ACO, we will first transform it into a single-agent
+TSP problem, and subsequently carry out ACS on the resulting graph.
 
-For the purposes of ACS, the key insight for this transformation is a subtle modification of the graph during search-time. Define the distance between any two $depot$s to be 0, and, at first, connect each task node only to $depot_1$.
+For the purposes of ACS, the key insight for this transformation is a subtle
+modification of the graph during search-time. Define the distance between any
+two $depot$s to be 0, and, at first, connect each task node only to $depot_1$.
 
-Upon visiting $depot_1$, ``teleport'' the ant to $depot_2$, connecting it to all of the task nodes, and disconnecting $depot_1$. Upon doing this, update an internal state variable $robot_{current}$, whose purpose it is to correctly evaluate the $cost()$ function.
+Upon visiting $depot_1$, ``teleport'' the ant to $depot_2$, connecting it to all
+of the task nodes, and disconnecting $depot_1$. Upon doing this, update an
+internal state variable $robot_{current}$, whose purpose it is to correctly
+evaluate the $cost()$ function.
 
-The first two iterations of performing ACS on this transformation on the sample problem are fleshed out below:
+The first two iterations of performing ACS on this transformation on the sample
+problem are fleshed out below:
 
 \subsubsection{Iteration 1}
 
