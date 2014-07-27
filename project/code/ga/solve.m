@@ -19,9 +19,6 @@ function [bestsol,  bestfun,  count] = solve()
     nsite = 2;    % number of mutation sites
     pc = 0.95;    % Crossover probability
     pm = 0.05;    % Mutation probability
-    genesize = 8;
-    nsbit = genesize * n;   % String length (bits)
-    totaln = n;
 
     % Generating the initial population
     popnew = init_gen(popsize);
@@ -73,15 +70,15 @@ function [bestsol,  bestfun,  count] = solve()
 function pop = init_gen(numPopulation)
     for i = 1:numPopulation,
         solution = getRandomSolution();
-        pop[i] = solution;
+        pop(i) = solution;
     end
 
 
 % Evolving the new generation
 function evolve(j)
-    global solnew popnew fitness fitold pop sol f;
+    global solnew popnew fitness fitold pop sol;
     solnew(j, :) = popnew(j,  : );
-    fitness(j) = f(solnew(j, :));
+    fitness(j) = getSolutionCost(solnew(j, :));
     if fitness(j) > fitold(j), 
         pop(j,  : ) = popnew(j,  : );
         sol(j) = solnew(j);
@@ -107,16 +104,16 @@ function [c, d] = crossover(a, b)
     c = finishCrossover(c, b, cPointHigh, cPointLow);
     d = finishCrossover(d, a, cPointHigh, cPointLow);
 
-function child = finishCrossover(halfChild, parent, cPointHigh, cPointLow)
+function halfChild = finishCrossover(halfChild, parent, cPointHigh, cPointLow)
     childIndex = cPointHigh + 1;
     parentIndex = cPointHigh + 1;
-    while childIndex <> cPointLow,
+    while childIndex ~= cPointLow,
         if any(halfChild == parent(parentIndex)),
-            parentIndex++;
+            parentIndex = parentIndex + 1;
         else
             halfChild(childIndex) = parent(parentIndex);
-            childIndex++;
-            parentIndex++;
+            childIndex = childIndex + 1;
+            parentIndex = parentIndex + 1;
             if parentIndex > length(parent)
                 parentIndex = parentIndex - length(parent);
             end
