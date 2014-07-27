@@ -414,14 +414,6 @@ We choose $\beta = 0.07571$
 
 \section{Proposed Solution}
 
-As an initial solution, we will use
-$$S_0 = [0, 1, \mathit{sentinel}, 2 ]$$
-Which specifies the paths
-\begin{align*}
-\mathit{robot}_0: & \mathit{home}_0 \rightarrow \mathit{task}_0 \rightarrow \mathit{task}_1 \rightarrow  \mathit{home}_0
-\mathit{robot}_1: & \mathit{home}_1 \rightarrow \mathit{task}_2 \rightarrow \mathit{home}_1
-\end{align*}
-
 % Once the problem is formulated and modeled, the five main algorithms studied
 % in this course (TA, SA, GA, PSO and ACO) must be applied to generate a “good”
 % solution for the problem. The solution may be optimal or suboptimal.
@@ -454,69 +446,96 @@ Which specifies the paths
 % studied algorithms should be implemented from scratch in Matlab / Octave.
 % Using toolboxes are NOT allowed.
 
+In this section, we will consider five metahuristics in the context of complex task allocation:
+\begin{itemize}
+\item taboo search algorithm
+\item simulated annealing algorithm
+\item genetic algorithm
+\item particle swarm optimization algorithm
+\item ant colony optimization algorithm
+\end{itemize}
+
+% TODO will we also discuss perf in this section?
+In the following subsections, we will, for each metaheuristic, provide a brief
+high level description of the algorithm, show and explain two ``hand iterations"
+on the reduced problem, and provide a Matlab implementation.
+
+All hand iterations will use $\alpha = 0.5$, treating time and quality costs
+equally, and $\beta = 0.06979$, calculated as specified in section 3.2.1. Where applicable
+we will use the ``randomly" selected initial solution, $S_0 = [ 1, 2, 0, 3 ]$.
+
 \subsection{Tabu Search Algorithm} % Lucas
+
+% TODO high level overview.
 
 \subsubsection{Hand Iterations}
 
-We will use a tabu tenure of 1.
+These hand iterations will use a tabu tenure of 1.
 
 \subsubsubsection{Iteration 1}
 
-We begin with our randomly selected initial solution
-$$S_0 = [ 0, 1, X, 2 ]$$
+We begin with our randomly selected initial solution, and initial global best
+$$S_0 = S_\textit{best} = [ 1, 2, 0, 3 ]$$
 
-Next, we find all neighbouring solutions and evaluate the cost of each. No solutions are tabu yet because our tabu list is empty
-
+Next, we find all neighboring solutions and evaluate the cost of each. No solutions are tabu yet because our tabu list is empty
+\begin{center}
 \begin{tabular}{lllll}
 & \textbf{swap}   & \textbf{solution}    & \textbf{tabu?} & \textbf{cost}  \\
-
-$S_{1,1}$ & $1,2$ & $[2, 1, 0, 3]$ & no & 1.0810   \\
-$S_{1,2}$ & $1,3$ & $[0, 2, 1, 3]$ & no & 0.55200  \\
-$S_{1,3}$ & $1,4$ & $[3, 2, 0, 1]$ & no & 1.3390   \\
-$S_{1,4}$ & $2,3$ & $[1, 0, 2, 3]$ & no & 1.5940   \\
-$S_{1,5}$ & $2,4$ & $[1, 3, 0, 2]$ & no & 1.2800   \\
-$S_{1,6}$ & $3,4$ & $[1, 2, 3, 0]$ & no & 0.73900  \\
+$S_{1,1}$ & $1,2$ & $[2, 1, 0, 3]$ & no & $3.8583$ \\
+$S_{1,2}$ & $1,3$ & $[0, 2, 1, 3]$ & no & $\infty$ \\
+$S_{1,3}$ & $1,4$ & $[3, 2, 0, 1]$ & no & $3.6619$ \\
+$S_{1,4}$ & $2,3$ & $[1, 0, 2, 3]$ & no & $3.5146$ \\
+$S_{1,5}$ & $2,4$ & $[1, 3, 0, 2]$ & no & $3.7910$ \\
+$S_{1,6}$ & $3,4$ & $[1, 2, 3, 0]$ & no & $4.3288$ \\
 \end{tabular}
+\end{center}
+\vspace{1.5em}
 
-Observe that $S_{1,6}$ has the lowest cost. Therefore the best solution, $S_{1, \text{best}}$.
+Observe that $S_{1,4}$ has the lowest cost, is not tabu, and improves upon our $S_\textit{best}$. Therefore, we let
+$$S_{\textit{best}} = S_{1, \textit{best}} = S_{1,4} = [1, 0, 2, 3]$$
 
-Since this solution was created by swapping elements 3 and 4 in $S_0$, we mark those in our tabu list
-
+Since this solution was created by swapping elements 2 and 3 in $S_0$, we mark those in our tabu list with a tenure of 1
+\begin{center}
 \begin{tabular}{lllll}
-position & 1 & 2 & 3 & 4 \\
-tenure   & 0 & 0 & 1 & 1
+\textbf{position} & 1 & 2 & 3 & 4 \\
+\textbf{tenure}   & 0 & 1 & 1 & 0
 \end{tabular}
+\end{center}
 \vspace{1.5em}
 
 \subsubsubsection{Iteration 2}
 
-We begin with $$S_{1, \text{best}} = [0, 1, 2, X]$$
+We begin with $$S_{1, \text{best}} = [1, 0, 2, 3]$$
 
-Next, we find all neighbouring solutions and evaluate the cost of each.
+Next, we find all neighboring solutions and evaluate the cost of each.
 
+\begin{center}
 \begin{tabular}{lllll}
 & \textbf{swap}   & \textbf{solution}    & \textbf{tabu?} & \textbf{cost}  \\
-
-$S_{2,1}$ & $1,2$ & $[2, 1, 3, 0]$ & no  & 0.39500 \\
-$S_{2,2}$ & $1,3$ & $[3, 2, 1, 0]$ & yes & 0.86000 \\
-$S_{2,3}$ & $1,4$ & $[0, 2, 3, 1]$ & yes & 0.95200 \\
-$S_{2,4}$ & $2,3$ & $[1, 3, 2, 0]$ & yes & 1       \\
-$S_{2,5}$ & $2,4$ & $[1, 0, 3, 2]$ & yes & 1.7100  \\
-$S_{2,6}$ & $3,4$ & $[1, 2, 0, 3]$ & yes & 1.0900  \\
+$S_{2,1}$ & $1,2$ & $[0, 1, 2, 3]$ & yes & 3.4210 \\
+$S_{2,2}$ & $1,3$ & $[2, 0, 1, 3]$ & yes & 2.9759 \\
+$S_{2,3}$ & $1,4$ & $[3, 0, 2, 1]$ & no  & 3.7690 \\
+$S_{2,4}$ & $2,3$ & $[1, 2, 0, 3]$ & yes & 3.1617 \\
+$S_{2,5}$ & $2,4$ & $[1, 3, 2, 0]$ & yes & 4.1556 \\
+$S_{2,6}$ & $3,4$ & $[1, 0, 3, 2]$ & yes & 3.6494 \\
 \end{tabular}
+\end{center}
+\vspace{1.5em}
 
-Observe that $S_{2,1}$ has the lowest cost and is not tabu. Therefore it is the best solution, $S_{2, \text{best}}$.
+Observe that $S_{2,2}$ has the lowest cost. Although this solution is tabu, it is has a lower cost than $S_\textit{best}$, so we allow it to become $S_\textit{best}$ and $S_{2, \textit{best}}$.
 
-Since this solution was created by swapping elements 1 and 2, we mark those as tabu with a starting tenure of 1. We also decrement the tenure of all other elements in the tabu list.
+We decrement the tenure of all elements in the tabu list. Since this solution was created by swapping elements 1 and 3 in $S_{1, \textit{best}}$, we mark those in our tabu list with a tenure of 1
 
+\begin{center}
 \begin{tabular}{lllll}
-position & 1 & 2 & 3 & 4 \\
-tenure   & 1 & 1 & 0 & 0
+\textbf{position} & 1 & 2 & 3 & 4 \\
+\textbf{tenure}   & 1 & 0 & 1 & 0
 \end{tabular}
+\end{center}
 \vspace{1.5em}
 
 After two iterations, our best solution is
-$$S_{\text{best}} = S_{2, \text{best}} = S_{2,1}$$
+$$S_{\text{best}} = [2, 0, 1, 3], \textit{cost}(S_{\text{best}}) = 2.9759$$
 
 \subsection{Simulated Annealing Algorithm} % Dane
 
