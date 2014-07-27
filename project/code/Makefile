@@ -1,5 +1,4 @@
 octave-build: Dockerfile *.m **/*.m
-	boot2docker up
 	docker build -t ece457a-project .
 
 octave-bash: octave-build
