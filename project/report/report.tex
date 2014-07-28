@@ -450,7 +450,7 @@ The distances between tasks and home locations are:
 
 In this section, we will consider five metahuristics in the context of complex task allocation:
 \begin{itemize}
-\item taboo search algorithm
+\item tabu search algorithm
 \item simulated annealing algorithm
 \item genetic algorithm
 \item particle swarm optimization algorithm
@@ -539,21 +539,25 @@ $$S_{\text{best}} = [2, 0, 1, 3], \; \textit{cost}(S_{\text{best}}) = 2.9759$$
 
 \subsection{Simulated Annealing Algorithm} % Dane
 
+The simulated annealing metaheuristic is based on the physical annealing process, used to alter the properties of materials through controlled cooling.\cite{Kirkpatrick} A cost function specific to the problem is used to represent the ``energy'' of a particular solution. The minimum energy state represents the optimal solution. Controlled cooling is used to find a near-optimal solution, similar to how particles settle into a stable, low-energy configuration in physical annealing. Since there is no concept of temperature in general optimization problems, an artificial temperature value $T$ is used to represent the temperature of the system. 
+
+The algorithm begins with a random solution. At each iteration, a random solution is selected from the current solution's set of neighbours. The probability of selecting the new random solution over the old solution is $\mathit{P}(\Delta{}E) = e^{-\frac{\Delta{}E}{k_{B}T}}$, based on the Boltzmann probability factor.\cite{Kirkpatrick} The probability function ensures that any improving solution is accepted, and that there is a possiblity to accept any non-improving solution when $T>0$. When the temperature is high, there is a high probability of selecting non-improving solutions, which decreases as the temperature decreases. As the algorithm reaches the minimum temperature, it should converge to an optimal or near-optimal solution.
+
 \subsubsection{Hand Iterations}
 
-In these hand iterations, a geometric cooling schedule will be used with an initial temperature $T_0 = 3$ and cooling factor $\alpha_\textit{cooling} = 0.8$
-$$T_i = T_0 \cdot \left( \alpha_\textit{cooling} \right)^{i - 1}$$
+In these hand iterations, a geometric cooling schedule will be used with an initial temperature $T_0 = 3$ and cooling factor $\alpha_\mathit{cooling} = 0.8$
+$$T_i = T_0 \cdot \left( \alpha_\mathit{cooling} \right)^{i - 1}$$
 
 \subsubsubsection{Iteration 1}
 
 We begin with our randomly selected initial solution
-$$S_\textit{best} = S_0 = [ 1, 2, 0, 3 ], \; \mathit{cost}(S_0) = 3.1617$$
+$$S_\mathit{best} = S_0 = [ 1, 2, 0, 3 ], \; \mathit{cost}(S_0) = 3.1617$$
 and swap two randomly selected elements (4 and 3) to create a neighboring
 solution, $S_1$
 $$S_1 = [ 1, 2, 3, 0 ], \; \mathit{cost}(S_1) = 4.3288$$
 
-To decide whether or not $S_1$ should become $S_\textit{best}$, we calculate its
-selection probability, $P_1$, as % TODO cite this formula?
+To decide whether or not $S_1$ should become $S_\mathit{next}$, we calculate its
+selection probability, $P_1$, as
 \begin{align*}
 P_i & =
 \begin{cases}
@@ -563,21 +567,24 @@ P_i & =
 P_1 & = 0.6777
 \end{align*}
 
-$S_1$ becomes $S_\mathit{best}$ if and only if a randomly selected number,
+$S_1$ becomes $S_\mathit{next}$ if and only if a randomly selected number,
 $r \in [0, 1]$, makes the inequality $r < P_1$ true.
 
 Suppose we choose $r = 0.3597$. Because $0.3597 < 0.6777$
-$$S_\mathit{best} = S_1 = [ 1, 2, 3, 0 ], \; \mathit{cost}(S_\mathit{best}) = 4.3288$$
+$$S_\mathit{next} = S_1 = [ 1, 2, 3, 0 ], \; \mathit{cost}(S_\mathit{next}) = 4.3288$$
 
 \subsubsubsection{Iteration 2}
 
-We begin by swapping two randomly selected elements (1 and 3) in $S_\mathit{best}$
+We begin by swapping two randomly selected elements (1 and 3) in $S_\mathit{next}$
 $$S_2 = [ 3, 2, 1, 0 ], \; \mathit{cost}(S_2) = 4.6092$$
 
 We calculate this solution's selection probability to be $P_2 = 0.8897$
 
 Suppose we choose $r = 0.6329$. Because $0.6329 < 0.8897$ is true
-$$S_\mathit{best} = S_2 = [ 3, 2, 1, 0 ], \; \mathit{cost}(S_\mathit{best}) = 4.6092$$
+$$S_\mathit{next} = S_2 = [ 3, 2, 1, 0 ], \; \mathit{cost}(S_\mathit{next}) = 4.6092$$
+
+The best solution found so far is 
+$$S_\mathit{best} = [ 1, 2, 0, 3 ], \; \mathit{cost}(S_\mathit{best}) = 3.1617$$
 
 \subsection{Genetic Algorithm} % Austin
 
