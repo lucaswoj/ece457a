@@ -51,10 +51,10 @@
 \section*{Summary}
 % The summary should be a brief version of the full report It should give the
 % reader an accurate overview Be brief, but be specific.
-This report is an analysis of the efficacy of different meta-heuristic algorithms in solving a complex task allocation problem.
+This report is an analysis of the efficacy of different metaheuristic algorithms in solving a complex task allocation problem.
 Complex task allocation is the assignment of complex and simple tasks to a group of robots. This report is taking an optimization-based approach to solve a multi-task robot, single-robot task, instantaneous assignment version of the multirobot task assignment problem that adopts a decompose-then allocate strategy to handle complex tasks.
 
-Five meta-heuristic algorithms were tested for this report. They are: Tabu Search, Simulated Annealing, Genetic Algorithms, Particle Swarm Optimization, and Ant Colony Optimization.
+Five metaheuristic algorithms were tested for this report. They are: Tabu Search, Simulated Annealing, Genetic Algorithms, Particle Swarm Optimization, and Ant Colony Optimization.
 
 These algorithms will be run on a dataset that INSERT DESCRIPTION OF THE DATASET HERE.
 
@@ -66,21 +66,26 @@ In conclusions, this report recommends the use of ALGORITHM.
 \section{Introduction}
 % Why is the problem important
 \subsection{Problem Context}
+
 As the digital revolution leaves the second digital wave behind, and embraces the robotics wave\cite{Talk}, it is becoming increasingly important to prepare for the multitude of situations where robots will be available to complete various tasks.
 
-In particular, Multirobot Systems (MRS) are becoming a high interest subject. An MRS is a group of robots that are designed with the intent of performing a collective behavior.\\
-There are numerous advantages associated with a group of simple robots over a single multi-purpose robot. For example, it is simpler to design a robust single purpose robot than a robot with multiple abilities and configurations. Simple designs tend to be more robust and lead to more reliable robots. Another source of reliability is that a group of robots can accommodate some degree of redundancy in composition.  In addition, many complex tasks are distributed over a large area and would be slow to accomplish with a single-agent system. Examples of problems that can be solved by MRSs are search and rescue in burning building, surveillance and space construction.\\
+In particular, Multirobot Systems (MRS) are becoming a high interest subject. An MRS is a group of robots that are designed with the intent of performing a collective behavior.
+
+There are numerous advantages associated with a group of simple robots over a single multi-purpose robot. For example, it is simpler to design a robust single purpose robot than a robot with multiple abilities and configurations. Simple designs tend to be more robust and lead to more reliable robots. Another source of reliability is that a group of robots can accommodate some degree of redundancy in composition.  In addition, many complex tasks are distributed over a large area and would be slow to accomplish with a single-agent system. Examples of problems that can be solved by MRSs are search and rescue in burning building, surveillance and space construction.
 
 % What is the problem
 \subsection{Multirobot Task Allocation}
-This report is specifically considering the problem of Complex Task Allocation for an MRS where the tasks are related to surveillance. The problem statement reads as follows:\\
+
+This report is specifically considering the problem of Complex Task Allocation for an MRS where the tasks are related to surveillance. The problem statement reads as follows:\mbox{}
 \blockquote{In mobile surveillance systems, complex task allocation addresses how to optimally assign a set of surveillance tasks to a set of mobile sensing agents to maximize overall expected performance, taking into account the priorities of the tasks and the skill ratings of the mobile robots.}
 This problem is important to solve because areas under surveillance usually possess some degree of danger. Being able to replace human sentinels with robots has the potential to save the lives of the surveyors and of nearby civilians by providing advanced warning of incoming threats. The task allocation problem within the broader scope of surveillance is important because an optimal solution represents an effective assignment of robots to tasks and improves the overall efficacy of the MRS. Colloquially speaking, this report answers the question of ``which robot should perform which task?''\cite{Badreldin}
 
 
 % Enumeration of report objectives and report structure
 \subsection{Report Structure and Direction}
-The purpose of this report is to categorize which meta-heuristic optimization techniques are effective within a given scenario. For example, which algorithms are better-suited for online analysis and which for offline analysis.
+
+The purpose of this report is to categorize which metaheuristic optimization techniques are effective within a given scenario. For example, which algorithms are better-suited for online analysis and which for offline analysis.
+
 The report will continue with a review of existing literature and identifying the commonalities and differences with the solution presented in this report. Then we will present a problem formulation and model from which we will implement our algorithms. The paper then describes how the well-known Traveling Salesman Problem can be adjusted for use with Complex Task Allocation. From there, the report identifies the criteria upon which each meta heuristic technique's performance is evaluated. Then the results of running each technique are then presented against these performance criteria. From these results, conclusions are drawn and recommendations for future work are suggested.
 
 
@@ -103,7 +108,7 @@ The market-based approach is inspired from the development of market economies i
 Each robot is made analogous to an individual seeking profit within a market and as a result, effecting a redistribution of resources within the environment.
 The optimization-based approach is rooted in mathematics rather than socio-economic observation.
 The thrust is to identify an equation that captures the constraints contained in a problem and to find a solution that either maximizes the profit or minimizes the cost of a given solution.
-The goal of this report is to perform a comparative study of meta-heuristic techniques and so this directs the attention of this paper onto an optimization-based approach for solving MRTA. Though Khamis et al.\cite{Khamis} propose a method for using a market-based approach to generate candidate solutions that are then fed into a meta-heuristic algorithm.\\
+The goal of this report is to perform a comparative study of metaheuristic techniques and so this directs the attention of this paper onto an optimization-based approach for solving MRTA. Though Khamis et al.\cite{Khamis} propose a method for using a market-based approach to generate candidate solutions that are then fed into a metaheuristic algorithm.\\
 
 In \textit{Complex Task Allocation in Mobile Surveillance Systems}\cite{Khamis}, Khamis et al. describe a taxonomy for classifying MRTA problems examined in literature. From their taxonomy, the MRTA problem examined by this report has the following classifications:
 
@@ -468,7 +473,7 @@ we will use the ``randomly" selected initial solution, $S_0 = [ 1, 2, 0, 3 ]$.
 
 \subsection{Tabu Search Algorithm} % Lucas
 
-\subsubsection{Description} 
+\subsubsection{Description}
 
 Tabu Search Algorithm is one of the easiest algorithms to implement because it modifies only one solution and contains only one improvement over Hill Climbing and that is the additon of a tabu list. The tabu list contains all of the recent moves taken by the algorithm which forces the algorithm to diversify if the algorithm is stuck in a local minima.
 
@@ -594,9 +599,9 @@ $$S_\mathit{best} = [ 1, 2, 0, 3 ], \; \mathit{cost}(S_\mathit{best}) = 3.1617$$
 
 \subsubsection{Description}
 
-Genetic algorithms cover a large group of similar algorithms, so for our comparitive study we needed to specify an instance of Genetic Algorithm that solves our problem appropriately. Because this is a permutation problem we cannot encode our solution as a binary string, so we have to use a version of Genetic Algorithm that can handle permutations. Our solution representation is the same as described in the Problem Formulation section with each individual in a generation representing a particular solution. 
+Genetic algorithms cover a large group of similar algorithms, so for our comparitive study we needed to specify an instance of Genetic Algorithm that solves our problem appropriately. Because this is a permutation problem we cannot encode our solution as a binary string, so we have to use a version of Genetic Algorithm that can handle permutations. Our solution representation is the same as described in the Problem Formulation section with each individual in a generation representing a particular solution.
 
-To initialize our solver we will choose a random starting solution for each individual and then start the iterations. Each iteration will consist of crossover, mutation and then survivor selection. Each of these steps must be customized for the problem set, and there are multiple methods between which we had to choose. 
+To initialize our solver we will choose a random starting solution for each individual and then start the iterations. Each iteration will consist of crossover, mutation and then survivor selection. Each of these steps must be customized for the problem set, and there are multiple methods between which we had to choose.
 
 For crossover we chose to use the Order 1 permutation as described in \cite{Eiben} which is a crossover algorithm that attempts to preserve the relative order of elements in a solution. It chooses a random subsection from one parent, copies those values into the first child and then fills the rest of the values in the same order that they appear in the second parent. This process is then mirrored for the second child so two children are produced from this crossover.
 
@@ -608,7 +613,7 @@ With our algorithm specified fully we can now do iterations by hand to see the r
 
 \subsubsection{Hand Iterations}
 
-The genetic algorithm meta-heuristic has many different parameters that can be tuned and changed, but for the hand iteration we will choose values that show the different operations of the algorithm. We will use a generation size of 4 and choose $p_\mathit{crossover}=0.75$, and $p_\mathit{mutation}=0.25$ because $p_\mathit{mutation}$ must be between $$\frac{1}{\text{Population Size}} <= p_\mathit{mutation} < \frac{1}{\text{Chromosome Length}}$$ For every child, a random number, $r \in (0,1)$, will be generated. If $0<r\leq0.25$ then mutation will be applied, else if $0.25<r<1$ then crossover will be applied.
+The genetic algorithm metaheuristic has many different parameters that can be tuned and changed, but for the hand iteration we will choose values that show the different operations of the algorithm. We will use a generation size of 4 and choose $p_\mathit{crossover}=0.75$, and $p_\mathit{mutation}=0.25$ because $p_\mathit{mutation}$ must be between $$\frac{1}{\text{Population Size}} <= p_\mathit{mutation} < \frac{1}{\text{Chromosome Length}}$$ For every child, a random number, $r \in (0,1)$, will be generated. If $0<r\leq0.25$ then mutation will be applied, else if $0.25<r<1$ then crossover will be applied.
 
 This is a permutation problem, so we will use the Order 1 crossover algorithm. We also choose the mutation operator to be a swap operation that swaps two elements in a solution.
 
@@ -680,7 +685,7 @@ S_{2,4} = [3, 2, 0, 1], & \qquad cost(S_{2,4}) = 3.6619
 \end{align*}
 
 \subsection{Particle Swarm Optimization Algorithm} % Ariel
-The particle Swarm Optimization (PSO) meta-heuristic is based on the behavior of swarm animals such as fish and birds.
+The particle Swarm Optimization (PSO) metaheuristic is based on the behavior of swarm animals such as fish and birds.
 Each particle represents a candidate solution and ``flies'' towards the optimal solution using information from its
 past experience and the swarm's experience. Gradually, the particles will converge on the ideal solution.
 The algorithm begins by generating an initial population of particles each of whom have a velocity of 0.
@@ -1028,7 +1033,7 @@ $$
 
 % Establish a set of evaluation metrics and run some experiments with different
 % values of algorithm parameters to quantitatively and qualitatively assess the
-% performance of the developed solution using different meta-heuristic
+% performance of the developed solution using different metaheuristic
 % optimization techniques. Students must identify the pros and cons of each
 % technique and assess the quality of work as well as its fit with project
 % objectives.
@@ -1050,7 +1055,7 @@ $$
 % quantitatively and qualitatively assess the performance of the developed
 % solution Identify the pros and cons of each method
 
-Each meta-heuristic will be evaluated quantitatively and qualitatively.
+Each metaheuristic will be evaluated quantitatively and qualitatively.
 
 The following instances of MRTA will be studied:
 \begin{enumerate}
@@ -1059,7 +1064,7 @@ The following instances of MRTA will be studied:
 \item \textbf{Large scale}: Fifty tasks and fifteen robots
 \end{enumerate}
 
-The different scenarios will allow for qualitative analysis on the scalability of meta-heuristic techniques and where they are best applied. Within each scenario, each technique can be compared using some quantitative metrics. Badreldin et al. \cite{Badreldin} identify two suitable measures: the computational time taken to find the best solution and the optimality of the best solution obtained by a meta-heuristic technique.
+The different scenarios will allow for qualitative analysis on the scalability of metaheuristic techniques and where they are best applied. Within each scenario, each technique can be compared using some quantitative metrics. Badreldin et al. \cite{Badreldin} identify two suitable measures: the computational time taken to find the best solution and the optimality of the best solution obtained by a metaheuristic technique.
 
 \subsection{Small Scale}
 
@@ -1077,7 +1082,7 @@ The different scenarios will allow for qualitative analysis on the scalability o
 % if appropriate, but avoid making your report into a check-list or a series of
 % encrypted notes.
 
-This paper has presented a comparative study of meta-heuristic algorithms used within an optimization based approach to solving the MRTA problem. Five meta-heuristics were considered: Tabu Search, Simulated Annealing, Genetic Algorithms, Particle Swarm optimization, and Ant Colony Optimization. RECAP RESULTS OF EXPERIMENTS.
+This paper has presented a comparative study of metaheuristic algorithms used within an optimization based approach to solving the MRTA problem. Five metaheuristics were considered: Tabu Search, Simulated Annealing, Genetic Algorithms, Particle Swarm optimization, and Ant Colony Optimization. RECAP RESULTS OF EXPERIMENTS.
 
 \printbibliography
 
