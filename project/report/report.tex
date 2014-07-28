@@ -186,8 +186,41 @@ $$
 S(r) = \{ \mathit{home}(r), t_1, t_2, ..., t_n, \mathit{home}(r) \}
 $$
 
-For simplicity, we represent homes as tasks.
+\subsubsection{Canonical Solution Representations}
+The overall solution $S$ has a canonical vector representation as an n-tuple, consisting of a permutation of the set:
+$$
+\{1, 2, \dots n_{tasks}\} \cup \{0\}^{n_{robots}-1}
+$$
+
+This tuple is read from left to right, and describes the concatenation of each $robot_i$'s path, using 0 to mark the end of a path. This 0 is henceforth known as a sentinel value. This representation \textbf{does not} include $robot_i$ starting at or returning to $\mathit{home}(i)$, since this information is redundant by the problem definition.
+
+To help cement this important representation in the reader's mind, consider the following canonical solution vector:
+$$
+\{3,4,2,0,0,1,5\}
+$$ 
+which should be interpreted as
+\begin{itemize}
+\item $S(1) = \{ home_1, 3, 4, 2, home_1 \}$
+\item $S(2) = \{ home_2, home_2 \}$
+\item $S(3) = \{ home_3, 1, 5, home_3 \}$
+\end{itemize}
+
+\subsubsection{Data Homogeneity}
+
+For simplicity and homogeneity of internal data models, we represent homes as tasks:
 $$\mathit{home}(r) = n_\mathit{tasks} + r$$
+
+Subject to the following constraints:
+$$
+\mathit{task\,time}(\mathit{home}(i)) = 0 \qquad \forall i \in \mathit{robots}
+$$
+$$
+\mathit{priority}(\mathit{home}(i)) = 0 \qquad \forall i \in \mathit{robots}
+$$
+$$
+\mathit{distance}(\mathit{home}(i), \mathit{home}(j)) = 0 \qquad \forall i, j \in \mathit{robots}
+$$
+
 
 \subsubsection{Overall Cost}
 

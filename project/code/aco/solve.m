@@ -1,15 +1,16 @@
 function bestSolution = solve(iterations = 10)
     global homes energy homeConst;
 
-    if iterations == 1000
-        iterations = 10
-    end
+    iterations = 1000;
 
     % construct the pheromone list
     numNodes = homes(end) - 1;
     numTasks = homes(1) - 1;
 
     tau = ones(numNodes + 1);
+
+    bestAge = 0;
+    maxAge = 10;
 
     exploitConst = 0.41;
     exploreConst = 1.15;
@@ -25,6 +26,15 @@ function bestSolution = solve(iterations = 10)
     ants = cell(numAnts, 2);
 
     for i = 1 : iterations
+        bestAge
+
+        bestAge = bestAge + 1;
+        if bestAge > maxAge
+            bestSolution
+            bestDist
+            return
+        end
+
         for ant = 1 : numAnts
             robot = 1;
             currentNode = homes(robot);
@@ -109,6 +119,7 @@ function bestSolution = solve(iterations = 10)
             if cost < bestDist
                 bestSolution = solution;
                 bestDist = cost;
+                bestAge = 0;
             end
 
             augmentedPath = [ ];
@@ -141,6 +152,7 @@ function bestSolution = solve(iterations = 10)
         end
     end
 
+    bestSolution
     bestDist
 end
 
