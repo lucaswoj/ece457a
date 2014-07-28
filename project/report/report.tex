@@ -543,7 +543,7 @@ $$S_{\text{best}} = [2, 0, 1, 3], \; \textit{cost}(S_{\text{best}}) = 2.9759$$
 
 \subsection{Simulated Annealing Algorithm} % Dane
 
-The simulated annealing metaheuristic is based on the physical annealing process, used to alter the properties of materials through controlled cooling.\cite{Kirkpatrick} A cost function specific to the problem is used to represent the ``energy'' of a particular solution. The minimum energy state represents the optimal solution. Controlled cooling is used to find a near-optimal solution, similar to how particles settle into a stable, low-energy configuration in physical annealing. Since there is no concept of temperature in general optimization problems, an artificial temperature value $T$ is used to represent the temperature of the system. 
+The simulated annealing metaheuristic is based on the physical annealing process, used to alter the properties of materials through controlled cooling.\cite{Kirkpatrick} A cost function specific to the problem is used to represent the ``energy'' of a particular solution. The minimum energy state represents the optimal solution. Controlled cooling is used to find a near-optimal solution, similar to how particles settle into a stable, low-energy configuration in physical annealing. Since there is no concept of temperature in general optimization problems, an artificial temperature value $T$ is used to represent the temperature of the system.
 
 The algorithm begins with a random solution. At each iteration, a random solution is selected from the current solution's set of neighbours. The probability of selecting the new random solution over the old solution is $\mathit{P}(\Delta{}E) = e^{-\frac{\Delta{}E}{k_{B}T}}$, based on the Boltzmann probability factor.\cite{Kirkpatrick} The probability function ensures that any improving solution is accepted, and that there is a possiblity to accept any non-improving solution when $T>0$. When the temperature is high, there is a high probability of selecting non-improving solutions, which decreases as the temperature decreases. As the algorithm reaches the minimum temperature, it should converge to an optimal or near-optimal solution.
 
@@ -587,7 +587,7 @@ We calculate this solution's selection probability to be $P_2 = 0.8897$
 Suppose we choose $r = 0.6329$. Because $0.6329 < 0.8897$ is true
 $$S_\mathit{next} = S_2 = [ 3, 2, 1, 0 ], \; \mathit{cost}(S_\mathit{next}) = 4.6092$$
 
-The best solution found so far is 
+The best solution found so far is
 $$S_\mathit{best} = [ 1, 2, 0, 3 ], \; \mathit{cost}(S_\mathit{best}) = 3.1617$$
 
 \subsection{Genetic Algorithm} % Austin
@@ -680,8 +680,35 @@ S_{2,4} = [3, 2, 0, 1], & \qquad cost(S_{2,4}) = 3.6619
 \end{align*}
 
 \subsection{Particle Swarm Optimization Algorithm} % Ariel
+The particle Swarm Optimization (PSO) meta-heuristic is based on the behavior of swarm animals such as fish and birds.
+Each particle represents a candidate solution and ``flies'' towards the optimal solution using information from its
+past experience and the swarm's experience. Gradually, the particles will converge on the ideal solution.
+The algorithm begins by generating an initial population of particles each of whom have a velocity of 0.
+In each iteration, the local (per particle) and global (across the swarm) best values are recorded and used to calculate each particle's velocity. \cite{ClassicalPSO}
+Velocity is calculated by:
+$$
+v_\mathit{next} = wv_\mathit{current} + c_1r_1(l_\mathit{best} - x) + c_2r_2(g_\mathit{best}-x)
+$$
 
+Where $w$ is a constant representing a particle's inertia, $c_1$ \& $c_2$ are two pre-selected parameters to adjust the relative importance of a particle's individual memory versus the swarm's collective memory. The random numbers $r_1$ \& $r_2$ are random numbers $\in (0,1)$ that are generated per iteration. $l_\mathit{best}$ is the best position a particle has been in and $g_\mathit{best}$ is the best position that any particle in the swarm has
+been in. The overall algorithm can be visualized as follows \cite{PSOFigure}:
 
+\includegraphics[width=1\textwidth]{images/PSO.png}
+
+Where satisfy criteria is defined in this report as performing a specified number of iterations.\\
+
+Now, mTSP is a permutation problem and therefore this report is making modification to the classical PSO algorithm.
+The difficulty arises from the fact that position and velocity do not have a natural meaning when working
+with permutations rather than continuous values.
+M. Clerc proposed a modification of PSO that could be applied to the Travelling Salesman problem.
+Every particle's position is a candidate solution which is a permutation of tasks and homes and
+a particle's velocity consists of a set of swaps that should be performed on its position.
+Clerc re-definitions of the operators for adding a velocity to a position, multiplying a velocity by a scalar, and subtracting two positions
+are used. Adding a velocity to a position is defined as performing all of the swaps on the position.
+Multiplying a velocity by a scalar results in a new velocity that consists of $scalar\cdot |velocity|$ swaps; which is achieved
+through truncation or augmentation with swaps repeated from the existing velocity.
+Subtracting two positions results in a velocity that consists of the swaps needed to turn the first position into the second position.
+With these new operations, the classical PSO algorithm can be used. \cite{PermutationPSO}
 
 \subsubsection{Hand Iterations}
 
