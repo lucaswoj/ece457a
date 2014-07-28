@@ -11,7 +11,7 @@ function [bestSolution, bestSolutionCost] = solve(nIterations = 100)
   velocityLength = nParticles * 10;
   velocities = zeros(nParticles, velocityLength, 2);
 
-  [positionGbest, costGbest] = getBestSolution(positions)
+  [gbestPosition, gbestCost] = getBestSolution(positions)
 
   for i=1:nIterations
 
@@ -26,7 +26,7 @@ function [bestSolution, bestSolutionCost] = solve(nIterations = 100)
         r2,
         positions(j, :),
         lbestPositions(j, :),
-        positionGbest,
+        gbestPosition,
         unpadVelocity(squeeze(velocities(j, :, :)))
       );
       position = addVelocityPosition(velocity, positions(j, :));
@@ -41,14 +41,13 @@ function [bestSolution, bestSolutionCost] = solve(nIterations = 100)
         lbestScores(j) = cost;
       endif
 
-      if (cost < costGbest)
-        positionGbest = position;
-        costGbest = cost;
+      if (cost < gbestCost)
+        gbestPosition = position;
+        gbestCost = cost;
       endif
 
     endfor
 
-    printIteration('pso', i, costGbest);
+    printIteration('pso', i, gbestCost);
 
   endfor
-
