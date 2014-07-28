@@ -42,8 +42,9 @@ function evolve(j)
     global individuals costs prevCosts prevIndividuals;
 
     costs(j) = getSolutionCost(individuals(j,  : ));
-    if costs(j) < prevCosts(j)
-        prevIndividuals(j,  :) = individuals(j,  :);
+    if costs(j) > prevCosts(j)
+        %If the cost is greater then replace the value with the parent
+        individuals(j,  :) = prevIndividuals(j,  :);
     end
 end
 

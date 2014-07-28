@@ -588,6 +588,20 @@ $$S_\mathit{best} = [ 1, 2, 0, 3 ], \; \mathit{cost}(S_\mathit{best}) = 3.1617$$
 
 \subsection{Genetic Algorithm} % Austin
 
+\subsubsection{Description}
+
+Genetic algorithms cover a large group of similar algorithms, so for our comparitive study we needed to specify an instance of Genetic Algorithm that solves our problem appropriately. Because this is a permutation problem we cannot encode our solution as a binary string, so we have to use a version of Genetic Algorithm that can handle permutations. Our solution representation is the same as described in the Problem Formulation section with each individual in a generation representing a particular solution. 
+
+To initialize our solver we will choose a random starting solution for each individual and then start the iterations. Each iteration will consist of crossover, mutation and then survivor selection. Each of these steps must be customized for the problem set, and there are multiple methods between which we had to choose. 
+
+For crossover we chose to use the Order 1 permutation as described in \cite{Eiben} which is a crossover algorithm that attempts to preserve the relative order of elements in a solution. It chooses a random subsection from one parent, copies those values into the first child and then fills the rest of the values in the same order that they appear in the second parent. This process is then mirrored for the second child so two children are produced from this crossover.
+
+The mutation function is much easier to specify in a permutation problem, because there are fewer issues relating to creating invalid solutions which is a large issue when attempting to do a crossover. Mutation in our algorithm swaps the position of two or more elements in a solution and then creates a new child. The number of elements swapped can be configured depending on the size of the solution.
+
+The last component that needs to be specified is the survivor selection algorithm. We chose to use a steady state Genetic Algorithm, so the entire generation is replaced by the children of the next generation if the child solution is an improvement on the parent from which it was derived. Because more children are generated than the size of the generation there is some selection pressure to choose better solutions, but because solutions are not kept from every iteration this allows us to diversify more than if we just chose the best solutions between both the children and parents as explained in course slides \cite{Talk}.
+
+With our algorithm specified fully we can now do iterations by hand to see the results of our decisions.
+
 \subsubsection{Hand Iterations}
 
 The genetic algorithm meta-heuristic has many different parameters that can be tuned and changed, but for the hand iteration we will choose values that show the different operations of the algorithm. We will use a generation size of 4 and choose $p_\mathit{crossover}=0.75$, and $p_\mathit{mutation}=0.25$ because $p_\mathit{mutation}$ must be between $$\frac{1}{\text{Population Size}} <= p_\mathit{mutation} < \frac{1}{\text{Chromosome Length}}$$ For every child, a random number, $r \in (0,1)$, will be generated. If $0<r\leq0.25$ then mutation will be applied, else if $0.25<r<1$ then crossover will be applied.
@@ -615,7 +629,7 @@ S_{1,2} = [2, 0, 3, 1], & \qquad cost(S_{1,2}) = 3.0201
 \end{align*}
 
 
-Another random number is genereated: $r=0.65$, another crosseover. This crossover will be between $S_{0,2}$ and $S_{0,4}$, with crossover points as 2 and 4. This yields two more children:
+Another random number is genereated: $r=0.65$, another crossover. This crossover will be between $S_{0,2}$ and $S_{0,4}$, with crossover points as 2 and 4. This yields two more children:
 
 \begin{align*}
 S_{1,3} = [3, 2, 0, 1], & \qquad cost(S_{1,3}) = 3.6619 \\
@@ -623,7 +637,7 @@ S_{1,4} = [3, 2, 1, 0], & \qquad cost(S_{1,4}) = 4.6092
 \end{align*}
 
 
-The next generation is selected using the fitness based elitism survivor selection; we will pick the best 4 solutions from the 8 candidates. The result of this selection is:
+The next generation is selected using the cost based elitism survivor selection; we will pick the best 4 solutions from the 8 candidates. The result of this selection is:
 
 \begin{align*}
 S_{1,1} = [1, 2, 0, 3], & \qquad cost(S_{1,1}) = 3.1617 \\
@@ -633,7 +647,6 @@ S_{1,4} = [3, 2, 0, 1], & \qquad cost(S_{1,4}) = 3.6619
 \end{align*}
 
 \subsubsubsection{Iteration 2}
-
 A random number is generated: $r=0.89$, a crossover. This crossover will be between parents $S_{1,1}$ and $S_{1,2}$ and use crossover points 3 and 4.
 
 \begin{align*}
@@ -653,7 +666,7 @@ The next random number is: $r=0.05$, a mutation. We will mutate one randomly cho
 S_{2,4} = [2, 3, 0, 1], & \qquad cost(S_{2,4}) = 4.0781
 \end{align*}
 
-Again, fitness-based elitism survivor selection is used to pick the best 4 solutions from both generations. We are left with the same generation as the last iteration because none of the children had a higher fitness score than any of the parents.
+Again, cost-based elitism survivor selection is used to pick the best 4 solutions from both generations. We are left with the same generation as the last iteration because none of the children had a higher fitness score than any of the parents.
 
 \begin{align*}
 S_{2,1} = [1, 2, 0, 3], & \qquad cost(S_{2,1}) = 3.1617 \\
