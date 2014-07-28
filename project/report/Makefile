@@ -1,4 +1,4 @@
-report.pdf: report.tex
+report.pdf: report.tex report.bib
 	docker build --tag latex .
 	docker rm latex-output || true
 	docker run --name latex-output --interactive --tty latex
