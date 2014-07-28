@@ -270,9 +270,9 @@ $$
 \mathit{cost}_\mathit{quality}(S) =
   \sum^{n_\mathit{robots}}_{r=1}
   \sum^{|S(r)|}_{t=1}
-  1 - \mathit{priority}(r, t) \cdot \mathit{skill}(r)
+  1 - \mathit{priority}(r, t) \cdot \mathit{skill}(r, t)
 $$
-Since a performing a high priority task with a highly skilled robot is desirable and we want to treat minimize cost, we subtract the maximum possible value, 1, from the product of the priority and skill (recall that $\mathit{skill}(r) \in [1, 0]$ and $\mathit{priority}(r, t) \in [1, 0]$).
+Since a performing a high priority task with a highly skilled robot is desirable and we want to treat minimize cost, we subtract the maximum possible value, 1, from the product of the priority and skill (recall that $\mathit{skill}(r) \in [0, 1]$ and $\mathit{priority}(r, t) \in [0, 1]$).
 
 % \subsection{Normalization}
 
