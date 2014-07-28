@@ -2,9 +2,8 @@ function loadReducedProblem()
 
     global nRobots velocities energy homes nTasks priorities skills taskTimes distances;
 
-    % TODO remove unnescessary globals (tasks, robots)
-    % TODO turn on those assert statements
-
+    % TODO create verifyProblem function
+    % TODO create verifySolution function
 
     nRobots = 2;
     nTasks = 3;
