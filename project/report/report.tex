@@ -69,16 +69,14 @@ There are numerous advantages of using an MRS over using a single multi-purpose 
 Tasks particularly well suited to MRSs include
 \begin{itemize}
 \item search and rescue in dangerous environments
-\item survellance
+\item surveillance
 \item space construction
 \end{itemize}
 
 % What is the problem
 \subsection{Problem}
 
-This report is being written as an assignment for the University of Waterloo's ECE457a course, ``cooperative and adaptive algorithms." In it, we will explore using cooperative and adaptive algorithms to find near-optimal solutions to complex task allocation problems for an MRS, with a focus on surveillance tasks.
-
-Complex task allocation, as defined in this assignment's problem statement, is
+In this report, we will determine the strengths and weaknesses of different metaheuristic algorithms in finding near-optimal solutions to complex task allocation problems. Complex task allocation, as defined in this assignment's problem statement, is
 \mbox{\blockquote{
   In mobile surveillance systems, complex task allocation addresses how to optimally assign a set of surveillance tasks to a set of mobile sensing agents to maximize overall expected performance, taking into account the priorities of the tasks and the skill ratings of the mobile robots.
 }}
@@ -86,15 +84,26 @@ Replacing humans with robots in surveillance tasks, and allocating those robots 
 
 Efficiently finding near-optimal solutions to complex task allocation has broad implications beyond surveillance. In essence, this report answers the question ``which robot should perform which task?''\cite{Badreldin}
 
-
 % Enumeration of report objectives and report structure
 \subsection{Report Structure and Direction}
 
-The purpose of this report is to categorize which metaheuristic optimization techniques are effective within a given scenario. For example, which algorithms are better-suited for online analysis and which for offline analysis.
+This report is being written as an assignment for the University of Waterloo's ECE457a course, ``cooperative and adaptive algorithms."
 
-The report will continue with a review of existing literature and identifying the commonalities and differences with the solution presented in this report. Then we will present a problem formulation and model from which we will implement our algorithms. The paper then describes how the well-known Traveling Salesman Problem can be adjusted for use with Complex Task Allocation. From there, the report identifies the criteria upon which each meta heuristic technique's performance is evaluated. Then the results of running each technique are then presented against these performance criteria. From these results, conclusions are drawn and recommendations for future work are suggested.
+In this report, we determine the strengths and weaknesses of different metaheuristic algorithms in finding near-optimal solutions to complex task allocation problems. The metaheuristic algorithms we consider are
+\begin{itemize}
+\item tabu search algorithm
+\item simulated annealing algorithm
+\item genetic algorithm
+\item particle swarm optimization algorithm
+\item ant colony optimization algorithm
+\end{itemize}
 
-
+The report will begin with a review of existing literature on the subject.
+Next we will present a problem formulation and model from which we will implement our algorithms.
+The paper then describes how the well-known Traveling Salesman Problem can be adjusted for use with Complex Task Allocation.
+From there, the report identifies the criteria upon which each meta heuristic technique's performance is evaluated.
+Then the results of running each technique are then presented against these performance criteria.
+From these results, conclusions are drawn and recommendations for future work are suggested.
 
 %  [1] [Alaa Khamis, Cooperative Multirobot Systems, Plenary Talk at IAC2014]
 %  [2]``Complex Task Allocation in Mobile Surveillance Systems'',
@@ -727,7 +736,7 @@ S_{2,4} = [3, 2, 0, 1], & \qquad cost(S_{2,4}) = 3.6619
 
 Genetic Algorithm is a complex algorithm with many different parameters that must be specified, so after initially creating our solution we made many modifications to our initial algorithm parameters. One of the initial parameters we could tune are the crossover and mutation probabilities. The crossover probability did not seem to be a huge factor in convergence, values from $.6$ - $.95$ would all converge to the same values with relative ease. The mutation probability was chosen to be in the range $$\frac{1}{\text{Population Size}} <= p_\mathit{mutation} < \frac{1}{\text{Chromosome Length}}$$ and the mutation sites variable was modified so as many as $\frac{\text{Chromosome Length}}{2}$ swaps were preformed when a mutation needed to be performed.
 
-The other modification we made after initially developing our algorithm was to change our stopping criteria from a strict number of iterations to a stopping criteria where we detect stagnation in the best solution and only stop then. This helps to fully explore the solution space and allows us to fairly compare this algorithm against our other algorithms. 
+The other modification we made after initially developing our algorithm was to change our stopping criteria from a strict number of iterations to a stopping criteria where we detect stagnation in the best solution and only stop then. This helps to fully explore the solution space and allows us to fairly compare this algorithm against our other algorithms.
 
 Because of the large number of parameters we have to tune the most efficient method to discover a good configuration would be to make an adaptive version of this algorithm that can tune the parameters based on the results of running the algorithm. This would still not give us the best possible configuration because we would also need a way to change our crossover algorithm, our mutation algorithm and our survivor selection algorithm. Each of these sub-algorithms has multiple different implementations that offer different results so if we wanted to find the best configuration we would need to implement all of these algorithms and then test them in all of the appropriate configurations.
 
