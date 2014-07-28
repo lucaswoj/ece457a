@@ -40,15 +40,19 @@ runProblem = \
 
 $(addsuffix Reduced.csv, $(ALGORITHMS)): %Reduced.csv: %/solve.m octave-build
 	$(call runProblem,Reduced,25)
+	cp $@ $(call basename, $@).`date +%s`.csv
 
 $(addsuffix Small.csv, $(ALGORITHMS)): %Small.csv: %/solve.m octave-build
 	$(call runProblem,Small,50)
+	cp $@ $(call basename, $@).`date +%s`.csv
 
 $(addsuffix Medium.csv, $(ALGORITHMS)): %Medium.csv: %/solve.m octave-build
 	$(call runProblem,Medium,100)
+	cp $@ $(call basename, $@).`date +%s`.csv
 
 $(addsuffix Large.csv, $(ALGORITHMS)): %Large.csv: %/solve.m octave-build
 	$(call runProblem,Large,1000)
+	cp $@ $(call basename, $@).`date +%s`.csv
 
 $(ALGORITHMS): %: %Reduced.csv %Small.csv %Medium.csv %Large.csv
 
