@@ -41,6 +41,7 @@ end
 function evolve(j)
     global individuals costs prevCosts prevIndividuals;
 
+    disp(individuals(j, :));
     costs(j) = getSolutionCost(individuals(j,  : ));
     if costs(j) < prevCosts(j)
         prevIndividuals(j,  :) = individuals(j,  :);
@@ -62,29 +63,44 @@ function [c, d] = crossover(a, b)
         cPointLow = temp;
     end
 
-    c(cPointLow : cPointHigh) = b(cPointLow : cPointHigh);
-    d(cPointLow : cPointHigh) = a(cPointLow : cPointHigh);
+    c(cPointLow : cPointHigh) = a(cPointLow : cPointHigh);
+    d(cPointLow : cPointHigh) = b(cPointLow : cPointHigh);
     c = finishCrossover(c, b, cPointHigh, cPointLow);
     d = finishCrossover(d, a, cPointHigh, cPointLow);
 end
 
 function halfChild = finishCrossover(halfChild, parent, cPointHigh, cPointLow)
+    global nRobots;
+
     childIndex = cPointHigh + 1;
     parentIndex = cPointHigh + 1;
-    while childIndex ~= cPointLow
-        if parentIndex > length(parent)
+    while length(halfChild) ~= length(parent)
+        if parentIndex > length(parent),
             parentIndex = parentIndex - length(parent);
         end
-        if childIndex > length(parent)
+        if childIndex > length(parent),
             childIndex = childIndex - length(parent);
+
         end
-        %If the child already has that value, just move on to the next index
-        if ~isempty(find(halfChild == parent(parentIndex)))
-            parentIndex = parentIndex + 1;
+        %Check to see if we have a sentinal value
+        if parent(parentIndex) == 0,
+            %If our child does not have all of its sentinal values then we can insert one
+            if nnz(halfChild == 0) < nRobots - 1,
+                halfChild(childIndex) = parent(parentIndex);
+                childIndex = childIndex + 1;
+                parentIndex = parentIndex + 1;
+            else 
+               parentIndex = parentIndex + 1;
+            end
         else
-            halfChild(childIndex) = parent(parentIndex);
-            childIndex = childIndex + 1;
-            parentIndex = parentIndex + 1;
+            %If the child already has that value, just move on to the next index
+            if ~isempty(find(halfChild == parent(parentIndex))),
+                parentIndex = parentIndex + 1;
+            else
+                halfChild(childIndex) = parent(parentIndex);
+                childIndex = childIndex + 1;
+                parentIndex = parentIndex + 1;
+            end      
         end
     end
 end
