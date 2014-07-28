@@ -1,11 +1,11 @@
-function [bestSolution, bestSolutionCost] = solve()
+function [bestSolution, bestSolutionCost] = solve(iterations)
 
-  iterations = 100;
+  % TODO tune this
   tenure = 5;
 
   global nTasks tasks nRobots robots nHomes homes priorities skills distances
 
-  solution = getRandomSolution();
+  solution = getRandomSolutions(1);
   bestSolution = solution;
   bestSolutionCost = getSolutionCost(solution);
 

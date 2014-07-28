@@ -3,7 +3,7 @@ function product = multiplyScalarVelocity(scalar, velocity)
 	newNumSwaps = scalar * numSwaps;
 
 	if scalar < 1
-		product = velocity(1:newNumSwaps, :) % Remove numModification entries from velocity
+		product = velocity(1:newNumSwaps, :); % Remove numModification entries from velocity
 	elseif scalar > 1
 		product = zeros(newNumSwaps, 2);
 		for i = 0:newNumSwaps-1
