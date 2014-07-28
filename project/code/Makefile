@@ -50,12 +50,17 @@ $(addsuffix Medium.csv, $(ALGORITHMS)): %Medium.csv: %/solve.m octave-build
 $(addsuffix Large.csv, $(ALGORITHMS)): %Large.csv: %/solve.m octave-build
 	$(call runProblem,Large,1000)
 
+$(ALGORITHMS): %: %Reduced.csv %Small.csv %Medium.csv %Large.csv
 
-loadLargeProblem.m: octave-build uneval.m loadRandomProblem.m
-	$(call generateProblem,Large, 50, 15)
+all: $(ALGORITHMS)
 
-loadMediumProblem.m: octave-build uneval.m loadRandomProblem.m
-	$(call generateProblem,Medium, 15, 5)
+# This shouldn't be regnereated unless absolutely nescessary
+#
+# loadLargeProblem.m: octave-build uneval.m loadRandomProblem.m
+# 	$(call generateProblem,Large, 50, 15)
 
-loadSmallProblem.m: octave-build uneval.m loadRandomProblem.m
-	$(call generateProblem,Small, 5, 3)
+# loadMediumProblem.m: octave-build uneval.m loadRandomProblem.m
+# 	$(call generateProblem,Medium, 15, 5)
+
+# loadSmallProblem.m: octave-build uneval.m loadRandomProblem.m
+# 	$(call generateProblem,Small, 5, 3)
