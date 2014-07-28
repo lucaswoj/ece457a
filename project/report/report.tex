@@ -39,14 +39,6 @@
 
 \maketitle
 
-% TODO Write out all irrational numbers to 4 decimal points
-% TODO Represent solutions as S_0^3
-% TODO All tasks must be 1-indexed
-% TODO All robots must be 1-indexed
-% TODO We must use a consistent naming convention for robots/sensors, homes/homes, tasks
-% TODO We must use a consistent formatting in representing solutions, esp sentinal values
-% TODO Do number equations and reference them by their number
-
 \section*{Summary}
 % The summary should be a brief version of the full report It should give the
 % reader an accurate overview Be brief, but be specific.
@@ -66,17 +58,26 @@ In conclusions, this report recommends the use of ALGORITHM.
 % Why is the problem important
 \subsection{Problem Context}
 
-As the digital revolution leaves the second digital wave behind, and embraces the robotics wave\cite{Talk}, it is becoming increasingly important to prepare for the multitude of situations where robots will be available to complete various tasks.
+As the digital revolution accelerates, electronics have become more than passive desktop appliances \emdash robotics has given computers a means to interact with the world around them, greatly expanding the scope of the tasks we can make them perform.
 
-In particular, Multirobot Systems (MRS) are becoming a high interest subject. An MRS is a group of robots that are designed with the intent of performing a collective behavior.
+Robots, like people, are more effective at many types of tasks when cooperating in a group rather than working alone. For this reason, multirobot systems (MRS) are becoming a high interest subject. An MRS is a group of robots that are designed to perform a collective behavior.
 
-There are numerous advantages associated with a group of simple robots over a single multi-purpose robot. For example, it is simpler to design a robust single purpose robot than a robot with multiple abilities and configurations. Simple designs tend to be more robust and lead to more reliable robots. Another source of reliability is that a group of robots can accommodate some degree of redundancy in composition.  In addition, many complex tasks are distributed over a large area and would be slow to accomplish with a single-agent system. Examples of problems that can be solved by MRSs are search and rescue in burning building, surveillance and space construction.
+We define a ``heterogenous MRS" to be a group of different types of robots, some more adept at certain tasks than others. In this paper, we will refer to a hetergenous MRS simply as an MRS.
+
+There are numerous advantages of using an MRS over using a single multi-purpose robot. For example, it is simpler to design a robust single purpose robot than a robot with multiple abilities and configurations. Simple designs tend to be more robust and lead to more reliable robots. Another source of reliability is that a MRS can have redundancies; if one robot fails, another may resume its tasks.  In addition, many complex tasks are distributed over a large area and would be slow to accomplish with a single robot.
+
+Tasks particularly well suited to MRSs include
+\begin{itemize}
+\item search and rescue in dangerous environments
+\item survellance
+\item space construction
+\end{itemize}
 
 % What is the problem
 \subsection{Multirobot Task Allocation}
 
 This report is specifically considering the problem of Complex Task Allocation for an MRS where the tasks are related to surveillance. The problem statement reads as follows:\mbox{}
-\blockquote{In mobile surveillance systems, complex task allocation addresses how to optimally assign a set of surveillance tasks to a set of mobile sensing agents to maximize overall expected performance, taking into account the priorities of the tasks and the skill ratings of the mobile robots.}
+  \blockquote{In mobile surveillance systems, complex task allocation addresses how to optimally assign a set of surveillance tasks to a set of mobile sensing agents to maximize overall expected performance, taking into account the priorities of the tasks and the skill ratings of the mobile robots.}
 This problem is important to solve because areas under surveillance usually possess some degree of danger. Being able to replace human sentinels with robots has the potential to save the lives of the surveyors and of nearby civilians by providing advanced warning of incoming threats. The task allocation problem within the broader scope of surveillance is important because an optimal solution represents an effective assignment of robots to tasks and improves the overall efficacy of the MRS. Colloquially speaking, this report answers the question of ``which robot should perform which task?''\cite{Badreldin}
 
 
@@ -847,11 +848,11 @@ $$
 \mathit{accomplishable}(r, t_\mathit{from}, t_\mathit{to}) =
 \frac{\mathit{round\,trip}(r, t_\mathit{from}, t_\mathit{to})}{velocity(r)} + \mathit{task \, time}(r, t_\mathit{to}) \leq \mathit{energy}_r
 $$
-for 
+for
 $$
 \mathit{round\,trip}(r, t_\mathit{from}, t_\mathit{to}) = \mathit{distance}(t_\mathit{from}, t_\mathit{to}) + \begin{cases}
 \mathit{distance}(t_\mathit{to}, \mathit{home}(r)) & \text{if } t_\mathit{to} \ne \mathit{home}(r) \\
-0 & \text{otherwise} 
+0 & \text{otherwise}
 \end{cases}
 $$
 
