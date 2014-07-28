@@ -1,5 +1,5 @@
 function bestSolution = solve(iterations)
-    initializeProblem();
+    % initializeProblem();
 
     global homes;
 
@@ -11,6 +11,7 @@ function bestSolution = solve(iterations)
     alpha = 1;
     beta = 1;
     rho = 0.1;
+    rnaught = 0.5;
     Q = 1; % pheromone amount
 
     bestSolution = [ ];
@@ -39,35 +40,53 @@ function bestSolution = solve(iterations)
                 end
             end
 
+            % @TODO:
+            %   - redefine weight function to be what lucas wrote
+            %   - select neighbor with highest value in neighborWeight should rand <= rnaught
+            %       - indicate selected node by setting nextNode
+
+            % Generate random number r, and compare to pre-chose r_o.
+            % If r <= r_o then exploit most desirable path
+            % Else explore path randomly selected using roulette wheel method
+
             % compute neighbor weights
             for j = 1 : length(neighbors)
                 n = neighbors(j);
 
                 % add 1 to the denominator to avoid division by 0
-                neighborWeight = [ neighborWeight, (weight(robot, currentNode, n)^beta + 1) ];
+                neighborWeight = [ neighborWeight, (weight(robot, currentNode, n, path)^beta + 1) ];
             end
 
-            eta = 0;
-            for j = 1 : length(neighbors)
-                n = neighbors(j);
-                eta = eta + tau(currentNode, n)^alpha / neighborWeight(j);
+            if rand <= rnaught
+                [maxWeight,selectedNeighbor] = max(neighborWeight); % getindex of most desirable neighbor
+                nextNode = neighbors(selectedNeighbor);
+            else
+
+                eta = 0;
+                for j = 1 : length(neighbors)
+                    n = neighbors(j);
+                    eta = eta + tau(currentNode, n)^alpha / neighborWeight(j);
+                end
+
+                eta
+
+                cumlProb = [ ];
+                for j = 1 : length(neighbors)
+                    n = neighbors(j);
+
+                    prob = tau(currentNode, n)^alpha / neighborWeight(j) / eta;
+                    cumlProb = [ cumlProb, prob ];
+                end
+
+                cumlProb
+                selectedNeighbor = roulette(cumlProb)
+                nextNode = neighbors(selectedNeighbor)
             end
 
-            eta
 
-            cumlProb = [ ];
-            for j = 1 : length(neighbors)
-                n = neighbors(j);
 
-                prob = tau(currentNode, n)^alpha / neighborWeight(j) / eta;
-                cumlProb = [ cumlProb, prob ];
-            end
 
-            cumlProb
-            selectedNeighbor = roulette(cumlProb)
-            nextNode = neighbors(selectedNeighbor)
             distTraveled = distTraveled + neighborWeight(selectedNeighbor);
-
             visited(nextNode) = 1
             path = [ path, nextNode ]
             if nextNode == homes(robot)
@@ -101,8 +120,8 @@ function bestSolution = solve(iterations)
         % update the pheromone
         tau = tau .* (1 - rho);
         for j = 1 : length(path) - 1
-            tau(path(j), path(j + 1)) = tau(path(j), path(j + 1)) + Q / distTraveled;
-            tau(path(j + 1), path(j)) = tau(path(j + 1), path(j)) + Q / distTraveled;
+            tau(path(j), path(j + 1)) = tau(path(j), path(j + 1)) + Q * distTraveled;
+            tau(path(j + 1), path(j)) = tau(path(j + 1), path(j)) + Q * distTraveled;
         end
 
         distTraveled
