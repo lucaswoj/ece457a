@@ -234,7 +234,7 @@ $$
   \mathit{tour \, time}(r, S(r))
 $$
 
-In the overall cost function, $\beta$ is a normalization parameter that makes $\mathit{cost}_\mathit{time}$ directly comparable to $\mathit{cost}_\mathit{quality}$. Because skills and priorities are bounded $\in [0, 1]$, we are garunteed that, for some tour $o$ and some robot $r$, $\mathit{cost}_\mathit{quality}(r, o) \in [0, |o|]$. To make $\mathit{cost}_\mathit{time}$ directly comparable to $\mathit{cost}_\mathit{quality}$, we must scale $\mathit{cost}_\mathit{time}$ using $\beta$ such that it has the same bounds, $\in [0, |o|]$. Such a $\beta$ may be calculated as
+In the overall cost function, $\beta$ is a normalization parameter that makes $\mathit{cost}_\mathit{time}$ directly comparable to $\mathit{cost}_\mathit{quality}$. Because skills and priorities are bounded $\in [0, 1]$, we are guaranteed that, for some tour $o$ and some robot $r$, $\mathit{cost}_\mathit{quality}(r, o) \in [0, |o|]$. To make $\mathit{cost}_\mathit{time}$ directly comparable to $\mathit{cost}_\mathit{quality}$, we must scale $\mathit{cost}_\mathit{time}$ using $\beta$ such that it has the same bounds, $\in [0, |o|]$. Such a $\beta$ may be calculated as
 $$
 \beta =
     \frac
