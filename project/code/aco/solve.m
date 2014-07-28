@@ -1,6 +1,4 @@
-function bestSolution = solve(iterations)
-    % initializeProblem();
-
+function bestSolution = solve(iterations = 100)
     global homes energy;
 
     % construct the pheromone list
@@ -10,19 +8,20 @@ function bestSolution = solve(iterations)
 
     exploitConst = 1;
     exploreConst = 1;
-    rho = 0.1;
+    rho = 0.7;
     rnaught = 0.5;
     Q = 1; % pheromone amount
 
     bestSolution = [ ];
     mostDesired = -Inf;
 
-    totalEnergy = energy
-    ants = cell(2,3)
+    totalEnergy = energy;
+    numAnts = 2;
+    ants = cell(numAnts, 2);
 
     for i = 1 : iterations
-        for ant = 1:length(ants)
-            energy = totalEnergy
+        for ant = 1 : numAnts
+            ant
 
             robot = 1;
             currentNode = homes(robot);
@@ -48,8 +47,8 @@ function bestSolution = solve(iterations)
                 end
 
                 % compute neighbor weights
-                neighborWeight = 1 : length(neighbors)
-                neighborTauWeight = 1 : length(neighbors)
+                neighborWeight = 1 : length(neighbors);
+                neighborTauWeight = 1 : length(neighbors);
                 for j = 1 : length(neighbors)
                     n = neighbors(j);
 
@@ -86,7 +85,7 @@ function bestSolution = solve(iterations)
                 visited(nextNode) = 1
                 path = [ path, nextNode ]
                 desirability = desirability + neighborWeight(selectedNeighbor);
-                energy(robot) = energy(robot) - energyCost(robot, currentNode, nextNode)
+                energy(robot) = energy(robot) - energyCost(robot, currentNode, nextNode);
 
                 if nextNode == homes(robot)
                     % teleport to a new robot if we've returned home
@@ -110,7 +109,7 @@ function bestSolution = solve(iterations)
                 mostDesired = desirability;
             end
 
-            augmentedPath = [ ]
+            augmentedPath = [ ];
             for j = 1 : length(path)
                 augmentedPath = [ augmentedPath, path(j) ];
                 if path(j) > numTasks
@@ -119,26 +118,25 @@ function bestSolution = solve(iterations)
             end
             path = [ homes(1), augmentedPath, homes(end) ];
 
-            ants{ant, 1} = getSolutionCost(solution)
-            ants{ant, 2} = desirability
-            ants{ant, 3} = path
+            energy = totalEnergy;
+            ants{ant, 1} = getSolutionCost(solution);
+            ants{ant, 2} = path;
         end
 
         % determine ant with best solution:
-        solutionCosts = 1 : length(ants);
-        for ant = 1 : length(ants)
+        solutionCosts = 1 : numAnts;
+        for ant = 1 : numAnts
             solutionCosts(ant) = ants{ant, 1};
         end
 
-        [cost, selectedAnt] = max(solutionCosts);
-        desirability = ants{selectedAnt, 2};
-        path = ants{selectedAnt, 3};
+        [cost, selectedAnt] = min(solutionCosts);
+        path = ants{selectedAnt, 2};
 
         % update the pheromone
         tau = tau .* (1 - rho);
         for j = 1 : length(path) - 1
-            tau(path(j), path(j + 1)) = tau(path(j), path(j + 1)) + Q * desirability;
-            tau(path(j + 1), path(j)) = tau(path(j + 1), path(j)) + Q * desirability;
+            tau(path(j), path(j + 1)) = tau(path(j), path(j + 1)) + Q / cost;
+            tau(path(j + 1), path(j)) = tau(path(j + 1), path(j)) + Q / cost;
         end
 
         desirability
@@ -146,5 +144,7 @@ function bestSolution = solve(iterations)
     end
 
     mostDesired
+    getSolutionCost(bestSolution)
+    bestSolution
 end
 

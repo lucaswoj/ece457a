@@ -1,12 +1,13 @@
 function v = weight(robot, src, dst)
-    global homes priorities skills taskTimes distances velocities;
+    global priorities skills taskTimes distances velocities;
 
     v = 0.0000000001;
     if canMakeItHomeFrom(robot, src, dst)
         % figure out better way to import alpha
         alpha = 0.5;
-        v = (1 - alpha) * (1 - priorities(dst)) * skills(robot, dst);
+        v = (1 - alpha) * priorities(dst) * skills(robot, dst);
         v = v + getBeta() * alpha * energyCost(robot, src, dst);
+        v = 1 / (v + 1);
     end
 
 end
