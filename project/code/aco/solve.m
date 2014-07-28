@@ -1,4 +1,4 @@
-function bestSolution = solve(iterations = 100)
+function bestSolution = solve(iterations = 10)
     global homes energy;
 
     % construct the pheromone list
@@ -6,17 +6,17 @@ function bestSolution = solve(iterations = 100)
     numTasks = homes(1) - 1;
     tau = ones(numNodes + 1);
 
-    exploitConst = 1;
+    exploitConst = 0.7;
     exploreConst = 1;
-    rho = 0.7;
-    rnaught = 0.5;
+    rho = 0.1;
+    rnaught = 0;
     Q = 1; % pheromone amount
 
     bestSolution = [ ];
-    mostDesired = -Inf;
+    bestDist = Inf;
 
     totalEnergy = energy;
-    numAnts = 2;
+    numAnts = 1;
     ants = cell(numAnts, 2);
 
     for i = 1 : iterations
@@ -101,12 +101,14 @@ function bestSolution = solve(iterations = 100)
                 currentNode = nextNode;
             end
 
+            energy = totalEnergy;
             % get a canonical representation of the solution
             solution = path .* (path <= numTasks);
+            cost = getSolutionCost(solution);
 
-            if desirability > mostDesired
+            if cost < bestDist
                 bestSolution = solution; 
-                mostDesired = desirability;
+                bestDist = cost;
             end
 
             augmentedPath = [ ];
@@ -118,8 +120,7 @@ function bestSolution = solve(iterations = 100)
             end
             path = [ homes(1), augmentedPath, homes(end) ];
 
-            energy = totalEnergy;
-            ants{ant, 1} = getSolutionCost(solution);
+            ants{ant, 1} = cost;
             ants{ant, 2} = path;
         end
 
@@ -136,14 +137,15 @@ function bestSolution = solve(iterations = 100)
         tau = tau .* (1 - rho);
         for j = 1 : length(path) - 1
             tau(path(j), path(j + 1)) = tau(path(j), path(j + 1)) + Q / cost;
-            tau(path(j + 1), path(j)) = tau(path(j + 1), path(j)) + Q / cost;
+            %tau(path(j + 1), path(j)) = tau(path(j + 1), path(j)) + Q / cost;
         end
 
-        desirability
+        cost
         tau
+        %input('pause');
     end
 
-    mostDesired
+    bestDist
     getSolutionCost(bestSolution)
     bestSolution
 end
