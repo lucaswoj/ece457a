@@ -585,78 +585,77 @@ $$S_\mathit{best} = S_2 = [ 3, 2, 1, 0 ], \; \mathit{cost}(S_\mathit{best}) = 4.
 
 \subsubsection{Hand Iterations}
 
-Genetic Algorithm has many different parameters that can be tuned and changed, but for the hand iteration we will choose values that show the different operations of the algorithm. Because the problem space is so small, we will have a generation size of 4. We choose the probability of crossover to be to be .75, and our probability of mutation to be .25 because it must be between $$\frac{1}{\text{Population Size}} < P_m < \frac{1}{\text{Chromosome Length}}$$ 
+The genetic algorithm meta-heuristic has many different parameters that can be tuned and changed, but for the hand iteration we will choose values that show the different operations of the algorithm. We will use a generation size of 4 and choose $p_\mathit{crossover}=0.75$, and $p_\mathit{mutation}=0.25$ because $p_\mathit{mutation}$ must be between $$\frac{1}{\text{Population Size}} <= p_\mathit{mutation} < \frac{1}{\text{Chromosome Length}}$$ For every child, a random number, $r \in (0,1)$, will be generated. If $0<r\leq0.25$ then mutation will be applied, else if $0.25<r<1$ then crossover will be applied.
 
-This is a permutation problem, so we cannot use the simple binary crossover and must instead use the Order 1 crossover algorithm. We also chose our mutation operator to be the swap operation, so it will simply swap the values between two elements when a member must be mutated.
+This is a permutation problem, so we will use the Order 1 crossover algorithm. We also choose the mutation operator to be a swap operation that swaps two elements in a solution.
 
 \subsubsubsection{Iteration 1}
 
-We choose 4 random solutions for each of our members in the generation
+We generate 4 random solutions to be members of the first generation.
 
 \begin{align*}
-M_0^1 = [1, 2, X, 3], & \qquad cost(M_0^1) = 3.1617 \\
-M_0^2 = [3, 2, X, 1], & \qquad cost(M_0^2) = 3.6619 \\ 
-M_0^3 = [2, X, 1, 3], & \qquad cost(M_0^3) = 2.9759 \\
-M_0^4 = [3, 2, 1, X], & \qquad cost(M_0^4) = 4.6092  
+S_{0,1} = [1, 2, 0, 3], & \qquad cost(S_{0,1}) = 3.1617 \\
+S_{0,2} = [3, 2, 0, 1], & \qquad cost(S_{0,2}) = 3.6619 \\
+S_{0,3} = [2, 0, 1, 3], & \qquad cost(S_{0,3}) = 2.9759 \\
+S_{0,4} = [3, 2, 1, 0], & \qquad cost(S_{0,4}) = 4.6092
 \end{align*}
 
-Now that we have initialized the members of our generation we must go to the iteration step where we select the parents, apply crossover, mutate members, and then reevaluate our generation.
+We now generate a random number to see if crossover or mutation will produce the first child(ren). $r=0.37$ so we will use crossover.
 
-We will generate our first crossover by choosing two random parents, in this case $M_0^1$ and $M_0^3$. We apply the Order 1 crossover, with our two crossover points as 1 and 2. Then our two children will be
-
-\begin{align*}
-C_1^1 = [1, 2, 3, X], & \qquad cost(C_1^1) = 4.3288 \\
-C_1^2 = [2, X, 3, 1], & \qquad cost(C_1^2) = 3.0201
-\end{align*}
-
-
-We can then generate our next crossover, between $M_0^2$ and $M_0^4$, with our crossover points as 2 and 4
+We will perform the crossover by choosing two random parents, $S_{0,1}$ and $S_{0,3}$. We apply Order 1 crossover, with the two crossover points as 1 and 2. The two children will be:
 
 \begin{align*}
-C_1^3 = [3, 2, X, 1], & \qquad cost(C_1^3) = 3.6619 \\
-C_1^4 = [3, 2, 1, 0], & \qquad cost(C_1^4) = 4.6092
+S_{1,1} = [1, 2, 3, 0], & \qquad cost(S_{1,1}) = 4.3288 \\
+S_{1,2} = [2, 0, 3, 1], & \qquad cost(S_{1,2}) = 3.0201
 \end{align*}
 
 
-We then use the fitness based elitism survivor selection, so we will pick the best 4 solutions from our 8 candidates, and then make those our members for the next iteration. The result of this selection is
+Another random number is genereated: $r=0.65$, another crosseover. This crossover will be between $S_{0,2}$ and $S_{0,4}$, with crossover points as 2 and 4. This yields two more children:
 
 \begin{align*}
-M_1^1 = [1, 2, X, 3], & \qquad cost(M_1^1) = 3.1617 \\
-M_1^2 = [2, X, 3, 1], & \qquad cost(M_1^2) = 3.0201 \\
-M_1^3 = [2, X, 1, 3], & \qquad cost(M_1^3) = 2.9759 \\
-M_1^4 = [3, 2, X, 1], & \qquad cost(M_1^4) = 3.6619   
+S_{1,3} = [3, 2, 0, 1], & \qquad cost(S_{1,3}) = 3.6619 \\
+S_{1,4} = [3, 2, 1, 0], & \qquad cost(S_{1,4}) = 4.6092
+\end{align*}
+
+
+The next generation is selected using the fitness based elitism survivor selection; we will pick the best 4 solutions from the 8 candidates. The result of this selection is:
+
+\begin{align*}
+S_{1,1} = [1, 2, 0, 3], & \qquad cost(S_{1,1}) = 3.1617 \\
+S_{1,2} = [2, 0, 3, 1], & \qquad cost(S_{1,2}) = 3.0201 \\
+S_{1,3} = [2, 0, 1, 3], & \qquad cost(S_{1,3}) = 2.9759 \\
+S_{1,4} = [3, 2, 0, 1], & \qquad cost(S_{1,4}) = 3.6619
 \end{align*}
 
 \subsubsubsection{Iteration 2}
 
-For our second iteration we will again start by doing a crossover with our crossover points as 3 and 4 and our parents as $M_1^1$ and $M_1^2$
+A random number is generated: $r=0.89$, a crossover. This crossover will be between parents $S_{1,1}$ and $S_{1,2}$ and use crossover points 3 and 4.
 
 \begin{align*}
-C_2^1 = [2, 1, X, 3], & \qquad cost(C_2^1) = 3.8583 \\
-C_2^2 = [2, X, 3, 1], & \qquad cost(C_2^2) = 3.0201
+S_{2,1} = [2, 1, 0, 3], & \qquad cost(S_{2,1}) = 3.8583 \\
+S_{2,2} = [2, 0, 3, 1], & \qquad cost(S_{2,2}) = 3.0201
 \end{align*}
 
-Then we will randomly choose to mutate one parent chosen randomly $M_1^2$ by swapping two indicies: 3 and 4
+The next random number is: $r=0.18$, a mutation. We will mutate one randomly chosen parent, $S_{1,2}$, by swapping the randomly chosen indicies 3 and 4.
 
 \begin{align*}
-C_2^3 = [2, 1, 3, X], & \qquad cost(C_2^3) = 4.6371 
+S_{2,3} = [2, 1, 3, 0], & \qquad cost(S_{2,3}) = 4.6371
 \end{align*}
 
-To generate the last child we randomly choose to mutate $M_1^4$ by swapping indicies 1 and 2
+The next random number is: $r=0.05$, a mutation. We will mutate one randomly chosen parent, $S_{1,4}$ by swapping the randomly chosen indicies 1 and 2.
 
 \begin{align*}
-C_2^4 = [2, 3, X, 1], & \qquad cost(C_2^4) = 4.0781
+S_{2,4} = [2, 3, 0, 1], & \qquad cost(S_{2,4}) = 4.0781
 \end{align*}
 
-Then we again use fitness based elitism survivor selection to pick the best 4 of both our generations, because we were not able to generate any better solutions this is the same group as the last iteration
+Again, fitness-based elitism survivor selection is used to pick the best 4 solutions from both generations. We are left with the same generation as the last iteration because none of the children had a higher fitness score than any of the parents.
 
 \begin{align*}
-M_2^1 = [1, 2, X, 3], & \qquad cost(M_2^1) = 3.1617 \\
-M_2^2 = [2, X, 3, 1], & \qquad cost(M_2^2) = 3.0201 \\
-M_2^3 = [2, X, 1, 3], & \qquad cost(M_2^3) = 2.9759 \\
-M_2^4 = [3, 2, X, 1], & \qquad cost(M_2^4) = 3.6619   
+S_{2,1} = [1, 2, 0, 3], & \qquad cost(S_{2,1}) = 3.1617 \\
+S_{2,2} = [2, 0, 3, 1], & \qquad cost(S_{2,2}) = 3.0201 \\
+S_{2,3} = [2, 0, 1, 3], & \qquad cost(S_{2,3}) = 2.9759 \\
+S_{2,4} = [3, 2, 0, 1], & \qquad cost(S_{2,4}) = 3.6619
 \end{align*}
-
 
 \subsection{Particle Swarm Optimization Algorithm} % Ariel
 
