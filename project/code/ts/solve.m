@@ -1,4 +1,4 @@
-function [bestSolution, bestSolutionCost] = solve(iterations)
+function [bestSolution, bestSolutionCost] = solve(iterations = 100)
 
   % TODO tune this
   tenure = 5;
