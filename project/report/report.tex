@@ -472,7 +472,7 @@ we will use the ``randomly" selected initial solution, $S_0 = [ 1, 2, 0, 3 ]$.
 
 Tabu Search Algorithm is one of the easiest algorithms to implement because it modifies only one solution and contains only one improvement over Hill Climbing and that is the additon of a tabu list. The tabu list contains all of the recent moves taken by the algorithm which forces the algorithm to diversify if the algorithm is stuck in a local minima.
 
-
+The algorithm works by maintaining a tabu list that contains all of the moves that are not allowed. After a move is taken the tenure value is put in the tabu list and then the rest of the values in the tabu list are decremented. By decrementing values in the tabu table this will make these moves available in the next step if their tabu value reaches 0. The only tuning that must be done in this algorithm is to modify the tenure value.
 
 \subsubsection{Hand Iterations}
 
@@ -602,7 +602,7 @@ For crossover we chose to use the Order 1 permutation as described in \cite{Eibe
 
 The mutation function is much easier to specify in a permutation problem, because there are fewer issues relating to creating invalid solutions which is a large issue when attempting to do a crossover. Mutation in our algorithm swaps the position of two or more elements in a solution and then creates a new child. The number of elements swapped can be configured depending on the size of the solution.
 
-The last component that needs to be specified is the survivor selection algorithm. We chose to use a steady state Genetic Algorithm, so the entire generation is replaced by the children of the next generation if the child solution is an improvement on the parent from which it was derived. Because more children are generated than the size of the generation there is some selection pressure to choose better solutions, but because solutions are not kept from every iteration this allows us to diversify more than if we just chose the best solutions between both the children and parents as explained in course slides \cite{Talk}.
+The last component that needs to be specified is the survivor selection algorithm. We chose to use a steady state Genetic Algorithm, so the entire generation and the children are considered when chosing the new generation. We use an elitism based selection method which causes our new generations to only contain the best members from the previous generation \cite{Talk}. This method was chosen because it caused the algorithm to converge faster to optimal values.
 
 With our algorithm specified fully we can now do iterations by hand to see the results of our decisions.
 
