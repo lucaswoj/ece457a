@@ -62,7 +62,7 @@ As the digital revolution accelerates, electronics have become more than passive
 
 Robots, like people, are more effective at many types of tasks when cooperating in a group rather than working alone. For this reason, multirobot systems (MRS) are becoming a high interest subject. An MRS is a group of robots that are designed to perform a collective behavior.
 
-We define a ``heterogenous MRS" to be a group of different types of robots, some more adept at certain tasks than others. In this paper, we will refer to a hetergenous MRS simply as an MRS.
+We define a ``heterogeneous MRS" to be a group of different types of robots, some more adept at certain tasks than others. In this paper, we will refer to a heterogeneous MRS simply as an MRS.
 
 There are numerous advantages of using an MRS over using a single multi-purpose robot. For example, it is simpler to design a robust single purpose robot than a robot with multiple abilities and configurations. Simple designs tend to be more robust and lead to more reliable robots. Another source of reliability is that a MRS can have redundancies; if one robot fails, another may resume its tasks.  In addition, many complex tasks are distributed over a large area and would be slow to accomplish with a single robot.
 
@@ -74,11 +74,17 @@ Tasks particularly well suited to MRSs include
 \end{itemize}
 
 % What is the problem
-\subsection{Multirobot Task Allocation}
+\subsection{Problem}
 
-This report is specifically considering the problem of Complex Task Allocation for an MRS where the tasks are related to surveillance. The problem statement reads as follows:\mbox{}
-  \blockquote{In mobile surveillance systems, complex task allocation addresses how to optimally assign a set of surveillance tasks to a set of mobile sensing agents to maximize overall expected performance, taking into account the priorities of the tasks and the skill ratings of the mobile robots.}
-This problem is important to solve because areas under surveillance usually possess some degree of danger. Being able to replace human sentinels with robots has the potential to save the lives of the surveyors and of nearby civilians by providing advanced warning of incoming threats. The task allocation problem within the broader scope of surveillance is important because an optimal solution represents an effective assignment of robots to tasks and improves the overall efficacy of the MRS. Colloquially speaking, this report answers the question of ``which robot should perform which task?''\cite{Badreldin}
+This report is being written as an assignment for the University of Waterloo's ECE457a course, ``cooperative and adaptive algorithms." In it, we will explore using cooperative and adaptive algorithms to find near-optimal solutions to complex task allocation problems for an MRS, with a focus on surveillance tasks.
+
+Complex task allocation, as defined in this assignment's problem statement, is
+\mbox{\blockquote{
+  In mobile surveillance systems, complex task allocation addresses how to optimally assign a set of surveillance tasks to a set of mobile sensing agents to maximize overall expected performance, taking into account the priorities of the tasks and the skill ratings of the mobile robots.
+}}
+Replacing humans with robots in surveillance tasks, and allocating those robots efficiently, is important because areas under surveillance usually possess some degree of danger.
+
+Efficiently finding near-optimal solutions to complex task allocation has broad implications beyond surveillance. In essence, this report answers the question ``which robot should perform which task?''\cite{Badreldin}
 
 
 % Enumeration of report objectives and report structure
@@ -198,7 +204,7 @@ This tuple is read from left to right, and describes the concatenation of each $
 To help cement this important representation in the reader's mind, consider the following canonical solution vector:
 $$
 \{3,4,2,0,0,1,5\}
-$$ 
+$$
 which should be interpreted as
 \begin{itemize}
 \item $S(1) = \{ home_1, 3, 4, 2, home_1 \}$
