@@ -5,18 +5,22 @@ function [bestSolution, bestSolutionCost] = solve(iterations)
   if nTasks == 50
     tenure = 120;
     bestSolutionAgeMax = 3000;
+    nNeighbours = 5;
 
   elseif nTasks == 15
     tenure = 10;
     bestSolutionAgeMax = 1500;
+    nNeighbours = 5;
 
   elseif nTasks == 5
     tenure = 5;
     bestSolutionAgeMax = 1000;
+    nNeighbours = 5;
 
   elseif nTasks == 3
     tenure = 5;
     bestSolutionAgeMax = 1000;
+    nNeighbours = 5;
 
   else
     assert(false)
@@ -31,7 +35,7 @@ function [bestSolution, bestSolutionCost] = solve(iterations)
 
   i = 1;
   while true
-    neighbours = getSolutionNeighbours(solution, 5);
+    neighbours = getSolutionNeighbours(solution, nNeighbours);
 
     nontabuNeighbours = neighbours(isNontabu(neighbours, solution, tabu), :);
 
