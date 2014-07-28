@@ -643,6 +643,18 @@ $$S_\mathit{next} = S_2 = [ 3, 2, 1, 0 ], \; \mathit{cost}(S_\mathit{next}) = 4.
 The best solution found so far is
 $$S_\mathit{best} = [ 1, 2, 0, 3 ], \; \mathit{cost}(S_\mathit{best}) = 3.1617$$
 
+\subsubsection{Parameter Tuning}
+
+When tuning simulated annealing, there seems to be an optimal temperature range where the most improvements to the best solution are found. If the temperature is too high, there will be too much exploration for the algorithm to make meaningful progress. If the temperature is too low, the algorithm gets stuck in local minima. 
+
+Using a higher cooling factor seems to produce better results, at the expense of requiring more iterations. A higher cooling factor means that more temperature values will be used, so the algorithm will spend more time in the optimal temperature range.
+
+More iterations per temperature can be used to increase the exploitation at each temperature. More iterations per temperature produces better results (to a point) at the expense of significantly more iterations.
+
+The minimum temperature doesn't seem to change much between data sets. Minimums that are too low cause the geometric cooling algorithm to run for significantly more iterations with little benefit, as they are much more likely to get stuck in local minima at low temperatures. Minimum temperature has less of an effect when linear cooling is used, but is still important. Tuning other parameters is much more lucrative than tuning the minimum temperature.
+
+On the small data set, geometric cooling seems to find the optimal solution more reliably than linear cooling. On the medium data set, geometric cooling seems to find better solutions in fewer iterations. Linear seems to be similar to geometric, on the large data set.
+
 \subsection{Genetic Algorithm} % Austin
 
 \subsubsection{Description}
