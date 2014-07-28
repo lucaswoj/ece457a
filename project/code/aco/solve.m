@@ -40,11 +40,6 @@ function bestSolution = solve(iterations)
                 end
             end
 
-            % @TODO:
-            %   - redefine weight function to be what lucas wrote
-            %   - select neighbor with highest value in neighborWeight should rand <= rnaught
-            %       - indicate selected node by setting nextNode
-
             % Generate random number r, and compare to pre-chose r_o.
             % If r <= r_o then exploit most desirable path
             % Else explore path randomly selected using roulette wheel method
@@ -65,7 +60,7 @@ function bestSolution = solve(iterations)
                 eta = 0;
                 for j = 1 : length(neighbors)
                     n = neighbors(j);
-                    eta = eta + tau(currentNode, n)^alpha / neighborWeight(j);
+                    eta = eta + tau(currentNode, n)^alpha * neighborWeight(j);
                 end
 
                 eta
@@ -74,7 +69,7 @@ function bestSolution = solve(iterations)
                 for j = 1 : length(neighbors)
                     n = neighbors(j);
 
-                    prob = tau(currentNode, n)^alpha / neighborWeight(j) / eta;
+                    prob = tau(currentNode, n)^alpha * neighborWeight(j) / eta;
                     cumlProb = [ cumlProb, prob ];
                 end
 
