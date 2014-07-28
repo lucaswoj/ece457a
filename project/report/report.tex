@@ -647,13 +647,15 @@ $$S_\mathit{best} = [ 1, 2, 0, 3 ], \; \mathit{cost}(S_\mathit{best}) = 3.1617$$
 
 When tuning simulated annealing, there seems to be an optimal temperature range where the most improvements to the best solution are found. If the temperature is too high, there will be too much exploration for the algorithm to make meaningful progress. If the temperature is too low, the algorithm gets stuck in local minima. 
 
-Using a higher cooling factor seems to produce better results, at the expense of requiring more iterations. A higher cooling factor means that more temperature values will be used, so the algorithm will spend more time in the optimal temperature range.
+For geometric cooling, using a higher cooling factor seems to produce better results at the expense of requiring more iterations. A higher cooling factor means that more temperature values will be used, so the algorithm will spend more time in the optimal temperature range. Conversely, a lower cooling factor appears to be more effective for a linear cooling schedule.
 
-More iterations per temperature can be used to increase the exploitation at each temperature. More iterations per temperature produces better results (to a point) at the expense of significantly more iterations.
+More iterations per temperature can be used to increase the exploitation at each temperature. More iterations per temperature produces better results at the expense of significantly more iterations. After a certain point, adding more iterations per temperature does not improve the solutions found.
 
-The minimum temperature doesn't seem to change much between data sets. Minimums that are too low cause the geometric cooling algorithm to run for significantly more iterations with little benefit, as they are much more likely to get stuck in local minima at low temperatures. Minimum temperature has less of an effect when linear cooling is used, but is still important. Tuning other parameters is much more lucrative than tuning the minimum temperature.
+Appropriate initial and minimum temperature values are quite similar between data sets, as the other parameters like cooling factor and iterations per temperature are more useful in controlling the total number of iterations. If the maximum temperature is too high, the algorithm wastes time at the start by exploring too much. Minimum temperatures that are too low cause the geometric cooling algorithm to run for significantly more iterations with little benefit, as they are much more likely to get stuck in local minima at low temperatures. Minimum temperature has less of an effect when linear cooling is used, but is still important.
 
 On the small data set, geometric cooling seems to find the optimal solution more reliably than linear cooling. On the medium data set, geometric cooling seems to find better solutions in fewer iterations. Linear seems to be similar to geometric, on the large data set.
+
+% TODO: reference data sets in the appendix
 
 \subsection{Genetic Algorithm} % Austin
 
