@@ -10,10 +10,10 @@ function bestSolution = solve(iterations = 10)
     tau = ones(numNodes + 1);
 
     bestAge = 0;
-    maxAge = 10;
+    maxAge = 100;
 
     exploitConst = 0.41;
-    exploreConst = 1.15;
+    exploreConst = 2;
     rho = 0.76;
     rnaught = 0.43;
     numAnts = 3;
@@ -26,12 +26,12 @@ function bestSolution = solve(iterations = 10)
     ants = cell(numAnts, 2);
 
     for i = 1 : iterations
-        bestAge
+        bestAge;
 
         bestAge = bestAge + 1;
         if bestAge > maxAge
-            bestSolution
-            bestDist
+            bestSolution;
+            bestDist;
             return
         end
 
@@ -150,9 +150,11 @@ function bestSolution = solve(iterations = 10)
             tau(path(j), path(j + 1)) = tau(path(j), path(j + 1)) + Q / cost;
             %tau(path(j + 1), path(j)) = tau(path(j + 1), path(j)) + Q / cost;
         end
+
+        printIteration('aco', i, bestSolution, bestDist);
     end
 
-    bestSolution
-    bestDist
+    bestSolution;
+    bestDist;
 end
 
