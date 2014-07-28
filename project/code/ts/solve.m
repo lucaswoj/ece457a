@@ -44,7 +44,7 @@ function [bestSolution, bestSolutionCost] = solve(iterations = 100)
 
     solution = nextSolution;
 
-    printIteration('ts', i, bestSolutionCost);
+    printIteration('ts', i, bestSolution, bestSolutionCost);
 
   endfor
 

@@ -48,6 +48,6 @@ function [bestSolution, bestSolutionCost] = solve(nIterations = 100)
 
     endfor
 
-    printIteration('pso', i, gbestCost);
+    printIteration('pso', i, gbestPosition, gbestCost);
 
   endfor

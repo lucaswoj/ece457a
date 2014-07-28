@@ -5,7 +5,7 @@ function bestSolution = solve()
 	coolingFactor = 0.85;			% (0, 1), typically between 0.7 and 0.95. Higher = slower cooling
 	iterationsPerTemperature = 3;	% Decrease temperature every X iterations
 
-	solution = getRandomSolution();
+	solution = getRandomSolutions(1);
 	solutionCost = getSolutionCost(solution);
 	bestSolution = solution;
 	bestSolutionCost = solutionCost;
@@ -31,6 +31,8 @@ function bestSolution = solve()
 		if mod(i, iterationsPerTemperature) == 0
 			temperature = temperature * coolingFactor;
 		end
+
+		printIteration('sa', i, bestSolution, bestSolutionCost);
 
 		i = i + 1;
 	end
