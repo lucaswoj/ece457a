@@ -38,16 +38,16 @@ runProblem = \
 	tee $@
 
 
-$(addsuffix Reduced.csv, $(ALGORITHMS)): %Reduced.csv: %/solve.m octave-build loadReducedProblem.m
+$(addsuffix Reduced.csv, $(ALGORITHMS)): %Reduced.csv: %/solve.m octave-build
 	$(call runProblem,Reduced,25)
 
-$(addsuffix Small.csv, $(ALGORITHMS)): %Small.csv: %/solve.m octave-build loadSmallProblem.m
+$(addsuffix Small.csv, $(ALGORITHMS)): %Small.csv: %/solve.m octave-build
 	$(call runProblem,Small,50)
 
-$(addsuffix Medium.csv, $(ALGORITHMS)): %Medium.csv: %/solve.m octave-build loadMediumProblem.m
+$(addsuffix Medium.csv, $(ALGORITHMS)): %Medium.csv: %/solve.m octave-build
 	$(call runProblem,Medium,100)
 
-$(addsuffix Large.csv, $(ALGORITHMS)): %Large.csv: %/solve.m octave-build loadLargeProblem.m
+$(addsuffix Large.csv, $(ALGORITHMS)): %Large.csv: %/solve.m octave-build
 	$(call runProblem,Large,1000)
 
 
