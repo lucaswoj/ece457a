@@ -1,13 +1,13 @@
 function [bestsol,  bestfun] = solve(iterations = 100)
-    global prevIndividuals individuals costs prevCosts f totaln genesize;
+    global prevIndividuals individuals costs prevCosts;
 
-    nIndividuals = 20;
+    nIndividuals = 5;
     nMutationSites = 2;
     pCrossover = 0.95;
     pMutation = 0.05;
 
     individuals = getRandomSolutions(nIndividuals);
-    costs = zeros(1, nIndividuals);
+    costs = repmat(Inf, 1, nIndividuals);
 
     for i = 1:iterations
         prevCosts = costs;
@@ -41,7 +41,6 @@ end
 function evolve(j)
     global individuals costs prevCosts prevIndividuals;
 
-    disp(individuals(j, :));
     costs(j) = getSolutionCost(individuals(j,  : ));
     if costs(j) < prevCosts(j)
         prevIndividuals(j,  :) = individuals(j,  :);
@@ -74,7 +73,7 @@ function halfChild = finishCrossover(halfChild, parent, cPointHigh, cPointLow)
 
     childIndex = cPointHigh + 1;
     parentIndex = cPointHigh + 1;
-    while length(halfChild) ~= length(parent)
+    while length(halfChild) ~= length(parent) || nnz(halfChild == 0) ~= nRobots - 1
         if parentIndex > length(parent),
             parentIndex = parentIndex - length(parent);
         end
@@ -89,7 +88,7 @@ function halfChild = finishCrossover(halfChild, parent, cPointHigh, cPointLow)
                 halfChild(childIndex) = parent(parentIndex);
                 childIndex = childIndex + 1;
                 parentIndex = parentIndex + 1;
-            else 
+            else
                parentIndex = parentIndex + 1;
             end
         else
@@ -100,7 +99,7 @@ function halfChild = finishCrossover(halfChild, parent, cPointHigh, cPointLow)
                 halfChild(childIndex) = parent(parentIndex);
                 childIndex = childIndex + 1;
                 parentIndex = parentIndex + 1;
-            end      
+            end
         end
     end
 end
