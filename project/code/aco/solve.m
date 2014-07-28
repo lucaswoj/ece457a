@@ -1,28 +1,31 @@
 function bestSolution = solve(iterations = 10)
-    global homes energy;
+    global homes energy homeConst;
+
+    if iterations == 1000
+        iterations = 10
+    end
 
     % construct the pheromone list
     numNodes = homes(end) - 1;
     numTasks = homes(1) - 1;
+
     tau = ones(numNodes + 1);
 
-    exploitConst = 0.7;
-    exploreConst = 1;
-    rho = 0.1;
-    rnaught = 0;
+    exploitConst = 0.41;
+    exploreConst = 1.15;
+    rho = 0.76;
+    rnaught = 0.43;
+    numAnts = 3;
     Q = 1; % pheromone amount
 
     bestSolution = [ ];
     bestDist = Inf;
 
     totalEnergy = energy;
-    numAnts = 1;
     ants = cell(numAnts, 2);
 
     for i = 1 : iterations
         for ant = 1 : numAnts
-            ant
-
             robot = 1;
             currentNode = homes(robot);
             visited = zeros(1, numNodes);
@@ -69,21 +72,18 @@ function bestSolution = solve(iterations = 10)
                         eta = eta + tau(currentNode, n)^exploitConst * neighborWeight(j);
                     end
 
-                    eta
-
                     cumlProb = 1 : length(neighbors);
                     for j = 1 : length(neighbors)
                         n = neighbors(j);
                         cumlProb(j) = tau(currentNode, n)^exploitConst * neighborWeight(j) / eta;
                     end
 
-                    cumlProb
-                    selectedNeighbor = roulette(cumlProb)
-                    nextNode = neighbors(selectedNeighbor)
+                    selectedNeighbor = roulette(cumlProb);
+                    nextNode = neighbors(selectedNeighbor);
                 end
 
-                visited(nextNode) = 1
-                path = [ path, nextNode ]
+                visited(nextNode) = 1;
+                path = [ path, nextNode ];
                 desirability = desirability + neighborWeight(selectedNeighbor);
                 energy(robot) = energy(robot) - energyCost(robot, currentNode, nextNode);
 
@@ -107,7 +107,7 @@ function bestSolution = solve(iterations = 10)
             cost = getSolutionCost(solution);
 
             if cost < bestDist
-                bestSolution = solution; 
+                bestSolution = solution;
                 bestDist = cost;
             end
 
@@ -139,14 +139,8 @@ function bestSolution = solve(iterations = 10)
             tau(path(j), path(j + 1)) = tau(path(j), path(j + 1)) + Q / cost;
             %tau(path(j + 1), path(j)) = tau(path(j + 1), path(j)) + Q / cost;
         end
-
-        cost
-        tau
-        %input('pause');
     end
 
     bestDist
-    getSolutionCost(bestSolution)
-    bestSolution
 end
 
