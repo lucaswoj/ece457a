@@ -54,6 +54,9 @@ $(ALGORITHMS): %: %Reduced.csv %Small.csv %Medium.csv %Large.csv
 
 all: $(ALGORITHMS)
 
+clean:
+	rm *.csv
+
 # This shouldn't be regnereated unless absolutely nescessary
 #
 # loadLargeProblem.m: octave-build uneval.m loadRandomProblem.m

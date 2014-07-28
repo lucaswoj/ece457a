@@ -1,14 +1,11 @@
-function swaps = subtractPositions(p2, p1)
+function velocity = subtractPositions(p2, p1)
   assert(length(p1) == length(p2))
-  pLength = length(p1);
 
   % Create a "directory" of mismatched elements
   p1Indicies = find(p1 ~= p2);
   p2Indicies = p1Indicies;
 
-  % Allocate space for the answer
-  swaps = zeros(pLength - 1, 2);
-  swapsIndex = 1;
+  velocity = zeros(0, 2);
 
   while length(p1Indicies) > 0
 
@@ -34,14 +31,10 @@ function swaps = subtractPositions(p2, p1)
         break;
       endif
 
-      swaps(swapsIndex, :) = [p1Index, p2Index];
-      swapsIndex = swapsIndex + 1;
-
+      velocity = [velocity; [p1Index, p2Index]];
       p1Index = p2Index;
 
     endwhile
 
   endwhile
-
-  swaps = unpadVelocity(swaps);
 

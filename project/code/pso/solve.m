@@ -2,16 +2,16 @@ function [bestSolution, bestSolutionCost] = solve(nIterations = 100)
   global nTasks tasks nRobots robots nHomes homes priorities skills distances;
 
   % TODO tune this
-  nParticles = 10
+  nParticles = 10;
 
   positions = getRandomSolutions(nParticles);
   lbestPositions = positions;
   lbestScores = zeros(1, nParticles);
 
-  velocityLength = nParticles * 10;
-  velocities = zeros(nParticles, velocityLength, 2);
+  velocities = cell(nParticles, 1);
+  velocities(:) = zeros(0, 2);
 
-  [gbestPosition, gbestCost] = getBestSolution(positions)
+  [gbestPosition, gbestCost] = getBestSolution(positions);
 
   for i=1:nIterations
 
@@ -27,11 +27,11 @@ function [bestSolution, bestSolutionCost] = solve(nIterations = 100)
         positions(j, :),
         lbestPositions(j, :),
         gbestPosition,
-        unpadVelocity(squeeze(velocities(j, :, :)))
+        velocities{j}
       );
       position = addVelocityPosition(velocity, positions(j, :));
 
-      velocities(j, :, :) = padVelocity(velocity, velocityLength);
+      velocities{j, 1} = velocity;
       positions(j, :) = position;
 
       cost = getSolutionCost(position);
