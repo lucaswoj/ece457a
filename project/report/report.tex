@@ -335,19 +335,17 @@ In this MRTA problem, there is also heterogeneity in the tasks that area assigne
 The next section describes the graph that will be constructed for use with mTSP.
 
 \subsubsection{The Graph}
+We will model complex task allocation loosely on the traveling salesman problem.
+
 Given a population of $\mathit{robots}$, a set of $\mathit{tasks}$, a set of $\mathit{homes}$ a priority for each task $P$, each robot's skill at performing each task $M_{skill}(r,t)$ and an ordered assignment of tasks to robots $S(r)$, for each $r \in \mathit{robots}$
 we can create a directed, weighted graph as follows:
-
-We will model complex task allocation loosely on the traveling salesman problem.
 
 Given a random initial solution, $S_0$,
 
 \begin{align*}
 	G &= (V, E) \\
 	V &= \mathit{homes} \cup \mathit{tasks} \\
-	E_{task_i, task_j} &= D_\mathit{task-task}(i,j) \qquad \forall t \in \mathit{tasks} \\
-  E_{home_i, task_j} &= D_\mathit{home-task}(i,j) \qquad \forall d \in \mathit{homes}\\
-	E_{task_i, home_j} &= D_\mathit{task-home}(i,j) \qquad \forall d \in \mathit{homes}\\
+	E_{i, j} &= distances(i,j) \qquad \forall i,j \in [1, nRobots+nTasks] \\
 \end{align*}
 %
 
