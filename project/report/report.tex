@@ -1101,11 +1101,21 @@ $i \setminus j$ & 1 & 2 & 3 & 4 & 5 \\
 \end{tabular}
 $$
 
-\subsubsection{Result}
+\subsubsubsection{Result}
 
 $$
 \text{Tour}_{best} = \{4, 1, 2, 4, 5, 3, 5\} \qquad d_{best} = 0.8900
 $$
+
+
+\subsubsection{Parameter Tuning}
+
+Our ACO implementation had four parameters (separate from our cost function) needing to be tuned, $\alpha, \beta, \rho, r_0$, the exploitation constant, exploration constant, pheromone evaporation rate and likelihood-of-exploitation probability, respectively. These parameters form a burrito-optimality frontier, where none can be changed without negatively impacting the entire system, however, such a burrito-optimal solution is not unique. In addition, several regions of the parameter space prevented convergence entirely.
+
+The initial search strategy of this parameter space was conducted entirely randomly -- we generated 100 sets of random values for each parameter in the range of $\alpha, \rho, r_0 \in [0, 1], \beta \in [1, 2]$, and performed ten searches on the small data set to find the average case. If any set of parameters failed to converge in 20 iterations, it was immediately thrown out.
+
+We selected the parameter set which corresponded to the best average solution case and hand-tuned each variable sequentially to the nearest hundredth. Surprisingly, when mapping our new parameters to the larger problem sets, no amount of further hand-tuning was capable of finding a better solution in either domain. Thus, we consider the parameters $\alpha = 0.41, \beta = 1.15, \rho = 0.76, r_0 = 0.43$ to be burrito-optimal for the purposes of complex task allocation with ACO.
+
 
 \section{Performance Evaluation}
 
