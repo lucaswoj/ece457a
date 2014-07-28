@@ -1,15 +1,23 @@
 function [bestsol,  bestfun] = solve(iterations = 100)
     global prevIndividuals individuals costs prevCosts nIndividuals nRobots nTasks;
 
-    nIndividuals = 20;
-    nMutationSites = 2;
-    pCrossover = 0.95;
-    pMutation = 0.05;
+    chromosomeLength = nRobots + nTasks - 1;
+
+    nIndividuals = 30;
+    nMaxMutationSites = floor(chromosomeLength/2);
+    pCrossover = 0.70;
+    pMutation = 0.15;
 
     individuals = getRandomSolutions(nIndividuals);
     costs = repmat(Inf, 1, nIndividuals);
 
-    for i = 1:iterations
+    numSameBest = 0;
+    bestCost = Inf;
+    prevBestCost = Inf;
+    iterations = 0;
+
+
+    while numSameBest ~= 200
         count = 1;
         prevCosts = costs;
         prevIndividuals = individuals;
@@ -19,13 +27,13 @@ function [bestsol,  bestfun] = solve(iterations = 100)
             jj = floor(nIndividuals * rand) + 1;
 
             if pCrossover > rand
-                [individuals(count,  : ), individuals(count + 1,  : )] = crossover(prevIndividuals(ii,  : ), prevIndividuals(jj,  : ));
+                [individuals(count, :), individuals(count + 1, :)] = crossover(prevIndividuals(ii,  :), prevIndividuals(jj,  :));
                 count = count + 2;
             end
 
             if pMutation > rand
                 kk = floor(nIndividuals * rand) + 1;
-                individuals(count, :) = mutate(prevIndividuals(kk,  :), nMutationSites);
+                individuals(count, :) = mutate(prevIndividuals(kk,  :), floor(rand * nMaxMutationSites));
                 count = count + 1;
             end
         end
@@ -33,9 +41,15 @@ function [bestsol,  bestfun] = solve(iterations = 100)
         individuals = chooseSurvivors(individuals, prevIndividuals);
 
         [bestCost, bestIndex] = min(costs);
-        bestIndividual = individuals(bestIndex);
+        if bestCost >= prevBestCost
+            numSameBest = numSameBest + 1;
+        else
+            numSameBest = 0;
+            prevBestCost = bestCost;
+        end
+        iterations = iterations + 1;
 
-        printIteration('ga', i, bestIndividual, bestCost);
+        printIteration('ga', iterations, 0, bestCost);
     end
 end
 

@@ -717,6 +717,14 @@ S_{2,3} = [2, 0, 1, 3], & \qquad cost(S_{2,3}) = 2.9759 \\
 S_{2,4} = [3, 2, 0, 1], & \qquad cost(S_{2,4}) = 3.6619
 \end{align*}
 
+\subsubsection{Parameter Tuning}
+
+Genetic Algorithm is a complex algorithm with many different parameters that must be specified, so after initially creating our solution we made many modifications to our initial algorithm parameters. One of the initial parameters we could tune are the crossover and mutation probabilities. The crossover probability did not seem to be a huge factor in convergence, values from $.6$ - $.95$ would all converge to the same values with relative ease. The mutation probability was chosen to be in the range $$\frac{1}{\text{Population Size}} <= p_\mathit{mutation} < \frac{1}{\text{Chromosome Length}}$$ and the mutation sites variable was modified so as many as $\frac{\text{Chromosome Length}}{2}$ swaps were preformed when a mutation needed to be performed.
+
+The other modification we made after initially developing our algorithm was to change our stopping criteria from a strict number of iterations to a stopping criteria where we detect stagnation in the best solution and only stop then. This helps to fully explore the solution space and allows us to fairly compare this algorithm against our other algorithms. 
+
+Because of the large number of parameters we have to tune the most efficient method to discover a good configuration would be to make an adaptive version of this algorithm that can tune the parameters based on the results of running the algorithm. This would still not give us the best possible configuration because we would also need a way to change our crossover algorithm, our mutation algorithm and our survivor selection algorithm. Each of these sub-algorithms has multiple different implementations that offer different results so if we wanted to find the best configuration we would need to implement all of these algorithms and then test them in all of the appropriate configurations.
+
 \subsection{Particle Swarm Optimization Algorithm} % Ariel
 The particle Swarm Optimization (PSO) metaheuristic is based on the behavior of swarm animals such as fish and birds.
 Each particle represents a candidate solution and ``flies'' towards the optimal solution using information from its
