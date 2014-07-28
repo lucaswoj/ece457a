@@ -1,7 +1,7 @@
 function [bestsol,  bestfun] = solve(iterations = 100)
-    global prevIndividuals individuals costs prevCosts;
+    global prevIndividuals individuals costs prevCosts nIndividuals nRobots nTasks;
 
-    nIndividuals = 5;
+    nIndividuals = 20;
     nMutationSites = 2;
     pCrossover = 0.95;
     pMutation = 0.05;
@@ -10,6 +10,7 @@ function [bestsol,  bestfun] = solve(iterations = 100)
     costs = repmat(Inf, 1, nIndividuals);
 
     for i = 1:iterations
+        count = 1;
         prevCosts = costs;
         prevIndividuals = individuals;
 
@@ -18,17 +19,18 @@ function [bestsol,  bestfun] = solve(iterations = 100)
             jj = floor(nIndividuals * rand) + 1;
 
             if pCrossover > rand
-                [individuals(ii,  : ), individuals(jj,  : )] = crossover(prevIndividuals(ii,  : ), prevIndividuals(jj,  : ));
-                evolve(ii);
-                evolve(jj);
+                [individuals(count,  : ), individuals(count + 1,  : )] = crossover(prevIndividuals(ii,  : ), prevIndividuals(jj,  : ));
+                count = count + 2;
             end
 
             if pMutation > rand
                 kk = floor(nIndividuals * rand) + 1;
-                individuals(kk, :) = mutate(prevIndividuals(kk,  :), nMutationSites);
-                evolve(kk);
+                individuals(count, :) = mutate(prevIndividuals(kk,  :), nMutationSites);
+                count = count + 1;
             end
         end
+
+        individuals = chooseSurvivors(individuals, prevIndividuals);
 
         [bestCost, bestIndex] = min(costs);
         bestIndividual = individuals(bestIndex);
@@ -38,14 +40,30 @@ function [bestsol,  bestfun] = solve(iterations = 100)
 end
 
 % Evolving the new generation
-function evolve(j)
-    global individuals costs prevCosts prevIndividuals;
+function newGeneration = chooseSurvivors(children, parents)
+    global costs prevCosts nIndividuals;
 
-    costs(j) = getSolutionCost(individuals(j,  : ));
-    if costs(j) > prevCosts(j)
-        %If the cost is greater then replace the value with the parent
-        individuals(j,  :) = prevIndividuals(j,  :);
+
+    newGeneration = [];
+    generation = [children; , parents];
+    [numRow, numVariables] = size(generation);
+    for i = 1 : numRow
+        genCosts(i) = getSolutionCost(generation(i, :));
     end
+
+    for i = 1 : nIndividuals
+        %find the best solution in the generation
+        [bestCost, bestIndex] = min(genCosts);
+
+        %add it to our cost vector and the output matrix
+        costs(i) = bestCost;
+        newGeneration(i, :) = generation(bestIndex, :);
+
+        %Then remove the values from the generation
+        generation(bestIndex, : ) = [];
+        genCosts(bestIndex) = [];
+    end
+
 end
 
 % Crossover operator, using the Order 1 crossover algorithm
