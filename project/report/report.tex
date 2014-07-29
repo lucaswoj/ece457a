@@ -479,7 +479,16 @@ Since there is no concept of temperature in general optimization problems, an ar
 
 The algorithm begins with a random solution. At each iteration, a neighboring solution is chosen at random. The probability of selecting this new solution over the old solution is $\mathit{P}(\Delta{}E) = e^{-\frac{\Delta{}E}{k_{B}T}}$, based on the Boltzmann probability factor.\cite{Kirkpatrick}
 
-This probability function ensures that any improving solution is accepted, and that there is a possibility to accept any non-improving solution when $T>0$. Given a high temperature, there is a large probability of selecting non-improving solutions, which decreases as the temperature decreases. As the algorithm reaches the minimum temperature, it should converge to an optimal or near-optimal solution.
+This probability function ensures that any improving solution is accepted, and that there is a possibility to accept any non-improving solution when $T>0$. Given a high temperature, there is a large probability of selecting non-improving solutions, which decreases as the temperature decreases. As the algorithm reaches the minimum temperature, it should converge to an optimal or near-optimal solution. This behaviour is shown in Figure 1.
+
+\begin{center}
+\begin{figure}
+\noindent\makebox[\textwidth]{%
+\includegraphics[width=1.2\textwidth]{images/SAplot.png}
+}
+\caption{Simulated Annealing run on large data set}
+\end{figure}
+\end{center}
 
 \subsubsection{Hand Iterations}
 
@@ -537,7 +546,6 @@ Appropriate initial and minimum temperature values are quite similar between dat
 On the small data set, geometric cooling seems to find the optimal solution more reliably than linear cooling. On the medium data set, geometric cooling seems to find better solutions in fewer iterations. On the large data set, linear seems to perform similarly to geometric.
 
 \todo{reference data sets in the appendix}
-\missingfigure{insert graph showing cost at each iteration on large data set}
 
 \subsection{Genetic Algorithm} % Austin
 
