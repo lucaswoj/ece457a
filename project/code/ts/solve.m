@@ -3,9 +3,9 @@ function [bestSolution, bestSolutionCost] = solve(iterations)
   global nTasks tasks nRobots robots nHomes homes priorities skills distances
 
   if nTasks == 50
-    tenure = 120;
+    tenure = 125;
     bestSolutionAgeMax = 3000;
-    nNeighbours = 5;
+    nNeighbours = 10;
 
   elseif nTasks == 15
     tenure = 10;
@@ -14,12 +14,12 @@ function [bestSolution, bestSolutionCost] = solve(iterations)
 
   elseif nTasks == 5
     tenure = 5;
-    bestSolutionAgeMax = 1000;
+    bestSolutionAgeMax = 2000;
     nNeighbours = 5;
 
   elseif nTasks == 3
     tenure = 5;
-    bestSolutionAgeMax = 1000;
+    bestSolutionAgeMax = 2000;
     nNeighbours = 5;
 
   else
