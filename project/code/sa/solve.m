@@ -80,7 +80,7 @@ function bestSolution = solve()
 		end
 	end
 
-	solution = getRandomSolutions(1);
+	solution = getRandomSolutions(1);	% select initial solution
 	solutionCost = getSolutionCost(solution);
 	bestSolution = solution;
 	bestSolutionCost = solutionCost;
@@ -88,21 +88,24 @@ function bestSolution = solve()
 	temperature = initialTemperature;
 	i = 1;
 
-	while temperature > minTemperature
+	while temperature > minTemperature	% algorithm terminates when it reaches the minimum temperature
 
-		newSolution = getSolutionNeighbours(solution, 1);
+		newSolution = getSolutionNeighbours(solution, 1);	% select a random neighbour
 		newSolutionCost = getSolutionCost(newSolution);
 		if newSolutionCost < solutionCost || exp((solutionCost - newSolutionCost) / temperature) > rand()
+			% if new solution is better, or probabilistically selected
 			solution = newSolution;
 			solutionCost = newSolutionCost;
 		end
 
 		if solutionCost < bestSolutionCost
+			% update current best solution
 			bestSolution = solution;
 			bestSolutionCost = solutionCost;
 		end
 
 		if mod(i, iterationsPerTemperature) == 0
+			% apply cooling schedule
 			if (geometricCooling)
 				temperature = temperature * coolingFactor;
 			else
@@ -110,7 +113,7 @@ function bestSolution = solve()
 			end
 		end
 
-		printIteration('sa', i, bestSolution, bestSolutionCost);
+		printIteration('sa', i, bestSolution, bestSolutionCost);	% logging
 
 		i = i + 1;
 	end
