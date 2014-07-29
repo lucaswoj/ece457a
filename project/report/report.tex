@@ -1079,13 +1079,17 @@ The other algorithms were suboptimal in either speed or optimality of solution, 
 
 \subsection{Small Scale}
 
-Our small scale problem featured a very small problem space with only 8! solutions and most of our metaheuristic algorithms were able to converge to the same solution. This data set displays some of the differences between the algorithms, both TS and SA were very effective by converging quickly on the optimal value. GA, ACO and PSO also converged to the optimal value, but more slowly than TS and SA. This is a property that we will see in the larger data sets where these differences are more pronounced.
+Our small dataset problem featured a very small permutation space with $8! = 40320$ possibilities, on which most of our metaheuristic algorithms were able to converge to the same solution. We take this as strong evidence of having found the optimal solution (though recall this is not a canonical dataset, so we are uncertain in this claim).
+
+The problem displays some of the differences between the algorithms, with both TS and SA being very effective with fast convergence to the optimal solution. GA, ACO and PSO also converged to the optimal value, but more slowly than TS and SA. This is a property that we will see in the larger datasets where said differences are more pronounced.
 
 \subsection{Medium Scale}
 
 \subsection{Large Scale}
 
-The large scale data set was the most interesting and was the real differentiator between the algorithms. There was much more variation in convergence speed and final solutions when the algorithms were run against the large data set. Our more complex algorithms had much more trouble converging as a result of the size of the problem space. This is because some of our algorithms scale to large problem sets much more effectively than others. For example, our ACO implementation must do N calculations at each node, and there are N nodes to consider for each ant. TS for comparison only has to look at a random selection of the neighborhood to find an improving solution, or a solution not in the tabu list. 
+The large scale dataset was the most interesting of the three, and really differentiated between the five algorithms under consideration. We found significantly more variation in convergence speed and optimality of solutions on this dataset.
+
+The more complex algorithms had much more trouble converging as a result of the size of the problem space, owing partially in fact because some of algorithms scale to large problem sets much more effectively than others. Take, for example, the ACO implementation which runs on the order of $O(n^2)$ for traversing the graph. For comparison, TS has only to look at a random selection of the neighborhood to find an improving solution. 
 
 
 \begin{center}
@@ -1104,9 +1108,11 @@ This paper has presented a comparative study of metaheuristic algorithms used wi
 
 We found that our algorithms had varied performance which is quite apparent in Figure 1. Simulated Annealing was our most successful algorithm due to a fast convergence rate with the most optimal solution. Simulated Annealing was known to be effective in solving problems similar to MRTA including Quadratic Assignment in previous papers\cite{Badreldin}, so this is not a particularly surprising discovery.
 
-The more complex algorithms were the P-Metaheuristic algorithms:Ant Colony Optimization, Particle Swarm Optimization and Genetic Algorithm. None of them had incredible speed of convergence, though GA did find very strong solutions. These algorithms were the most difficult to implement and optimize so their relatively poor performance is expected. Each of these algorithms contains significantly more calculations per iteration and tuning parameters than their simpler alternatives.
+The more complicated algorithms were the P-Metaheuristic algorithms: Ant Colony Optimization, Particle Swarm Optimization and Genetic Algorithm. None of them had incredible speeds of convergence, though GA did find very strong solutions. These algorithms were the most difficult to implement and optimize so their relatively poor performance is to be expected. Each of these algorithms contains significantly more calculations per iteration and tuning parameters than their simpler alternatives.
 
-This difference in scaling is one of our primary concerns for future study because with algorithms that scale more effectively we may have been able to get better results from our P-Metaheuristic algorithms. More optimizations are needed in order to implement these algorithms as effectively our S-Metaheuristic algorithms. Because we had only intermediate experience writing MATLAB programs we were not able to optimize our program as thoroughly as expert MATLAB programmers. The choice of language also made an impact on program speed, if we had implemented our algorithm in a faster language we may have seen a boost in performance, so this is an avenue of future study. Besides just optimizing program flow we also had to change the internal parameters of the algorithms in order to achieve better performance.
+This difference in scaling is one of our primary concerns for future study because given algorithms with more effective scaling we may have been able to get better results from the P-Metaheuristic algorithms. Further optimizations are needed to implement these algorithms as efficiently as the S-Metaheuristic algorithms. 
+
+Since we had only intermediate experience writing MATLAB programs, we were unable to optimize our program as thoroughly as expert MATLAB programmers would have been capable. The choice of language also made an tremendously poor impact on speed; faster languages would certainly see hugely improved results. In addition to algorithmic improvements, each method had several internal parameters in need of tuning.
 
 Tuning the algorithms' various parameters was by far the most difficult aspect of the project, owing to the fact that we did not implement adaptive versions of the algorithms. Due to the stochastic nature of these algorithms, a qualitative evaluation of a set of parameters is very hard to perform. The sheer number of parameters also made it difficult to tune effectively because modification of one rarely lead to drastically different results, but modification of many did not lead itself to analysis.
 
