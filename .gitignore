@@ -21,3 +21,4 @@
 *.mtc1
 *.synctex.gz
 report.pdf
+report.run.xml

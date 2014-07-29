@@ -49,7 +49,7 @@ Complex task allocation is the assignment of complex and simple tasks to a group
 
 Five metaheuristic algorithms were tested for this report. They are: Tabu Search, Simulated Annealing, Genetic Algorithms, Particle Swarm Optimization, and Ant Colony Optimization.
 
-Unfortunately, we were unable to find a canonical dataset for this problem, and thus have run these algorithms on a randomly-generated dataset. An example of the dataset is included in Appendix A, with the remainder on the attached digital media.
+Unfortunately, we were unable to find a canonical dataset for this problem, and thus have run these algorithms on a randomly-generated dataset. An example of the reduced dataset used is included in Section 3.3, with the larger datasets on the attached digital media.
 
 The results of experimentation are as follows. The algorithm that produced the best solution was Simulated Annealing, at the cost of a relatively large number of iterations to achieve convergence.
 
@@ -1275,8 +1275,8 @@ However, as is so often the case, it was modifications of the algorithms themsel
 
 Furthermore, our PSO algorithm was also modified to not persist velocities between iterations. Due to the way velocity was defined, no sense of direction could possibly persist between positions. Thusly, after performing a swap between solutions, velocity would not apply, so it was thrown out entirely. This was one of our breakthroughs in the implementation of this algorithm, and significantly helped lead to convergence.
 
-
 \printbibliography
+
 
 % Every report needs references; in fact, your failure to consult references for
 % guidance may be considered negligence. On the other hand, when you include
