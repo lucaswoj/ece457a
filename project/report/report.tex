@@ -644,7 +644,7 @@ selection probability, $P_1$, as
 P_i & =
 \begin{cases}
   1 & \mathit{cost}(S_{i}) < \mathit{cost}(S_{i - 1}) \\
-  e^{-\frac{\mathit{cost}(S_{i}) - \mathit{cost}(S_{i - 1})}{T_i}} & \text{otherwise}
+  \exp \left\{-\frac{\mathit{cost}(S_{i}) - \mathit{cost}(S_{i - 1})}{T_i}\right\} & \text{otherwise}
 \end{cases} \\
 P_1 & = 0.6777
 \end{align*}
@@ -774,42 +774,56 @@ S_{2,4} = [3, 2, 0, 1], & \qquad cost(S_{2,4}) = 3.6619
 
 \subsubsection{Parameter Tuning}
 
-Genetic Algorithm is a complex algorithm with many different parameters that must be specified, so after initially creating our solution we made many modifications to our initial algorithm parameters. One of the initial parameters we could tune are the crossover and mutation probabilities. The crossover probability did not seem to be a huge factor in convergence, values from $.6$ - $.95$ would all converge to the same values with relative ease. The mutation probability was chosen to be in the range $$\frac{1}{\text{Population Size}} <= p_\mathit{mutation} < \frac{1}{\text{Chromosome Length}}$$ and the mutation sites variable was modified so as many as $\frac{\text{Chromosome Length}}{2}$ swaps were preformed when a mutation needed to be performed.
+Genetic Algorithm is a complex algorithm with many different parameters needing specification, so after initially creating our solution we made many modifications to our initial algorithm parameters.
 
-The other modification we made after initially developing our algorithm was to change our stopping criteria from a strict number of iterations to a stopping criteria where we detect stagnation in the best solution and only stop then. This helps to fully explore the solution space and allows us to fairly compare this algorithm against our other algorithms.
+One of the initial parameters we could tune are the crossover and mutation probabilities. The crossover probability did not seem to be a huge factor in convergence, values from $.6$ - $.95$ would all converge to the same values with relative ease.
 
-Because of the large number of parameters we have to tune the most efficient method to discover a good configuration would be to make an adaptive version of this algorithm that can tune the parameters based on the results of running the algorithm. This would still not give us the best possible configuration because we would also need a way to change our crossover algorithm, our mutation algorithm and our survivor selection algorithm. Each of these sub-algorithms has multiple different implementations that offer different results so if we wanted to find the best configuration we would need to implement all of these algorithms and then test them in all of the appropriate configurations.
+The mutation probability was chosen to be in the range $$\frac{1}{\text{Population Size}} <= p_\mathit{mutation} < \frac{1}{\text{Chromosome Length}}$$ and the mutation sites variable was modified so as many as $\frac{\text{Chromosome Length}}{2}$ swaps were preformed when a mutation needed to be performed.
 
-\subsection{Particle Swarm Optimization Algorithm} % Ariel
+The other modification we made after initially developing our algorithm was to change our stopping criteria from a strict number of iterations to a criterion by which we detect stagnation in the best solution and stop only then. This helps to fully explore the solution space and allows us to fairly compare this algorithm against our others.
+
+Due to the large number of parameters we have to tune, the most efficient method to discover a good configuration would be to make an adaptive version of this algorithm to tune the parameters based on running itself recursively, though this would still not give us the best possible configuration.
+
+This solution to tuning would still not be optimal since it would also need a way to change its crossover, mutation and survivor-selection algorithms. Each of these sub-algorithms has multiple different implementations.
+
+\subsection{Particle Swarm Optimization Algorithm}
+% Ariel
 The particle Swarm Optimization (PSO) metaheuristic is based on the behavior of swarm animals such as fish and birds.
-Each particle represents a candidate solution and ``flies'' towards the optimal solution using information from its
-past experience and the swarm's experience. Gradually, the particles will converge on the ideal solution.
-The algorithm begins by generating an initial population of particles each of whom have a velocity of 0.
-In each iteration, the local (per particle) and global (across the swarm) best values are recorded and used to calculate each particle's velocity. \cite{ClassicalPSO}
-Velocity is calculated by:
+
+Each particle represents a candidate solution and ``flies'' towards the optimal solution using information from it and the swarm's collective experience. Gradually, these particles will converge on the optimal solution.
+
+This algorithm begins by generating an initial population of particles, each of which has a velocity of 0.
+
+In each iteration, the local (per particle) and global (across the swarm) best values are recorded and used to calculate each particle's new velocity \cite{ClassicalPSO} as:
 $$
 v_\mathit{next} = wv_\mathit{current} + c_1r_1(l_\mathit{best} - x) + c_2r_2(g_\mathit{best}-x)
 $$
 
-Where $w$ is a constant representing a particle's inertia, $c_1$ \& $c_2$ are two pre-selected parameters to adjust the relative importance of a particle's individual memory versus the swarm's collective memory. The random numbers $r_1$ \& $r_2$ are random numbers $\in (0,1)$ that are generated per iteration. $l_\mathit{best}$ is the best position a particle has been in and $g_\mathit{best}$ is the best position that any particle in the swarm has
-been in. The overall algorithm can be visualized as follows \cite{PSOFigure}:
+where $w$ is a constant representing a particle's inertia and $c_1, c_2$ are two pre-selected parameters to adjust the relative importance of a particle's individual memory versus the swarm's collective memory. 
+
+The variables $r_1$ \& $r_2$ are random numbers $\in (0,1)$ that are generated on a per-iteration basis. $l_\mathit{best}$ is the best position in which a particle has found itself and $g_\mathit{best}$ is likewise defined for the swam collective.
+
+The overall algorithm can be visualized as follows \cite{PSOFigure}:
 
 \includegraphics[width=1\textwidth]{images/PSO.png}
 
-Where satisfy criteria is defined in this report as performing a specified number of iterations.\\
+where satisfy criteria is defined in this report as performing a specified number of iterations.\\
 
-Now, mTSP is a permutation problem and therefore this report is making modification to the classical PSO algorithm.
+mTSP is a permutation problem and therefore this report necessarily makes some modifications to the classic PSO algorithm:
+
 The difficulty arises from the fact that position and velocity do not have a natural meaning when working
-with permutations rather than continuous values.
-M. Clerc proposed a modification of PSO that could be applied to the Travelling Salesman problem.
+with permutations. However, Clerc\cite{PermutationPSO} proposed a modification of PSO that can be applied to TSP:
+
 Every particle's position is a candidate solution which is a permutation of tasks and homes and
 a particle's velocity consists of a set of swaps that should be performed on its position.
-Clerc re-definitions of the operators for adding a velocity to a position, multiplying a velocity by a scalar, and subtracting two positions
-are used. Adding a velocity to a position is defined as performing all of the swaps on the position.
-Multiplying a velocity by a scalar results in a new velocity that consists of $scalar\cdot |velocity|$ swaps; which is achieved
-through truncation or augmentation with swaps repeated from the existing velocity.
-Subtracting two positions results in a velocity that consists of the swaps needed to turn the first position into the second position.
-With these new operations, the classical PSO algorithm can be used. \cite{PermutationPSO}
+
+Clerc then redefines the operations of position/velocity addition, position subtraction and scalar multiplication: 
+\begin{itemize}
+\item Adding a velocity to a position is defined as performing all of the swaps on the position.
+\item Multiplying a velocity by a scalar results in a new velocity that consists of $scalar\cdot |velocity|$ swaps; which is achieved through truncation or augmentation with swaps repeated from the existing velocity.
+\item Subtracting two positions results in a velocity that consists of the swaps needed to turn the first position into the second position.
+\end{itemize}
+Given these new operations, the classical PSO algorithm can be used as-is.
 
 \subsubsection{Hand Iterations}
 
@@ -842,8 +856,7 @@ $S_{\mathit{lbest}, i}$.
 For each position, $i$, we calculate
 $v_{1,i}$ using the following equation. Note that we redefine the subtraction of
 two positions, the addition of a velocity and a position, and the multiplication
-of a velocity by a scalar as defined in M. Clerc's paper, ``Discrete Particle
-Swarm Optimization."
+of a velocity by a scalar as defined above\cite{DiscretePSO}.
 $$
 v_{j,i} =
   w v_{j-1, i} +
@@ -884,11 +897,10 @@ $$S_\mathit{gbest} = [1, 2, 0, 3], \; cost(S_\mathit{gbest}) = 3.1617$$
 
 \subsection{Ant Colony Optimization Algorithm} % Sandy
 
-We are using a variation of ACS to solve this instance of complex task allocation.
+We use a variation of ACS to solve this instance of complex task allocation as follows:
 
 Let us define the pheromone evaporation constant $\rho=0.7$.\\
-The desirability function is defined as:
-
+The desirability function is defined by:
 
 \begin{equation*}
 \resizebox{0.9\textwidth}{!}{$
@@ -906,12 +918,12 @@ The desirability function is defined as:
 \end{cases}
 $}
 \end{equation*}
-Where $\mathit{accomplishable}$ is defined as:
+where $\mathit{accomplishable}$ is defined as:
 $$
 \mathit{accomplishable}(r, t_\mathit{from}, t_\mathit{to}) =
 \frac{\mathit{round\,trip}(r, t_\mathit{from}, t_\mathit{to})}{velocity(r)} + \mathit{task \, time}(r, t_\mathit{to}) \leq \mathit{energy}_r
 $$
-for
+for:
 $$
 \mathit{round\,trip}(r, t_\mathit{from}, t_\mathit{to}) = \mathit{distance}(t_\mathit{from}, t_\mathit{to}) + \begin{cases}
 \mathit{distance}(t_\mathit{to}, \mathit{home}(r)) & \text{if } t_\mathit{to} \ne \mathit{home}(r) \\
@@ -919,16 +931,16 @@ $$
 \end{cases}
 $$
 
-We define an $r_o$ value that will be used to control the level of exploitation versus the level of exploration by the ants.
+We then define an $r_0$ value that will be used to control the level of exploitation versus the level of exploration by the ants.
 For each state transition the ant makes, a random number, $r$, is generated.
-If $r<=r_o$ then the most desirable path (weighted by pheromones) is exploited, else if $r>r_0$
+If $r<=r_0$ then the most desirable path (weighted by pheromones) is exploited, else if $r>r_0$
 a randomly selected path is explored. We will use a value of $r_0=0.43$.
 
 The most desirable path is defined as the neighboring node that maximizes:
 $$
 \tau_{iu}\eta_{iu}^\beta
 $$
-Where $i$ represents the current node of the ant and $u$ is a neighboring node.
+where $i$ represents the current node of the ant and $u$ is a neighboring node.
 
 For exploration, random path selection is done via the Roulette Wheel Method.
 Probabilities are generated by:
@@ -939,9 +951,9 @@ p_{ij}=
 0 & \text{if } j \not\in N_i
 \end{cases}
 $$
-Where $N_i$ represents the neighbors of node $i$.
+with $N_i$ representing the neighbors of node $i$.
 
-The most important modification to ACS is how the sentinel values in a given solution $S$ are handled.
+The most important modification to ACS is how the sentinel values of a canonical solution vector $S$ are handled.
 The key insight for this change is a subtle modification of the graph during search-time. Define the distance between any
 two $home$s to be 0, and, at first, connect each task node only to $home(1)$.
 
@@ -954,20 +966,17 @@ The first two iterations of performing ACS on the reduced problem are shown belo
 
 \subsubsection{Iteration 1}
 
-The starting node is $\mathit{home}(1) = 4$.
-
-using params:
-homeConst =  0.50000
-exploitConst =  1
-exploreConst =  1
-rho =  0.70000
-rnaught =  0.50000
-
+The starting node is $\mathit{home}(1) = 4$, with parameters $\alpha = \beta = 1, \rho = 0.7, r_0 = 0.5$.
 
 \subsubsubsection{Ant Travel}
+
+We first compute the cumulative desirability $\eta$ of this nodes neighbors, used to normalize the relative desirabilities later.
+
 $$
 \eta = \sum_{n \in N_4} \uptau_{4n}^\alpha d_{4n}^\beta = 6.2913
 $$
+
+We then proceed to compute the relative probabilities of traveling to any given node as follows, with the bold probability being the edge chosen by the Roulette Wheel Method:
 
 \begin{align*}
 p_{4i} &= \frac{\uptau_{4n}^\alpha d_{4i}^{-\beta}}{\eta} \\
@@ -978,11 +987,15 @@ p_{43} &= 0.24933 \\
 p_{44} &= 0.23842
 \end{align*}
 
+This corresponds to the partially constructed canonical vector solution and energy of $robot_1$: 
+
 $$
-\text{Tour} = \{4, 2\} \qquad \mathit{energy}(1) = 40.096
+S(1) = \{4, 2\} \qquad \mathit{energy}(1) = 40.096
 $$
 
 % % %
+
+Repeat the above steps for the newly selected node 2:
 
 $$
 \eta = \sum_{n \in N_2} \uptau_{2n}^\alpha d_{2n}^\beta = 4.5890
@@ -997,10 +1010,10 @@ p_{24} &= 0.32687
 \end{align*}
 
 $$
-\text{Tour} = \{2, 1\} \qquad \mathit{energy}(1) = 28.742
+S(1) = \{4, 2, 1\} \qquad \mathit{energy}(1) = 28.742
 $$
 
-% % %
+and again:
 
 $$
 \eta = \sum_{n \in N_1\setminus\{2\}} \uptau_{1n}^\alpha d_{1n}^\beta = 3.0489
@@ -1014,12 +1027,14 @@ p_{14} &= 0.49198 \\
 \end{align*}
 
 $$
-\text{Tour} = \{4, 2, 1, 3, 4, 5\} \qquad \mathit{energy}(1) = 6.4352 \qquad d_{tour} = 6.1953
+S = \{2, 1, 3, 0\} \qquad \mathit{energy}(1) = 6.4352 \qquad d_{tour} = 6.1953
 $$
 
 Note that traveling to $\textit{home}(1) = 4$ has triggered the ant to automatically move to $\textit{home}(2) = 5$, and thus the ant now uses $robot_2$'s cost function.
 
 \subsubsubsection{Update Pheromone Trail}
+
+First, we decay the pheromone matrix by $1-\rho$:
 $$
 \uptau = (1 - \rho)\uptau =
 \begin{tabular}{r | c c c c c}
@@ -1032,6 +1047,8 @@ $i \setminus j$ & 1 & 2 & 3 & 4 & 5 \\
 5 & 0.30000 & 0.30000 & 0.30000 & 0.30000 & 0.30000
 \end{tabular}
 $$
+
+and proceed to update the pheromone matrix with the constant $Q/d_{tour}$ -- in effect the ant returns home via the same path, laying pheromone over the entire distance:
 
 $$
 \uptau_{ij} = \uptau_{ij} + Q/\mathit{cost}(\text{Tour}) =
@@ -1050,6 +1067,8 @@ $$
 
 \subsubsection{Iteration 2}
 
+The second iteration proceeds entirely as above:
+
 \subsubsubsection{Ant Travel}
 $$
 \eta = \sum_{n \in N_4} \uptau_{4n}^\alpha d_{4n}^\beta = 2.2287
@@ -1065,7 +1084,7 @@ p_{44} &= 0.20192
 \end{align*}
 
 $$
-\text{Tour} = \{4, 3\} \qquad \mathit{energy}(1) = 47.028
+S(1) = \{4, 3\} \qquad \mathit{energy}(1) = 47.028
 $$
 
 % % %
@@ -1075,7 +1094,7 @@ r < r_0 \to \text{automatically choose most desirable path, 4}
 $$
 
 $$
-\text{Tour} = \{4, 3, 4, 5\} \qquad \mathit{energy}(1) = 37.704
+S(1) = \{4, 3, 4\} \qquad \mathit{energy}(1) = 37.704
 $$
 
 Note that because node 4 was visited, 5 was also visited and now $robot_{current} = 2$.
@@ -1094,7 +1113,7 @@ p_{31} &= 0.50890 \\
 \end{align*}
 
 $$
-\text{Tour} = \{4, 3, 4, 5, 2, 1\} \qquad \mathit{energy}(2) = 13.132 \qquad d_{tour} = 3.2795
+S(2) = \{5, 2, 1\} \qquad \mathit{energy}(2) = 13.132 \qquad d_{tour} = 3.2795
 $$
 
 Node 1 was automatically selected since after choosing 2, it was all that remained.
@@ -1129,8 +1148,10 @@ $$
 
 \subsubsubsection{Result}
 
+To determine the result, we look through all solutions created by the ants earlier, and return the one with the highest total desirability.
+
 $$
-\text{Tour}_{best} = \{4, 1, 2, 4, 5, 3, 5\} \qquad d_{best} = 0.8900
+S = \{1, 2, 0, 3\} \qquad d_{best} = 0.8900
 $$
 
 
