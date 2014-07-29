@@ -38,7 +38,7 @@
 \section*{Summary}
 
 This report is an analysis of the efficacy of different metaheuristic algorithms in solving a complex task allocation problem.
-Complex task allocation is the assignment of complex and simple tasks to a group of robots. This report is taking an optimization-based approach to solve a multi-task robot, single-robot task, instantaneous assignment version of the multirobot task assignment problem that adopts a decompose-then allocate strategy to handle complex tasks.
+Complex task allocation is the assignment of complex and simple tasks to a group of robots. This report is taking an optimization-based approach to solve a multi-task robot, single-robot task, instantaneous assignment version of the multirobot task assignment problem that adopts a decompose-then-allocate strategy to handle complex tasks.
 
 Five metaheuristic algorithms were tested for this report. They are: Tabu Search, Simulated Annealing, Genetic Algorithms, Particle Swarm Optimization, and Ant Colony Optimization.
 
@@ -60,7 +60,7 @@ Robots, like people, are more effective at many types of tasks when cooperating 
 
 We define a ``heterogeneous MRS" to be a group of different types of robots, some more adept at certain tasks than others. In this paper, we will refer to a heterogeneous MRS simply as an MRS.
 
-There are numerous advantages of using an MRS over using a single multi-purpose robot. For example, it is simpler to design a robust single purpose robot than a robot with multiple abilities and configurations. Simple designs tend to be more robust and lead to more reliable robots. Another source of reliability is that a MRS can have redundancies; if one robot fails, another may resume its tasks.  In addition, many complex tasks are distributed over a large area and would be slow to accomplish with a single robot.
+There are numerous advantages of using an MRS over using a single multi-purpose robot. For example, it is simpler to design a robust single purpose robot than a robot with multiple abilities and configurations. Simple designs tend to be more robust and lead to more reliable robots. Another source of reliability is that an MRS can have redundancies; if one robot fails, another may resume its tasks.  In addition, many complex tasks are distributed over a large area and would be slow to accomplish with a single robot.
 
 Tasks particularly well suited to MRSs include
 \begin{itemize}
@@ -99,7 +99,7 @@ We will begin with a review of existing literature on the subject. Next, this re
 
 The paper then describes how the well-known Traveling Salesman Problem can be adjusted for use with Complex Task Allocation, and from there, identifies the criteria upon which each metaheuristic's technique performance is to be evaluated.
 
-Afterwads, the results of running each technique are then presented against these performance criteria, and finally conclusions are drawn, with recommendations for future work.
+Afterwards, the results of running each technique are then presented against these performance criteria, and finally conclusions are drawn, with recommendations for future work.
 
 \newpage
 \section{Literature Review}
@@ -202,7 +202,7 @@ $$
 
 $\alpha$ is a tuning parameter allowing for the relative importance of quality vs time to be adjusted. $\alpha = 1$ places all emphasis on time; $\alpha = 0$ places all emphasis on quality.
 
-$\beta$ is a normalization parameter that makes $\mathit{cost}_\mathit{time}$ directly comparable to $\mathit{cost}_\mathit{quality}$. It is discussed in further the next section.
+$\beta$ is a normalization parameter that makes $\mathit{cost}_\mathit{time}$ directly comparable to $\mathit{cost}_\mathit{quality}$. It is discussed in more detail in the next section.
 
 \subsubsection{Time Cost}
 
@@ -211,7 +211,7 @@ $$\mathit{velocity}(r) > 0, \in \mathbb{R}$$
 Each task, $t$, may be a different distance from each other task, $u$. For simplicity, we represent home locations as tasks.
 $$\mathit{distance}(t, u) > 0, \in \mathbb{R}$$
 
-Additionally, each robot, $r$ may complete each task, $t$, in a different amount of time.
+Additionally, each robot, $r$, may complete each task, $t$, in a different amount of time.
 $$\mathit{task \, time}(r, t) > 0, \in \mathbb{R}$$
 
 The total amount of time it takes for a robot $r$, to complete a tour $P$, is given by:
@@ -250,7 +250,7 @@ $$
 
 \subsubsection{Energy Cost}
 
-Each robot, $r$, may be capable of a spending different amount of time on tour. One unit energy equates to the ability to spend one additional unit time on tour.
+Each robot, $r$, may be capable of spending a different amount of time on tour. One unit energy equates to the ability to spend one additional unit time on tour.
 $$\mathit{energy}(r) > 0, \in \mathbb{R}$$
 
 We define $\mathit{cost}_\mathit{energy}$ to evaluate to 0 if this hard constraint is met for all robots, and $\infty$ otherwise
@@ -270,13 +270,13 @@ $$
   \sum^{|S(r)|}_{t=1}
   1 - \mathit{priority}(r, t) \cdot \mathit{skill}(r, t)
 $$
-Since a performing a high priority task with a highly skilled robot is desirable and we want to treat minimize cost, we subtract the maximum possible value, 1, from the product of the priority and skill (recall that $\mathit{skill}(r) \in [0, 1]$ and $\mathit{priority}(r, t) \in [0, 1]$).
+Since performing a high priority task with a highly skilled robot is desirable and we want to minimize cost, we subtract the maximum possible value, 1, from the product of the priority and skill (recall that $\mathit{skill}(r) \in [0, 1]$ and $\mathit{priority}(r, t) \in [0, 1]$).
 
 
 \subsection{Modeling as Traveling Salesman Problem (TSP)}
 
 \subsubsection{Adaptation}
-The area of interest for the robots in the MRS can be represented as a two dimensional bounded space. Within this space, the location of tasks and robot home locations can be represented as a graph. As described in the previous section, the goal is to create an assignment of tasks to robots which minimizes the total cost of travel. This makes the MRTA problem a good fit for reduction to the mTSP problem. This report will be making use of some well-studied variations of mTSP \cite{Badreldin}.
+The area of interest for the robots in the MRS can be represented as a two dimensional bounded space. Within this space, the location of tasks and robot home locations can be represented as a graph. As described in the previous section, the goal is to create an assignment of tasks to robots which minimizes the total cost of travel. This makes the MRTA problem a good fit for reduction to the mTSP problem. This report will be making use of some well-studied variations of mTSP.\cite{Badreldin}
 \begin{enumerate}
 \item \textbf{Salesmen starting node}: Robots are not guaranteed to start from the same node and must end their tour by returning to their starting node.
 \item \textbf{Number of salesmen}: The number of robots can vary between instances of this problem, but is static for the duration of any given instance.
@@ -290,11 +290,11 @@ In an MRS, there is heterogeneity in robot composition. This requires the augmen
 \item \textbf{Velocity}: Each robot has a speed at which they travel between tasks.
 \item \textbf{Energy}: Each robot has an energy capacity that restricts how long it can be away from its home node.
 \item \textbf{Skill}: Each robot has a skill rating that represents its ability to complete a task.
-\item \textbf{Task Completion Time}: Robots do not necessarily take the same amount requires a different amount of time to complete
+\item \textbf{Task Completion Time}: Robots do not necessarily take the same amount of time to complete a task.
 
 \end{enumerate}
 
-In this MRTA problem, there is also heterogeneity in the tasks that area assigned to visit. For this reason, the idea of ``cities'' have been augmented with the following features:
+In this MRTA problem, there is also heterogeneity in the tasks that are assigned to visit. For this reason, the idea of ``cities'' have been augmented with the following features:
 
 \begin{enumerate}
 \item \textbf{Priority}: Some tasks are more important that others and should be considered first.
@@ -305,7 +305,7 @@ The next section describes the graph that will be constructed for use with mTSP.
 \subsubsection{The Graph}
 We will model complex task allocation loosely on the traveling salesman problem.
 
-Given a population of $\mathit{robots}$, a set of $\mathit{tasks}$, a set of $\mathit{homes}$ a priority for each task $P$, each robot's skill at performing each task $M_{skill}(r,t)$ and an ordered assignment of tasks to robots $S(r)$, for each $r \in \mathit{robots}$
+Given a population of $\mathit{robots}$, a set of $\mathit{tasks}$, a set of $\mathit{homes}$, a priority for each task $P$, each robot's skill at performing each task $M_{skill}(r,t)$ and an ordered assignment of tasks to robots $S(r)$, for each $r \in \mathit{robots}$
 we can create a directed, weighted graph as follows:
 
 Given a random initial solution, $S_0$,
