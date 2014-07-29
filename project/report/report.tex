@@ -1,8 +1,3 @@
-% SOW must be emailed to the course instructor at akhamis@pami.uwaterloo.ca
-% with subject SOW-[Your Project number] no later than June 9, 2014.
-
-% (We are team #27)
-
 \documentclass[a4paper]{article}
 
 %\newcommand{\addbibresource}[1]{}
@@ -17,11 +12,10 @@
 \usepackage{upgreek}
 \usepackage{todonotes}
 \usepackage{csquotes}
+\usepackage{pdfpages}
 
 \addbibresource{report.bib}
 
-% Allow for sub^3sections and sub^4sections
-% http://pleasemakeanote.blogspot.com/2010/06/how-to-activate-subsubsubsection-in.html
 \setcounter{secnumdepth}{5}
 \newcommand{\subsubsubsection}[1]{\paragraph{#1} \mbox{}}
 \newcommand{\subsubsubsubsection}[1]{\subparagraph{#1} \mbox{}}
@@ -42,14 +36,13 @@
 \maketitle
 
 \section*{Summary}
-% The summary should be a brief version of the full report It should give the
-% reader an accurate overview Be brief, but be specific.
+
 This report is an analysis of the efficacy of different metaheuristic algorithms in solving a complex task allocation problem.
 Complex task allocation is the assignment of complex and simple tasks to a group of robots. This report is taking an optimization-based approach to solve a multi-task robot, single-robot task, instantaneous assignment version of the multirobot task assignment problem that adopts a decompose-then allocate strategy to handle complex tasks.
 
 Five metaheuristic algorithms were tested for this report. They are: Tabu Search, Simulated Annealing, Genetic Algorithms, Particle Swarm Optimization, and Ant Colony Optimization.
 
-Unfortunately, we were unable to find a canonical dataset for this problem, and thus have run these algorithms on a randomly-generated dataset. An example of the dataset is included in Appendix A, with the remainder on the attached digital media.
+Unfortunately, we were unable to find a canonical dataset for this problem, and thus have run these algorithms on a randomly-generated dataset. An example of the reduced dataset used is included in Section 3.3, with the larger datasets on the attached digital media.
 
 The results of experimentation are as follows. The algorithm that produced the best solution was Simulated Annealing, at the cost of a relatively large number of iterations to achieve convergence.
 
@@ -58,7 +51,7 @@ If computation time needs to be minimized, then Tabu Search is able to produce t
 In conclusions, this report recommends the use of Simulated Annealing for the purposes of Complex Task Allocation.
 
 \section{Introduction}
-% Why is the problem important
+
 \subsection{Problem Context}
 
 As the digital revolution accelerates, electronics have become more than passive desktop appliances --- robotics has given computers a means to interact with the world around them, greatly expanding the scope of the tasks we can make them perform.
@@ -76,7 +69,7 @@ Tasks particularly well suited to MRSs include
 \item space construction
 \end{itemize}
 
-% What is the problem
+
 \subsection{Problem}
 
 In this report, we will determine the strengths and weaknesses of different metaheuristic algorithms in finding near-optimal solutions to complex task allocation problems. Complex task allocation, as defined in this assignment's problem statement, is
@@ -88,7 +81,7 @@ Replacing humans with robots in surveillance tasks -- and allocating those robot
 
 Efficiently finding near-optimal solutions to complex task allocation has broad implications beyond surveillance. In essence, this report answers the question ``which robot should perform which task?''\cite{Badreldin}
 
-% Enumeration of report objectives and report structure
+
 \subsection{Report Structure and Direction}
 
 This report is being written as an assignment for the University of Waterloo's ECE457a course, ``cooperative and adaptive algorithms."
@@ -108,18 +101,8 @@ The paper then describes how the well-known Traveling Salesman Problem can be ad
 
 Afterwads, the results of running each technique are then presented against these performance criteria, and finally conclusions are drawn, with recommendations for future work.
 
-%  [1] [Alaa Khamis, Cooperative Multirobot Systems, Plenary Talk at IAC2014]
-%  [2]``Complex Task Allocation in Mobile Surveillance Systems'',
-%  \cite{Badreldin} ``A comparative Study between Optimization and Market-based Approaches to Multi-robot Task Allocation''.
-%  [4] A Framework For Studying Multirobot Task Allocation (mrs03.pdf)Brian P. Gerkey, Maja J. Mataric
-
-% Summarize the importance of the problem you are trying to solve and the reason that motivated you to select this project. Explain what was the problem or challenge that you were given? state the purpose of the project and how did you solve it? Enumerate the objectives of the project and describe in brief the structure of the report.
-
-
+\newpage
 \section{Literature Review}
-% The following papers were reviewed to obtain some perspective on different approaches to complex task allocation:
-% ``Complex Task Allocation in Mobile Surveillance Systems'', ``A comparative Study between Optimization and
-% Market-based Approaches to Multi-robot Task Allocation''.
 
 An examination of existing literature reveals two predominant schools of approach to solving Multi-Robot Task Allocation (MRTA). There are market-based and optimization-based approaches.
 
@@ -145,64 +128,14 @@ In Gerkey's \textit{A Framework for Studying Multirobot Task Allocation}\cite{Ge
 
 The importance of considering distance traveled, in addition to the cost associated in a task-robot assignment make the mapping onto Traveling Salesman Problem (TSP) a more natural fit.\\
 
-% Contrast our approach to mTSP to \cite{Badreldin}'s approach to mTSP
-% we make task completion time a per-robot value rather than a per-task value
 This report makes use of the multiple Travelling Salesman Problem (mTSP) formulation as described by Badreldin, Hussein, and Khamis with some important differences:\cite{Badreldin}
 
 Instead of including a robot aging factor, an energy capacity feature has been identified to put a harder constraint on robot tour lengths. In addition, instead of considering a minimum task completion time that holds for all robots, each type of robot has its own task completion time. This explicitly decouples a robot's skill at a task from the time it takes to complete the task. It also more accurately represents that different types of robots can have radically different methods for accomplishing the same task. To reconcile this change with the idea that tasks have certain requirements, a time of infinity is assigned to robots who lack any skill at a particular task.
 
-% Conduct a critical survey on different/similar solutions and explain how your
-% solution extends or differs from these solutions.
-
-% This project should start by studying comprehensively the problem in order
-% to characterize its complexity and its main challenges. Collect related
-% resources and conduct a critical survey on similar solutions reported in the
-% literature.
-
-% Collect resources and think about how to explain any of the topics below
-%  - Motivation
-%  - Definition
-%  - [*] Categorization
-%  - Challenges
-%  - Applications
-
-% Suggested reference papers:
-%
-%  - Alaa Khamis, Ahmed Elmogy and Fakhreddine Karray, "Complex Task Allocation
-%    in Mobile Surveillance Systems," Journal of Intelligent and Robotic Systems,
-%    Springer
-%  - Mohamed Badreldin, Ahmed Hussein and Alaa Khamis, "A Comparative Study
-%    between Optimization and Market-based Approaches to Multi-robot Task
-%    Allocation," Advances in Artificial Intelligence Journal, 2013.
-%  - Alaa Khamis, Cooperative Multirobot Systems, Plenary Talk at IAC2014].
-
+\newpage
 \section{Problem Formulation and Modeling}
 
-% Include the problem statement and describe its model.
-
-% In this step, an initial statement of the problem should be made. The
-% internal and external factors and the objective(s) of the problem must be
-% outlined. Describe the problem as standard optimization problem as
-% following:
-%
-% Find
-% $$X = {x_1, x_2, ..., x_n}^T$$
-% which minimizes/maximizes $f(X)$ subject to equality constraints
-% $$\forall j \in [1, m], l_j(X) = 0$$
-% and inequality constraints
-% $$\forall j \in [1, p], g_j(X) \leq 0$$
-% (see "specification for statement of work.pdf" for a visual representation)
-%
-% Define the decision variable or design vector, objective function/s and the
-% problem constraints.
-
-% Include the problem statement and describe its modeling If you think there is
-% a need to explain background information regarding some supplementary methods
-% used in your formulation, do that here
-
 \subsection{Problem Formulation}
-
-% TODO explicitly indicate that everything is 1 indexed
 
 Suppose we have a set of tasks, $\{1, 2, ..., n_\mathit{tasks}\}$, which need to be completed by a set of robots, $\{1, 2, ..., n_\mathit{robots}\}$.
 
@@ -339,39 +272,9 @@ $$
 $$
 Since a performing a high priority task with a highly skilled robot is desirable and we want to treat minimize cost, we subtract the maximum possible value, 1, from the product of the priority and skill (recall that $\mathit{skill}(r) \in [0, 1]$ and $\mathit{priority}(r, t) \in [0, 1]$).
 
-% \subsection{Normalization}
-
-% Note that many of the above quantities ($\mathit{priority}$, $\mathit{skill}$, $\mathit{distance}$, $\mathit{velocity}$, and $\mathit{taskTime}$) must be $\in [0 ,1]$. Raw data must be normalized to be within this rage.
-
-% This is trivial for $\mathit{priority}$ and $\mathit{skill}$: divide all
-% priorities by the max priority. Skills may be treated likewise.
-
-% Normalizing the $\mathit{distance}$, $\mathit{velocity}$, and
-% $\mathit{taskTime}$, however, is a little more tricky.
-
-% Suppose you have unnormalized $\mathit{distance}'$, $\mathit{velocity}'$, and
-% $\mathit{taskTime}'$ Calculate $\beta$ as
-
-
-% We can then obtain normalized $\mathit{distance}'$, $\mathit{velocity}'$, and
-% $\mathit{task \, time}'$ as
-% \begin{align*}
-% \mathit{distance} & = \mathit{distance}' \cdot \frac{1}{\beta} \\
-% \mathit{velocity} & = \mathit{velocity}' \cdot \frac{1}{\beta} \\
-% \mathit{task \, time} & = \mathit{task \, time}' \cdot \frac{1}{\beta}
-% \end{align*}
 
 \subsection{Modeling as Traveling Salesman Problem (TSP)}
 
-% In this important step, an abstract mathematical model is built for the
-% problem. The modeler can be inspired by similar models in the literature.
-% This will reduce the problem to well-studied optimization models. Usually,
-% models we are solving are simplifications of the reality. They involve
-% approximations and somecdot they skip processes that are complex to
-% represent in a mathematical model. For example, travelling salesman problem
-% (TSP) and multiple travelling salesman problem (mTSP) are commonly used as
-% models for real-life problems such as school bus routing problem and complex
-% task allocation problem.
 \subsubsection{Adaptation}
 The area of interest for the robots in the MRS can be represented as a two dimensional bounded space. Within this space, the location of tasks and robot home locations can be represented as a graph. As described in the previous section, the goal is to create an assignment of tasks to robots which minimizes the total cost of travel. This makes the MRTA problem a good fit for reduction to the mTSP problem. This report will be making use of some well-studied variations of mTSP \cite{Badreldin}.
 \begin{enumerate}
@@ -420,14 +323,6 @@ From here, we can run TSP on the created graph. The cost of taking each edge wil
 
 \subsection{Reduced Size Problem}
 
-% Describe a reduced version of the problem in order to be used to perform
-% hand-iterations. For example, if you are studying plant layout problem
-% (PLP), a reduced size problem may contain only 4 departments (facilities)
-% and 4 locations.
-
-% Describe a small scale problem of the original one Try to perform hand
-% iterations to make sure modeling is done properly
-
 In this section, we define a reduced size complex task allocation problem which
 will be used to perform hand-iterations of various optimization algorithms in
 the following sections.
@@ -469,49 +364,8 @@ The distances between tasks and home locations are:
 \end{tabular}
 \end{center}
 
-\subsection{Real Problem}
-
-% The real size problem formulation and modeling will be used to show the
-% ability of the proposed solutions implemented in handling large size
-% problems.
-
-% Gradually Increase the size of problem to study the scalability of your model
-% Some models will fail in this step (any examples? Is the any way to know that
-% beforehand?)
-
+\newpage
 \section{Proposed Solution}
-
-% Once the problem is formulated and modeled, the five main algorithms studied
-% in this course (TA, SA, GA, PSO and ACO) must be applied to generate a “good”
-% solution for the problem. The solution may be optimal or suboptimal.
-
-% At least two hand iterations must be performed on the reduced size problem to
-% show how to use the studied algorithms in solving the selected problem.
-
-% The studied algorithms must be implemented from scratch using Matlab/Octave
-% without using any toolboxes.
-
-%  - Generate an initial solution.
-%  - Suggest a cost function (objective function) suitable for this problem.
-%  - Define a suitable neighborhood operator.
-%  - Define a suitable solving strategy for this problem.
-%  - Select your own values for the parameter and explain the basis for your
-%      selection.
-%  - Describe how each algorithm (TS, SA, GA, PSO and ACO) will proceed to
-%       solve this problem by performing at least two hand iterations on a
-%       reduced version of the problem.
-%  - Implement the proposed solution using Matlab/Octave.
-
-% Once the problem is formulated and modeled, the five main algorithms studied
-% in this course (TA, SA, GA, PSO and ACO) must be applied to generate a “good”
-% solution for the problem. The solution may be optimal or suboptimal.
-
-% Apply five main optimization algorithms (TS, SA, GA, PSO, and ACO) Try to
-% generate a “good” solution that may be optimal or sub-optimal
-
-% Include at least two hand iterations on the reduced size of the problem The
-% studied algorithms should be implemented from scratch in Matlab / Octave.
-% Using toolboxes are NOT allowed.
 
 In this section, we will consider five metahuristics in the context of complex task allocation:
 \begin{itemize}
@@ -858,7 +712,6 @@ For this algorithm, we track not only the best solution seen globally,
 $S_\mathit{gbest}$, but the best solution seen by each particle, $i$, as
 $S_{\mathit{lbest}, i}$.
 
-% TODO create a proper citation to paper
 For each position, $i$, we calculate
 $v_{1,i}$ using the following equation. Note that we redefine the subtraction of
 two positions, the addition of a velocity and a position, and the multiplication
@@ -1200,36 +1053,8 @@ We selected the parameter set which corresponded to the best average solution ca
 
 That being said, however, despite being unable to come up with better solutions when tweaking the parameters, ACO's solutions for the large data set were qualitatively poor. Most solutions it converged to were obvious local optima; almost all of them were worse than 1.5x the best located solution by other metaheuristics. We spent over 4 mythical person-hours attempting to tweak these parameters to no avail. While researching this, it was noted that reseting the pheromone trail to a random solution after each iteration would perform better than maintaining it, implying our desirability function was non-reflexive.
 
-
+\newpage
 \section{Performance Evaluation}
-
-% Define some experiments (scenarios) to quantitatively evaluate the performance
-% of your algorithm. Experiments must be run several cdot and average results
-% should be reported
-
-% Establish a set of evaluation metrics and run some experiments with different
-% values of algorithm parameters to quantitatively and qualitatively assess the
-% performance of the developed solution using different metaheuristic
-% optimization techniques. Students must identify the pros and cons of each
-% technique and assess the quality of work as well as its fit with project
-% objectives.
-
-% Report your observation and interpret the obtained results. Suggest how to
-% refine the implemented solutions to improve their performance.
-
-% The implemented solutions should be tested against a set of well-defined
-% evaluation metrics. These metrics may include, but are not limited to, the CPU
-% time of the algorithm, number of iterations to converge, time per iteration,
-% optimality (if the ground truth is known), etc.
-
-% A number of experiments/scenarios should be conducted to quantitatively
-% evaluate the performance of the proposed solutions. You should run each
-% experiment several cdot and report the average results.
-
-% Determine some evaluation metrics (time is a potentially useful candidate) Run
-% some experiments with different values of algorithms parameters to
-% quantitatively and qualitatively assess the performance of the developed
-% solution Identify the pros and cons of each method
 
 Each metaheuristic will be evaluated quantitatively and qualitatively.
 
@@ -1242,7 +1067,7 @@ The following instances of MRTA will be studied:
 
 The different scenarios will allow for qualitative analysis on the scalability of metaheuristic techniques and where they are best applied. Within each scenario, each technique can be compared using some quantitative metrics. Badreldin et al. \cite{Badreldin} identify two suitable measures: the computational time taken to find the best solution and the optimality of the best solution obtained by a metaheuristic technique.
 
-Our experimental data was generated randomly because there are no canonical data sets for the MRTA problem that we could find. For each of the data sets there were 6 different parameters generated randomly: a $\mathit{Priority}$ matrix, a $\mathit{Distance}$ matrix, a $\mathit{Skill}$ matrix, a $\mathit{Task Time}$ matrix, an $\mathit{Energy}$ matrix and a $\mathit{Velocity}$ vector.
+Our experimental data was generated randomly because there are no canonical data sets for the MRTA problem that we could find. For each of the data sets there were 6 different parameters generated randomly: a $\mathit{priority(task)}$ vector, a $\mathit{distance(node, node)}$ matrix, a $\mathit{skill(robot, task)}$ matrix, a $\mathit{task\,time(robot, task)}$ matrix, an $\mathit{energy(robot)}$ matrix and a $\mathit{velocity(robot)}$ vector.
 
 %TODO add macbook pro stats
 Our experiment was to run each of our algorithms 5 times on each of the data sets and then compare this data. We ran it on a MacBook Pro with %%%%%%%%%%%%%%%%.
@@ -1260,22 +1085,21 @@ Our small scale problem featured a very small problem space with only 8! solutio
 
 \subsection{Large Scale}
 
+\begin{center}
+\begin{figure}
+\noindent\makebox[\textwidth]{%
+\includegraphics[width=1.2\textwidth]{images/graph.pdf}
+}
+\caption{Algorithm results for the large dataset}
+\end{figure}
+\end{center}
 
-
+\newpage
 \section{Conclusions \& Recommendations}
-% Report your observation and interpret obtained results. Briefly explain your
-% research work, and suggest how to improve the implemented solutions
-
-% Summarize the conclusion and future improvement. Explain how did you solve the
-% problem, what problems were met? What did the results show? and how to refine
-% the proposed solution? You may organize ideas using lists or numbered points,
-% if appropriate, but avoid making your report into a check-list or a series of
-% encrypted notes.
 
 This paper has presented a comparative study of metaheuristic algorithms used within an optimization based approach to solving the MRTA problem. Five metaheuristics were considered: Tabu Search, Simulated Annealing, Genetic Algorithms, Particle Swarm optimization, and Ant Colony Optimization.
 
-%TODO insert figure reference
-We found that our algorithms had varied performance which is quite apparent in \todo{figure out what this should be}Figure xx.xx?. Simulated Annealing was our most successful algorithm due to a fast convergence rate with the most optimal solution. Simulated Annealing was known to be effective in solving problems similar to MRTA including Quadratic Assignment in previous papers\cite{Badreldin}, so this is not a particularly surprising discovery.
+We found that our algorithms had varied performance which is quite apparent in Figure 1. Simulated Annealing was our most successful algorithm due to a fast convergence rate with the most optimal solution. Simulated Annealing was known to be effective in solving problems similar to MRTA including Quadratic Assignment in previous papers\cite{Badreldin}, so this is not a particularly surprising discovery.
 
 The more complex algorithms were Ant Colony Optimization, Particle Swarm Optimization and Genetic Algorithm, none of which had incredible performances of convergence, though the latter did find very strong solutions. These algorithms were the most difficult to implement and optimize so their relatively poor performance is relatively expected. Each of these algorithms contains significantly more calculations per iteration and tuning parameters than their simpler alternatives.
 
@@ -1285,25 +1109,6 @@ However, as is so often the case, it was modifications of the algorithms themsel
 
 Furthermore, our PSO algorithm was also modified to not persist velocities between iterations. Due to the way velocity was defined, no sense of direction could possibly persist between positions. Thusly, after performing a swap between solutions, velocity would not apply, so it was thrown out entirely. This was one of our breakthroughs in the implementation of this algorithm, and significantly helped lead to convergence.
 
-
 \printbibliography
-
-% Every report needs references; in fact, your failure to consult references for
-% guidance may be considered negligence. On the other hand, when you include
-% sentences, photos, drawings or figures from other sources in your report, the
-% complete reference must be cited. Failure to do so is plagiarism, an academic
-% infraction with serious consequences.
-
-% Remember to cite anything you get from other sources
-%  - Other research papers
-%  - Drawings, charts, figures, etc.
-
-% Failure to do so is plagiarism, an academic infraction with serious
-% consequences. The complete references should be shown at the end of your
-% report
-
-
-
-% M. Clerc, “Discrete Particle Swarm Optimization,” in New Optimization Techniques in Engineering. Springer-Verlag, 2004.
 
 \end{document}
