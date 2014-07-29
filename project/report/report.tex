@@ -12,6 +12,7 @@
 \usepackage{upgreek}
 \usepackage{todonotes}
 \usepackage{csquotes}
+\usepackage{pdfpages}
 
 \addbibresource{report.bib}
 
@@ -100,7 +101,7 @@ The paper then describes how the well-known Traveling Salesman Problem can be ad
 
 Afterwads, the results of running each technique are then presented against these performance criteria, and finally conclusions are drawn, with recommendations for future work.
 
-
+\newpage
 \section{Literature Review}
 
 An examination of existing literature reveals two predominant schools of approach to solving Multi-Robot Task Allocation (MRTA). There are market-based and optimization-based approaches.
@@ -131,7 +132,7 @@ This report makes use of the multiple Travelling Salesman Problem (mTSP) formula
 
 Instead of including a robot aging factor, an energy capacity feature has been identified to put a harder constraint on robot tour lengths. In addition, instead of considering a minimum task completion time that holds for all robots, each type of robot has its own task completion time. This explicitly decouples a robot's skill at a task from the time it takes to complete the task. It also more accurately represents that different types of robots can have radically different methods for accomplishing the same task. To reconcile this change with the idea that tasks have certain requirements, a time of infinity is assigned to robots who lack any skill at a particular task.
 
-
+\newpage
 \section{Problem Formulation and Modeling}
 
 \subsection{Problem Formulation}
@@ -363,8 +364,7 @@ The distances between tasks and home locations are:
 \end{tabular}
 \end{center}
 
-\subsection{Real Problem}
-
+\newpage
 \section{Proposed Solution}
 
 In this section, we will consider five metahuristics in the context of complex task allocation:
@@ -1053,7 +1053,7 @@ We selected the parameter set which corresponded to the best average solution ca
 
 That being said, however, despite being unable to come up with better solutions when tweaking the parameters, ACO's solutions for the large data set were qualitatively poor. Most solutions it converged to were obvious local optima; almost all of them were worse than 1.5x the best located solution by other metaheuristics. We spent over 4 mythical person-hours attempting to tweak these parameters to no avail. While researching this, it was noted that reseting the pheromone trail to a random solution after each iteration would perform better than maintaining it, implying our desirability function was non-reflexive.
 
-
+\newpage
 \section{Performance Evaluation}
 
 Each metaheuristic will be evaluated quantitatively and qualitatively.
@@ -1077,12 +1077,21 @@ Our small scale problem featured a very small problem space with only 8! solutio
 
 \subsection{Large Scale}
 
+\begin{center}
+\begin{figure}
+\noindent\makebox[\textwidth]{%
+\includegraphics[width=1.2\textwidth]{images/graph.pdf}
+}
+\caption{Algorithm results for the large dataset}
+\end{figure}
+\end{center}
+
+\newpage
 \section{Conclusions \& Recommendations}
 
 This paper has presented a comparative study of metaheuristic algorithms used within an optimization based approach to solving the MRTA problem. Five metaheuristics were considered: Tabu Search, Simulated Annealing, Genetic Algorithms, Particle Swarm optimization, and Ant Colony Optimization.
 
-%TODO insert figure reference
-We found that our algorithms had varied performance which is quite apparent in \todo{figure out what this should be}Figure xx.xx?. Simulated Annealing was our most successful algorithm due to a fast convergence rate with the most optimal solution. Simulated Annealing was known to be effective in solving problems similar to MRTA including Quadratic Assignment in previous papers\cite{Badreldin}, so this is not a particularly surprising discovery.
+We found that our algorithms had varied performance which is quite apparent in Figure 1. Simulated Annealing was our most successful algorithm due to a fast convergence rate with the most optimal solution. Simulated Annealing was known to be effective in solving problems similar to MRTA including Quadratic Assignment in previous papers\cite{Badreldin}, so this is not a particularly surprising discovery.
 
 The more complex algorithms were Ant Colony Optimization, Particle Swarm Optimization and Genetic Algorithm, none of which had incredible performances of convergence, though the latter did find very strong solutions. These algorithms were the most difficult to implement and optimize so their relatively poor performance is relatively expected. Each of these algorithms contains significantly more calculations per iteration and tuning parameters than their simpler alternatives.
 
