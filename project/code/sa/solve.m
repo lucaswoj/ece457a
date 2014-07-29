@@ -8,7 +8,7 @@ function bestSolution = solve()
 
 	% small
 	geometricCooling = true;
-	if nTasks > 5 % medium
+	if nTasks > 5 && nTasks <= 15 % medium
 		geometricCooling = true;
 	elseif nTasks > 15 % large
 		geometricCooling = true;
@@ -17,39 +17,39 @@ function bestSolution = solve()
 	if geometricCooling
 		% small
 		initialTemperature = 13;		% Starting temperature (better to be too high than too low)
-		if nTasks > 5 % medium
+		if nTasks > 5 && nTasks <= 15 % medium
 			initialTemperature = 15;
 		elseif nTasks > 15 % large
-			initialTemperature = 13;
+			initialTemperature = 12;
 		endif
 
 		% small
 		minTemperature = 0.1;			% Terminate after reaching this temperature
-		if nTasks > 5 % medium
+		if nTasks > 5 && nTasks <= 15 % medium
 			minTemperature = 0.0002;
 		elseif nTasks > 15 % large
-			minTemperature = 0.0001;
+			minTemperature = 0.00001;
 		end
 
 		% small
 		coolingFactor = 0.85;			% (0, 1), typically between 0.7 and 0.95. Higher = slower cooling
-		if nTasks > 5 % medium
+		if nTasks > 5 && nTasks <= 15 % medium
 			coolingFactor = 0.93;
 		elseif nTasks > 15 % large
-			coolingFactor = 0.935;
+			coolingFactor = 0.93;
 		end
 		
 		% small
 		iterationsPerTemperature = 80;	% Decrease temperature every X iterations
-		if nTasks > 5 % medium
+		if nTasks > 5 && nTasks <= 15 % medium
 			iterationsPerTemperature = 150;
 		elseif nTasks > 15 % large
-			iterationsPerTemperature = 500;
+			iterationsPerTemperature = 250;
 		end
 	else
 		% small
 		initialTemperature = 13;		% Starting temperature (better to be too high than too low)
-		if nTasks > 5 % medium
+		if nTasks > 5 && nTasks <= 15 % medium
 			initialTemperature = 15;
 		elseif nTasks > 15 % large
 			initialTemperature = 15;
@@ -57,7 +57,7 @@ function bestSolution = solve()
 
 		% small
 		minTemperature = 0.01;			% Terminate after reaching this temperature
-		if nTasks > 5 % medium
+		if nTasks > 5 && nTasks <= 15 % medium
 			minTemperature = 0.1;
 		elseif nTasks > 15 % large
 			minTemperature = 0.1;
@@ -65,7 +65,7 @@ function bestSolution = solve()
 
 		% small
 		coolingFactor = 0.01;			% (0, 1), Higher = faster cooling
-		if nTasks > 5 % medium
+		if nTasks > 5 && nTasks <= 15 % medium
 			coolingFactor = 0.1;
 		elseif nTasks > 15 % large
 			coolingFactor = 0.1;
@@ -73,7 +73,7 @@ function bestSolution = solve()
 		
 		% small
 		iterationsPerTemperature = 3;	% Decrease temperature every X iterations
-		if nTasks > 5 % medium
+		if nTasks > 5 && nTasks <= 15 % medium
 			iterationsPerTemperature = 100;
 		elseif nTasks > 15 % large
 			iterationsPerTemperature = 100;
