@@ -47,12 +47,13 @@ Complex task allocation is the assignment of complex and simple tasks to a group
 
 Five metaheuristic algorithms were tested for this report. They are: Tabu Search, Simulated Annealing, Genetic Algorithms, Particle Swarm Optimization, and Ant Colony Optimization.
 
-These algorithms will be run on a dataset that INSERT DESCRIPTION OF THE DATASET HERE.
+Unfortunately, we were unable to find a canonical dataset for this problem, and thus have run these algorithms on a randomly-generated dataset. An example of the dataset is included in Appendix A, with the remainder on the attached digital media.
 
-The results of experimentation are as follows. The algorithm that produced the most optimal solution in ITERATIONS is ALGORITHM.
+The results of experimentation are as follows. The algorithm that produced the best solution was Simulated Annealing, at the cost of a relatively large number of iterations to achieve convergence.
+
 If computation time needs to be minimized, then ALGORITHM is able to produce the most optimal solution in SMALLER NUMBER of ITERATIONS.
 
-In conclusions, this report recommends the use of ALGORITHM.
+In conclusions, this report recommends the use of Simulated Annealing for the purposes of Complex Task Allocation.
 
 \section{Introduction}
 % Why is the problem important
@@ -77,10 +78,11 @@ Tasks particularly well suited to MRSs include
 \subsection{Problem}
 
 In this report, we will determine the strengths and weaknesses of different metaheuristic algorithms in finding near-optimal solutions to complex task allocation problems. Complex task allocation, as defined in this assignment's problem statement, is
+\todo{this is rendering off the page for Sandy}
 \mbox{\blockquote{
   In mobile surveillance systems, complex task allocation addresses how to optimally assign a set of surveillance tasks to a set of mobile sensing agents to maximize overall expected performance, taking into account the priorities of the tasks and the skill ratings of the mobile robots.
 }}
-Replacing humans with robots in surveillance tasks, and allocating those robots efficiently, is important because areas under surveillance usually possess some degree of danger.
+Replacing humans with robots in surveillance tasks -- and allocating those robots efficiently -- is important because areas under surveillance usually possess a high degree of danger.
 
 Efficiently finding near-optimal solutions to complex task allocation has broad implications beyond surveillance. In essence, this report answers the question ``which robot should perform which task?''\cite{Badreldin}
 
@@ -89,21 +91,20 @@ Efficiently finding near-optimal solutions to complex task allocation has broad 
 
 This report is being written as an assignment for the University of Waterloo's ECE457a course, ``cooperative and adaptive algorithms."
 
-In this report, we determine the strengths and weaknesses of different metaheuristic algorithms in finding near-optimal solutions to complex task allocation problems. The metaheuristic algorithms we consider are
+In this paper, we determine the strengths and weaknesses of different metaheuristic algorithms in finding near-optimal solutions to Complex Task Allocation problems. The metaheuristic algorithms under consideration are:
 \begin{itemize}
-\item tabu search algorithm
-\item simulated annealing algorithm
-\item genetic algorithm
-\item particle swarm optimization algorithm
-\item ant colony optimization algorithm
+\item tabu search (TS)
+\item simulated annealing (SA)
+\item genetic algorithms (GA)
+\item particle swarm optimization (PSO)
+\item ant colony optimization (ACO)
 \end{itemize}
 
-The report will begin with a review of existing literature on the subject.
-Next we will present a problem formulation and model from which we will implement our algorithms.
-The paper then describes how the well-known Traveling Salesman Problem can be adjusted for use with Complex Task Allocation.
-From there, the report identifies the criteria upon which each meta heuristic technique's performance is evaluated.
-Then the results of running each technique are then presented against these performance criteria.
-From these results, conclusions are drawn and recommendations for future work are suggested.
+We will begin with a review of existing literature on the subject. Next, this report will present a problem formulation and model from which we will implement our algorithms.
+
+The paper then describes how the well-known Traveling Salesman Problem can be adjusted for use with Complex Task Allocation, and from there, identifies the criteria upon which each metaheuristic's technique performance is to be evaluated.
+
+Afterwads, the results of running each technique are then presented against these performance criteria, and finally conclusions are drawn, with recommendations for future work.
 
 %  [1] [Alaa Khamis, Cooperative Multirobot Systems, Plenary Talk at IAC2014]
 %  [2]``Complex Task Allocation in Mobile Surveillance Systems'',
@@ -119,11 +120,14 @@ From these results, conclusions are drawn and recommendations for future work ar
 % Market-based Approaches to Multi-robot Task Allocation''.
 
 An examination of existing literature reveals two predominant schools of approach to solving Multi-Robot Task Allocation (MRTA). There are market-based and optimization-based approaches.
+
 The market-based approach is inspired from the development of market economies in human societies.
 Each robot is made analogous to an individual seeking profit within a market and as a result, effecting a redistribution of resources within the environment.
+
 The optimization-based approach is rooted in mathematics rather than socio-economic observation.
-The thrust is to identify an equation that captures the constraints contained in a problem and to find a solution that either maximizes the profit or minimizes the cost of a given solution.
-The goal of this report is to perform a comparative study of metaheuristic techniques and so this directs the attention of this paper onto an optimization-based approach for solving MRTA. Though Khamis et al.\cite{Khamis} propose a method for using a market-based approach to generate candidate solutions that are then fed into a metaheuristic algorithm.\\
+The thrust of which is to identify an equation that captures the constraints contained in a problem and to find a solution that either maximizes the profit or minimizes the cost of a given solution.
+
+The goal of this report is to perform a comparative study of metaheuristic techniques and so this directs the attention of the paper towards an optimization-based approach for solving MRTA. However, this is not the only approach; Khamis et al.\cite{Khamis} propose a method for using a market-based approach to generate candidate solutions that are then fed into a metaheuristic algorithm, but it will not be used here.\\
 
 In \textit{Complex Task Allocation in Mobile Surveillance Systems}\cite{Khamis}, Khamis et al. describe a taxonomy for classifying MRTA problems examined in literature. From their taxonomy, the MRTA problem examined by this report has the following classifications:
 
@@ -135,11 +139,15 @@ In \textit{Complex Task Allocation in Mobile Surveillance Systems}\cite{Khamis},
 
 The scope of this report will focus on a decompose-then-allocate approach towards complex tasks. That is, all complex tasks will be broken up into subtasks that will then be assigned out to particular robots. This makes a strong assumption about the independence of the subtasks, but is not without precedence in the literature.\cite{Khamis}\\
 
-In Gerkey's \textit{A Framework for Studying Multirobot Task Allocation}\cite{Gerkey}, he identifies MRTA as an instance of the Optimal Assignment Problem (OAP). The OAP considers $n$ workers who have various skill levels at $m$ jobs that must be completed, and seeks a mapping of workers to jobs that optimizes overall performance. At first this seems like an ideal problem to map MRTA onto, but there are a few shortcomings for the particular instance of MRTA being studied in this report. Robots are not being assigned to a single task, but rather are given a tour of several tasks through a given area of interest. The importance of considering distance traveled, in addition to the cost associated in a task-robot mapping, make the Traveling Salesman Problem (TSP) a more natural problem to map this instance of MRTA onto.\\
+In Gerkey's \textit{A Framework for Studying Multirobot Task Allocation}\cite{Gerkey}, he identifies MRTA as an instance of the Optimal Assignment Problem (OAP). The OAP considers $n$ workers who have various skill levels at $m$ jobs that must be completed, and seeks a mapping of workers to jobs that optimizes overall performance. At first this seems like an ideal problem onto which to map MRTA, but there are a few shortcomings for the particular instance of MRTA being studied in this report: robots are not being assigned to a single task, but rather are given a tour of several tasks through a given area of interest.
+
+The importance of considering distance traveled, in addition to the cost associated in a task-robot assignment make the mapping onto Traveling Salesman Problem (TSP) a more natural fit.\\
 
 % Contrast our approach to mTSP to \cite{Badreldin}'s approach to mTSP
 % we make task completion time a per-robot value rather than a per-task value
-This report makes use of the multiple Travelling Salesman Problem (mTSP) formulation as described by Badreldin, Hussein, and Khamis with some important differences.\cite{Badreldin} Instead of including a robot aging factor, an energy capacity feature has been identified to put a harder constraint on robot tour lengths. In addition, instead of considering a minimum task completion time that holds for all robots, each type of robot has its own task completion time. This explicitly decouples a robot's skill at a task from the time it takes to complete the task. It also more accurately represents that different types of robots can have radically different methods for accomplishing the same task. To reconcile this change with the idea that tasks have certain requirements, a time of infinity is assigned to robots who lack any skill at a particular task.
+This report makes use of the multiple Travelling Salesman Problem (mTSP) formulation as described by Badreldin, Hussein, and Khamis with some important differences:\cite{Badreldin}
+
+Instead of including a robot aging factor, an energy capacity feature has been identified to put a harder constraint on robot tour lengths. In addition, instead of considering a minimum task completion time that holds for all robots, each type of robot has its own task completion time. This explicitly decouples a robot's skill at a task from the time it takes to complete the task. It also more accurately represents that different types of robots can have radically different methods for accomplishing the same task. To reconcile this change with the idea that tasks have certain requirements, a time of infinity is assigned to robots who lack any skill at a particular task.
 
 % Conduct a critical survey on different/similar solutions and explain how your
 % solution extends or differs from these solutions.
@@ -194,13 +202,15 @@ This report makes use of the multiple Travelling Salesman Problem (mTSP) formula
 
 % TODO explicitly indicate that everything is 1 indexed
 
-Suppose we have a set of ``tasks", $\{1, 2, ..., n_\mathit{tasks}\}$, which need to be completed by a set of ``robots", $\{1, 2, ..., n_\mathit{robots}\}$.
+Suppose we have a set of tasks, $\{1, 2, ..., n_\mathit{tasks}\}$, which need to be completed by a set of robots, $\{1, 2, ..., n_\mathit{robots}\}$.
 
-We seek a ``solution", $S$, that consists of an assignment of each robot an ordered set of tasks for it to complete, a ``tour", such that each task is performed exactly once and our overall cost is minimized. Each tour begins and ends at the robot's ``home".
+We seek a solution $S$ that consists of an assignment of each robot an ordered set of tasks for it to complete (known as a ``tour") such that each task is performed exactly once. Additionally, we aim to minimize the overall cost of the solution. Each tour begins and ends at the robot's ``home".
+
+The notion of a $robot$'s path is formalized as:
 $$
 \Forall_{r=0}^{n_\mathit{robots}}
 S(r) = \{ \mathit{home}(r), t_1, t_2, ..., t_n, \mathit{home}(r) \}
-$$
+$$j
 
 \subsubsection{Canonical Solution Representations}
 The overall solution $S$ has a canonical vector representation as an n-tuple, consisting of a permutation of the set:
@@ -226,7 +236,7 @@ which should be interpreted as
 For simplicity and homogeneity of internal data models, we represent homes as tasks:
 $$\mathit{home}(r) = n_\mathit{tasks} + r$$
 
-Subject to the following constraints:
+subject to the following constraints:
 $$
 \mathit{task\,time}(\mathit{home}(i)) = 0 \qquad \forall i \in \mathit{robots}
 $$
@@ -255,6 +265,8 @@ $$
   \mathit{cost}_\mathit{energy}(S)
 $$
 
+
+
 $\alpha$ is a tuning parameter allowing for the relative importance of quality vs time to be adjusted. $\alpha = 1$ places all emphasis on time; $\alpha = 0$ places all emphasis on quality.
 
 $\beta$ is a normalization parameter that makes $\mathit{cost}_\mathit{time}$ directly comparable to $\mathit{cost}_\mathit{quality}$. It is discussed in further the next section.
@@ -269,14 +281,14 @@ $$\mathit{distance}(t, u) > 0, \in \mathbb{R}$$
 Additionally, each robot, $r$ may complete each task, $t$, in a different amount of time.
 $$\mathit{task \, time}(r, t) > 0, \in \mathbb{R}$$
 
-The total amount of time it takes for a robot, $r$, to complete a tour, $o$, is given by
+The total amount of time it takes for a robot $r$, to complete a tour $P$, is given by:
 $$
-\mathit{tour \, time}(r, o) =
+\mathit{tour \, time}(r, P) =
   \left(
-    \sum^{|o|}_{t=2} \mathit{distance}(t - 1, t) \cdot \mathit{velocity}(r)
+    \sum^{|P|}_{t=2} \mathit{distance}(t - 1, t) \cdot \mathit{velocity}(r)
   \right) +
   \left(
-    \sum^{|o|}_{t=1} \mathit{task \, time}(r, t)
+    \sum^{|P|}_{t=1} \mathit{task \, time}(r, t)
   \right)
 $$
 
@@ -287,7 +299,7 @@ $$
   \mathit{tour \, time}(r, S(r))
 $$
 
-In the overall cost function, $\beta$ is a normalization parameter that makes $\mathit{cost}_\mathit{time}$ directly comparable to $\mathit{cost}_\mathit{quality}$. Because skills and priorities are bounded $\in [0, 1]$, we are guaranteed that, for some tour $o$ and some robot $r$, $\mathit{cost}_\mathit{quality}(r, o) \in [0, |o|]$. To make $\mathit{cost}_\mathit{time}$ directly comparable to $\mathit{cost}_\mathit{quality}$, we must scale $\mathit{cost}_\mathit{time}$ using $\beta$ such that it has the same bounds, $\in [0, |o|]$. Such a $\beta$ may be calculated as
+In the overall cost function, $\beta$ is a normalization parameter that makes $\mathit{cost}_\mathit{time}$ directly comparable to $\mathit{cost}_\mathit{quality}$. Because skills and priorities are bounded $\in [0, 1]$, we are guaranteed that, for some tour $P$ and some robot $r$, $\mathit{cost}_\mathit{quality}(r, P) \in [0, |P|]$. To make $\mathit{cost}_\mathit{time}$ directly comparable to $\mathit{cost}_\mathit{quality}$, we must scale $\mathit{cost}_\mathit{time}$ using $\beta$ such that it has the same bounds, $\in [0, |P|]$. Such a $\beta$ may be calculated as
 $$
 \beta =
     \frac
@@ -398,7 +410,7 @@ Given a random initial solution, $S_0$,
 \begin{align*}
 	G &= (V, E) \\
 	V &= \mathit{homes} \cup \mathit{tasks} \\
-	E_{i, j} &= distances(i,j) \qquad \forall i,j \in [1, nRobots+nTasks] \\
+	E_{i, j} &= distance(i,j) \qquad \forall i,j \in [1, n_{robots}+n_{tasks}] \\
 \end{align*}
 %
 
@@ -503,14 +515,13 @@ The distances between tasks and home locations are:
 
 In this section, we will consider five metahuristics in the context of complex task allocation:
 \begin{itemize}
-\item tabu search algorithm
-\item simulated annealing algorithm
+\item tabu search
+\item simulated annealing
 \item genetic algorithm
-\item particle swarm optimization algorithm
-\item ant colony optimization algorithm
+\item particle swarm optimization
+\item ant colony optimization
 \end{itemize}
 
-% TODO will we also discuss perf in this section?
 In the following subsections, we will, for each metaheuristic, provide a brief
 high level description of the algorithm, show and explain two ``hand iterations"
 on the reduced problem, and provide a Matlab implementation.
