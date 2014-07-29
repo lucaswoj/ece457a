@@ -1188,7 +1188,18 @@ Our experimental data was generated randomly because there are no canonical data
 % if appropriate, but avoid making your report into a check-list or a series of
 % encrypted notes.
 
-This paper has presented a comparative study of metaheuristic algorithms used within an optimization based approach to solving the MRTA problem. Five metaheuristics were considered: Tabu Search, Simulated Annealing, Genetic Algorithms, Particle Swarm optimization, and Ant Colony Optimization. RECAP RESULTS OF EXPERIMENTS.
+This paper has presented a comparative study of metaheuristic algorithms used within an optimization based approach to solving the MRTA problem. Five metaheuristics were considered: Tabu Search, Simulated Annealing, Genetic Algorithms, Particle Swarm optimization, and Ant Colony Optimization. 
+
+%TODO insert figure reference
+We found that our algorithms had varied performance which is quite apparent in SOMEFIGURESTHATWETALKABOUTHERE. Simulated Annealing was our most successful algorithm because it both converged very quickly, and achieved the most optimal solution. Simulated Annealing was known to be effective in solving problems similar to MRTA including Quadradic Assignment in previous papers, so it is not a suprising discovery\cite{Badreldin}. 
+
+Our more complex algorithms were Ant Colony Optimization, Particle Swarm Optimization and Genetic Algorithm and they all did not perform to our hopes and expectations. These algorithms were the most difficult to implement and optimize so it is not surprising that they were slower than our more simple algorithms. Each of these algorithms contains many more calculations per iteration than TS and SA and the also contain many more tuning parameters. 
+
+The tuning parameters were very hard to modify manually because we did not develop adaptive versions of our algorithms. It is hard to determine if the parameter tuning was successful because of the variance between runs of the same algorithm. The number of parameters also made it difficult to tune effectively because if we modified one at a time it was difficult to see major improvements, but if we modified more than one at a time it would be difficult to tell what caused improvement.
+
+The most effective way we were able to modify our algorithms was to modify the methods that they used to generate new solutions because they could give us major improvements in speed. For example in our GA algorithm we originally used a generational model; by switching to a steady state model we were able to pick much better parents for our next generations and converge much faster. We also modified our PSO to not persist a velocity between iterations because the way velocity is defined it does not persist a sense of direction across positions. Thus when we made a swap between solutions the velocity value does not apply, so we simply throw it out. This was one of our breakthroughs while implementing this algorithm and helped us get a converging algorithm.
+
+
 
 \printbibliography
 
