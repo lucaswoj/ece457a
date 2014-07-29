@@ -5,6 +5,8 @@
 
 \documentclass[a4paper]{article}
 
+%\newcommand{\addbibresource}[1]{}
+%\newcommand{\printbibliography}{}
 \usepackage[style=ieee,sorting=none,dateabbrev=false,backend=biber]{biblatex}
 \usepackage[english]{babel}
 \usepackage[utf8]{inputenc}
@@ -210,7 +212,7 @@ The notion of a $robot$'s path is formalized as:
 $$
 \Forall_{r=0}^{n_\mathit{robots}}
 S(r) = \{ \mathit{home}(r), t_1, t_2, ..., t_n, \mathit{home}(r) \}
-$$j
+$$
 
 \subsubsection{Canonical Solution Representations}
 The overall solution $S$ has a canonical vector representation as an n-tuple, consisting of a permutation of the set:
@@ -264,8 +266,6 @@ $$
   (1-\alpha) \mathit{cost}_\mathit{quality}(S) +
   \mathit{cost}_\mathit{energy}(S)
 $$
-
-
 
 $\alpha$ is a tuning parameter allowing for the relative importance of quality vs time to be adjusted. $\alpha = 1$ places all emphasis on time; $\alpha = 0$ places all emphasis on quality.
 
@@ -532,9 +532,11 @@ we will use the ``randomly" selected initial solution, $S_0 = [ 1, 2, 0, 3 ]$.
 
 \subsection{Tabu Search Algorithm} % Lucas
 
-Tabu Search was the first proposed metaheuristic\cite{GloverTabu} and, as such, is a very simple algorithm --- it takes a similar approach to  hill climbing in that it starts with a random solution and seeks the optimal solution by continually moving towards improving neighbor solutions. It improves on hill climbing, however, with the addition of a tabu list. The tabu list ``remembers" recent moves and discourages backtracking, helping the algorithm to avoid becoming stuck in a local minima.
+Tabu Search was the first proposed metaheuristic\cite{GloverTabu} and, as such, is a very simple algorithm --- it takes a similar approach to  hill climbing in that it starts with a random solution and seeks the optimal solution by continually moving towards improving neighbor solutions. It improves on hill climbing, however, with the addition of a tabu list. The tabu list ``remembers" recent moves and discourages backtracking, helping the algorithm to avoid becoming stuck in a local optima.
 
-One technique for using tabu search to solve permutation problems, like this formulation of complex task allocation, is described by Glover and Laguna in ``Modern Heuristic Techniques for Combinatorial Problems"\cite{GloverModern}. We begin with a random solution, represented as an ordered set of tasks and sentinel values. Next, we find a number of random neighboring solutions, where a neighboring solution is defined as one that can be obtained by swapping two elements. We then choose the neighbor with the lowest cost, preferring nontabu solutions to tabu ones, and update our tabu list to mark the swapped positions as tabu for some number of future iterations. This process is repeated until some stopping criteria is met.
+One technique for using tabu search to solve permutation problems -- like this formulation of complex task allocation -- is described by Glover and Laguna in ``Modern Heuristic Techniques for Combinatorial Problems"\cite{GloverModern}.
+
+We begin with a random solution, represented as a canonical solution vector. Next, we find a number of random neighboring solutions, where a neighboring solution is defined as one that can be obtained by swapping two elements. The neighbor with the lowest cost is then chosen, preferring non-tabued solutions over tabued ones, and update the tabu list to mark the swapped positions for some number of future iterations. This process is repeated until some stopping criteria is met.
 
 \subsubsection{Hand Iterations}
 
@@ -605,9 +607,15 @@ $$S_{\text{best}} = [2, 0, 1, 3], \; \textit{cost}(S_{\text{best}}) = 2.9759$$
 
 \subsection{Simulated Annealing Algorithm} % Dane
 
-The simulated annealing metaheuristic is based on the physical annealing process, used to alter the properties of materials through controlled cooling.\cite{Kirkpatrick} A cost function specific to the problem is used to represent the ``energy'' of a particular solution. The minimum energy state represents the optimal solution. Controlled cooling is used to find a near-optimal solution, similar to how particles settle into a stable, low-energy configuration in physical annealing. Since there is no concept of temperature in general optimization problems, an artificial temperature value $T$ is used to represent the temperature of the system.
+The simulated annealing metaheuristic is based on the physical annealing process, used to alter the properties of materials through controlled cooling.\cite{Kirkpatrick}
 
-The algorithm begins with a random solution. At each iteration, a random solution is selected from the current solution's set of neighbours. The probability of selecting the new random solution over the old solution is $\mathit{P}(\Delta{}E) = e^{-\frac{\Delta{}E}{k_{B}T}}$, based on the Boltzmann probability factor.\cite{Kirkpatrick} The probability function ensures that any improving solution is accepted, and that there is a possibility to accept any non-improving solution when $T>0$. When the temperature is high, there is a high probability of selecting non-improving solutions, which decreases as the temperature decreases. As the algorithm reaches the minimum temperature, it should converge to an optimal or near-optimal solution.
+A cost function specific to the problem is used to represent the ``energy'' of a particular solution, with the minimum energy state represents the optimal solution.
+Controlled cooling is used to find a near-optimal solution, similar to how particles settle into a stable, low-energy configuration in physical annealing.
+Since there is no concept of temperature in general optimization problems, an artificial temperature value $T$ is used to represent the temperature of the system.
+
+The algorithm begins with a random solution. At each iteration, a neighboring solution is chosen at random. The probability of selecting this new solution over the old solution is $\mathit{P}(\Delta{}E) = e^{-\frac{\Delta{}E}{k_{B}T}}$, based on the Boltzmann probability factor.\cite{Kirkpatrick} 
+
+This probability function ensures that any improving solution is accepted, and that there is a possibility to accept any non-improving solution when $T>0$. Given a high temperature, there is a large probability of selecting non-improving solutions, which decreases as the temperature decreases. As the algorithm reaches the minimum temperature, it should converge to an optimal or near-optimal solution.
 
 \subsubsection{Hand Iterations}
 
@@ -654,13 +662,13 @@ $$S_\mathit{best} = [ 1, 2, 0, 3 ], \; \mathit{cost}(S_\mathit{best}) = 3.1617$$
 
 \subsubsection{Parameter Tuning}
 
-When tuning simulated annealing, there seems to be an optimal temperature range where the most improvements to the best solution are found. If the temperature is too high, there will be too much exploration for the algorithm to make meaningful progress. If the temperature is too low, the algorithm gets stuck in local minima.
+When tuning simulated annealing, there seems to be an optimal temperature range in which the most improvements towards the best solution are found. If the temperature is too high, there will be too much exploration for the algorithm to make meaningful progress. However, should the temperature be too low, the algorithm will get stuck in local optima.
 
 For geometric cooling, using a higher cooling factor seems to produce better results at the expense of requiring more iterations. A higher cooling factor means that more temperature values will be used, so the algorithm will spend more time in the optimal temperature range. Conversely, a lower cooling factor appears to be more effective for a linear cooling schedule.
 
-More iterations per temperature can be used to increase the exploitation at each temperature, producing better results at the expense of significantly more iterations. After a certain point, adding more iterations per temperature does not improve the solutions found.
+More iterations per temperature can be used to increase the exploitation at each temperature, producing better results at the expense of significantly more computation time. After a certain point, adding more iterations per temperature does not improve the solutions found.
 
-Appropriate initial and minimum temperature values are quite similar between data sets, as the cooling factor and iterations per temperature parameters are more useful in controlling the total number of iterations. If the maximum temperature is too high, the algorithm wastes time at the start by exploring too much. Setting the minimum temperature too low causes the geometric cooling algorithm to run for significantly more iterations with little benefit, as it is much more likely to get stuck in local minima at low temperatures. Minimum temperature has less of an effect when linear cooling is used, but is still necessary to prevent the algorithm from getting stuck in local minima.
+Appropriate initial and minimum temperature values are quite similar between data sets, as the cooling factor and iterations per temperature parameters are more useful in controlling the total number of iterations. If the maximum temperature is too high, the algorithm wastes time at the start by exploring too much. Setting the minimum temperature too low causes the geometric cooling algorithm to run for significantly more iterations with little benefit, being much more likely to get stuck in local optima. The minimum temperature has less of an effect when linear cooling is used, but is still necessary to prevent the algorithm from getting stuck in local optima.
 
 On the small data set, geometric cooling seems to find the optimal solution more reliably than linear cooling. On the medium data set, geometric cooling seems to find better solutions in fewer iterations. On the large data set, linear seems to perform similarly to geometric.
 
@@ -669,17 +677,17 @@ On the small data set, geometric cooling seems to find the optimal solution more
 
 \subsection{Genetic Algorithm} % Austin
 
-\subsubsection{Description}
+Genetic algorithms cover a large group of similar algorithms, so for our comparative study it is necessary to specify an instance of Genetic Algorithm that solves the problem adequately.
 
-Genetic algorithms cover a large group of similar algorithms, so for our comparitive study we needed to specify an instance of Genetic Algorithm that solves our problem appropriately. Because this is a permutation problem we cannot encode our solution as a binary string, so we have to use a version of Genetic Algorithm that can handle permutations. Our solution representation is the same as described in the Problem Formulation section with each individual in a generation representing a particular solution.
+Since this is a permutation problem we are unable to encode the solution as a binary string; thus it is necessary to use a version of Genetic Algorithm which can handle permutations. 
 
-To initialize our solver we will choose a random starting solution for each individual and then start the iterations. Each iteration will consist of crossover, mutation and then survivor selection. Each of these steps must be customized for the problem set, and there are multiple methods between which we had to choose.
+To initialize the solver we choose a random starting solution for each individual and then start iterating. Each iteration will consist of crossover, mutation and then survivor selection, each step of which must be customized for the problem set. Each step has many alternatives between which it is necessary to choose.
 
-For crossover we chose to use the Order 1 permutation as described in \cite{Eiben} which is a crossover algorithm that attempts to preserve the relative order of elements in a solution. It chooses a random subsection from one parent, copies those values into the first child and then fills the rest of the values in the same order that they appear in the second parent. This process is then mirrored for the second child so two children are produced from this crossover.
+For crossover we chose to use the Order 1 permutation as described in \cite{Eiben} -- a crossover algorithm that attempts to preserve the relative order of elements in a solution. It chooses a random subsection from one parent, copies those values into the first child and then fills the rest of the values in the same order that they appear in the second parent. This process is then mirrored for the second child so two children are produced from this crossover.
 
-The mutation function is much easier to specify in a permutation problem, because there are fewer issues relating to creating invalid solutions which is a large issue when attempting to do a crossover. Mutation in our algorithm swaps the position of two or more elements in a solution and then creates a new child. The number of elements swapped can be configured depending on the size of the solution.
+The mutation function is much easier to specify in a permutation problem, because there are fewer issues relating to creating invalid solutions -- a large issue when attempting to do crossover. Mutation in our algorithm swaps the position of two or more elements in a solution and then creates a new child. The number of elements swapped can be configured depending on the size of the solution.
 
-The last component that needs to be specified is the survivor selection algorithm. We chose to use a steady state Genetic Algorithm, so the entire generation and the children are considered when chosing the new generation. We use an elitism based selection method which causes our new generations to only contain the best members from the previous generation \cite{Talk}. This method was chosen because it caused the algorithm to converge faster to optimal values.
+The last component that needs to be specified is the survivor selection algorithm. We chose to use a steady state Genetic Algorithm, considering the entire generation and the children when choosing the new population. We use an elitism-based selection method which causes our new generations to only contain the best members from the previous generation \cite{Talk}. This method was chosen because it caused the algorithm to converge faster to optimal values.
 
 With our algorithm specified fully we can now do iterations by hand to see the results of our decisions.
 
