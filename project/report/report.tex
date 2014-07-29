@@ -35,6 +35,8 @@
 
 \maketitle
 
+\listoftodos
+
 \section*{Summary}
 
 This report is an analysis of the efficacy of different metaheuristic algorithms in solving a complex task allocation problem.
@@ -534,8 +536,8 @@ Appropriate initial and minimum temperature values are quite similar between dat
 
 On the small data set, geometric cooling seems to find the optimal solution more reliably than linear cooling. On the medium data set, geometric cooling seems to find better solutions in fewer iterations. On the large data set, linear seems to perform similarly to geometric.
 
-% TODO: reference data sets in the appendix
-% TODO: insert graph showing cost at each iteration on large data set
+\todo{reference data sets in the appendix}
+\missingfigure{insert graph showing cost at each iteration on large data set}
 
 \subsection{Genetic Algorithm} % Austin
 
@@ -687,7 +689,7 @@ This strikes a balance between exploitation of the previous best solution and ex
 
 \subsubsection{Hand Iterations}
 
-% TODO don't say "in this course", find the actual citation.
+\todo{don't say \"in this course\", find the actual citation.}
 As per the recommendations in this course, we set the following constants
 \begin{align*}
 c_1 = c_2 & = 1.4944 \\
@@ -858,7 +860,7 @@ The starting node is $\mathit{home}(1) = 4$, with parameters $\alpha = \beta = 1
 
 \subsubsubsection{Ant Travel}
 
-We first compute the cumulative desirability $\eta$ of this nodes neighbors, used to normalize the relative desirabilities later.
+We first compute the cumulative desirability $\eta$ of this node's neighbors, used to normalize the relative desirabilities later.
 
 $$
 \eta = \sum_{n \in N_4} \uptau_{4n}^\alpha d_{4n}^\beta = 6.2913
@@ -1045,13 +1047,13 @@ $$
 
 \subsubsection{Parameter Tuning}
 
-Our ACO implementation had four parameters (separate from our cost function) needing to be tuned, $\alpha, \beta, \rho, r_0$, the exploitation constant, exploration constant, pheromone evaporation rate and likelihood-of-exploitation probability, respectively. These parameters form a burrito-optimality frontier, where none can be changed without negatively impacting the entire system, however, such a burrito-optimal solution is not unique. In addition, several regions of the parameter space prevented convergence entirely.
+Our ACO implementation had four parameters (separate from our cost function) needing to be tuned, $\alpha, \beta, \rho, r_0$, the exploitation constant, exploration constant, pheromone evaporation rate and likelihood-of-exploitation probability, respectively. These parameters form a \todo{I like burritos, but...} burrito-optimality frontier, where none can be changed without negatively impacting the entire system, however, such a burrito-optimal solution is not unique. In addition, several regions of the parameter space prevented convergence entirely.
 
 The initial search strategy of this parameter space was conducted entirely randomly -- we generated 100 sets of random values for each parameter in the range of $\alpha, \rho, r_0 \in [0, 1], \beta \in [1, 2]$, and performed ten searches on the small data set to find the average case. If any set of parameters failed to converge in 20 iterations, it was immediately thrown out.
 
 We selected the parameter set which corresponded to the best average solution case and hand-tuned each variable sequentially to the nearest hundredth. Surprisingly, when mapping our new parameters to the larger problem sets, no amount of further hand-tuning was capable of finding a better solution in either domain. Thus, we consider the parameters $\alpha = 0.41, \beta = 1.15, \rho = 0.76, r_0 = 0.43$ to be burrito-optimal for the purposes of complex task allocation with ACO.
 
-That being said, however, despite being unable to come up with better solutions when tweaking the parameters, ACO's solutions for the large data set were qualitatively poor. Most solutions it converged to were obvious local optima; almost all of them were worse than 1.5x the best located solution by other metaheuristics. We spent over 4 mythical person-hours attempting to tweak these parameters to no avail. While researching this, it was noted that reseting the pheromone trail to a random solution after each iteration would perform better than maintaining it, implying our desirability function was non-reflexive.
+However, despite being unable to come up with better solutions when tweaking the parameters, ACO's solutions for the large data set were qualitatively poor. Most solutions it converged to were obvious local optima; almost all of them were worse than 1.5x the best located solution by other metaheuristics. We spent over 4 person-hours attempting to tweak these parameters to no avail. While researching this, it was noted that reseting the pheromone trail to a random solution after each iteration would perform better than maintaining it, implying our desirability function was non-reflexive.
 
 \newpage
 \section{Performance Evaluation}
@@ -1069,7 +1071,7 @@ The different scenarios will allow for qualitative analysis on the scalability o
 
 Our experimental data was generated randomly because there are no canonical data sets for the MRTA problem that we could find. For each of the data sets there were 6 different parameters generated randomly: a $\mathit{priority(task)}$ vector, a $\mathit{distance(node, node)}$ matrix, a $\mathit{skill(robot, task)}$ matrix, a $\mathit{task\,time(robot, task)}$ matrix, an $\mathit{energy(robot)}$ matrix and a $\mathit{velocity(robot)}$ vector.
 
-The experiment run was to evaluate each algorithms five times over each dataset. The algorithms were run on a single MacBook Pro with a 2.6Hz quad-core Intel Core-i7 processor, and 8GB of RAM to ensure numeric consistency between the individual optimization processes.
+The experiment run was to evaluate each algorithms five times over each dataset. The algorithms were run on a single MacBook Pro with a 2.3GHz quad-core Intel Core-i7 processor, and 16GB of RAM to ensure numeric consistency between the individual optimization processes.
 
 Each algorithm created a .csv file with a standardized output in an attempt to run identical analyses throughout. Such a system facilitated easy creation of graphs and other statistical tools. The analysis under discussion revealed some interesting results when compared over quantitative metrics.
 
