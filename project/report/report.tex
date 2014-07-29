@@ -97,7 +97,7 @@ In this paper, we determine the strengths and weaknesses of different metaheuris
 
 We will begin with a review of existing literature on the subject. Next, this report will present a problem formulation and model from which we will implement our algorithms.
 
-The paper then describes how the well-known Traveling Salesman Problem can be adjusted for use with Complex Task Allocation, and from there, identifies the criteria upon which each metaheuristic's technique performance is to be evaluated.
+The paper then describes how the well-known Traveling Salesman Problem can be adjusted for use with Complex Task Allocation, and from there, identifies the criteria upon which each metaheuristic technique's performance is to be evaluated.
 
 Afterwards, the results of running each technique are then presented against these performance criteria, and finally conclusions are drawn, with recommendations for future work.
 
@@ -284,7 +284,7 @@ The area of interest for the robots in the MRS can be represented as a two dimen
 \item \textbf{Fair division of salesmen}: There are constraints on the maximum amount of work that a robot can perform on their tour and so the required traveling should be distributed amongst the available agents in a relatively fair manner as defined by the problem parameters.
 \end{enumerate}
 
-In an MRS, there is heterogeneity in robot composition. This requires the augmentation of the ``salesman'' idea to support some differentiating factors. This report has identified 3 main features:
+In an MRS, there is heterogeneity in robot composition. This requires the augmentation of the ``salesman'' idea to support some differentiating factors. This report has identified 4 main features:
 
 \begin{enumerate}
 \item \textbf{Velocity}: Each robot has a speed at which they travel between tasks.
@@ -294,7 +294,7 @@ In an MRS, there is heterogeneity in robot composition. This requires the augmen
 
 \end{enumerate}
 
-In this MRTA problem, there is also heterogeneity in the tasks that are assigned to visit. For this reason, the idea of ``cities'' have been augmented with the following features:
+In this MRTA problem, there is also heterogeneity in the tasks that are assigned to visit. For this reason, the idea of ``cities'' have been augmented with the following features\todo{there's only one feature}:
 
 \begin{enumerate}
 \item \textbf{Priority}: Some tasks are more important that others and should be considered first.
@@ -463,7 +463,7 @@ $$S_{\text{best}} = [2, 0, 1, 3], \; \textit{cost}(S_{\text{best}}) = 2.9759$$
 
 Tabu search as described effectively has two parameters: tabu tenure and the number of considered neighbours. Note that in the hand iterations above, we consider all neighbours but for larger problems we would choose a number of random neighbours to consider.
 
-Emperically, we found that increasing the tabu tenure caused the algorithm to run slower but be less likely to become trapped in a local minima. Therefore, we reccomend a smaller tabu tenure for time sensitive applications and a larger tabu tenure for less constrainted offline analysis. A tabu tenure of 125 worked well for the large problem.
+Empirically, we found that increasing the tabu tenure caused the algorithm to run slower but be less likely to become trapped in a local minima. Therefore, we recommend a smaller tabu tenure for time sensitive applications and a larger tabu tenure for less constrained offline analysis. A tabu tenure of 125 worked well for the large problem.
 
 We found that increasing number of neighbours to consider did not have a substantial effect on iteration time; however did it affect the time to convergence. There was an optimal number of neighbours to consider for each problem size. Considering 10 neighbours for the large problem worked well.
 
@@ -471,7 +471,7 @@ We found that increasing number of neighbours to consider did not have a substan
 
 The simulated annealing metaheuristic is based on the physical annealing process, used to alter the properties of materials through controlled cooling.\cite{Kirkpatrick}
 
-A cost function specific to the problem is used to represent the ``energy'' of a particular solution, with the minimum energy state represents the optimal solution.
+A cost function specific to the problem is used to represent the ``energy'' of a particular solution, where the minimum energy state represents the optimal solution.
 Controlled cooling is used to find a near-optimal solution, similar to how particles settle into a stable, low-energy configuration in physical annealing.
 Since there is no concept of temperature in general optimization problems, an artificial temperature value $T$ is used to represent the temperature of the system.
 
@@ -634,7 +634,7 @@ Genetic Algorithm is a complex algorithm with many different parameters needing 
 
 One of the initial parameters we could tune are the crossover and mutation probabilities. The crossover probability did not seem to be a huge factor in convergence, values from $.6$ - $.95$ would all converge to the same values with relative ease.
 
-The mutation probability was chosen to be in the range $$\frac{1}{\text{Population Size}} <= p_\mathit{mutation} < \frac{1}{\text{Chromosome Length}}$$ and the mutation sites variable was modified so as many as $\frac{\text{Chromosome Length}}{2}$ swaps were preformed when a mutation needed to be performed.
+The mutation probability was chosen to be in the range $$\frac{1}{\text{Population Size}} <= p_\mathit{mutation} < \frac{1}{\text{Chromosome Length}}$$ and the mutation sites variable was modified so as many as $\frac{\text{Chromosome Length}}{2}$ swaps were performed when a mutation needed to be performed.
 
 The other modification we made after initially developing our algorithm was to change our stopping criteria from a strict number of iterations to a criterion by which we detect stagnation in the best solution and stop only then. This helps to fully explore the solution space and allows us to fairly compare this algorithm against our others.
 
