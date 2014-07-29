@@ -799,7 +799,7 @@ $$
 v_\mathit{next} = wv_\mathit{current} + c_1r_1(l_\mathit{best} - x) + c_2r_2(g_\mathit{best}-x)
 $$
 
-where $w$ is a constant representing a particle's inertia and $c_1, c_2$ are two pre-selected parameters to adjust the relative importance of a particle's individual memory versus the swarm's collective memory. 
+where $w$ is a constant representing a particle's inertia and $c_1, c_2$ are two pre-selected parameters to adjust the relative importance of a particle's individual memory versus the swarm's collective memory.
 
 The variables $r_1$ \& $r_2$ are random numbers $\in (0,1)$ that are generated on a per-iteration basis. $l_\mathit{best}$ is the best position in which a particle has found itself and $g_\mathit{best}$ is likewise defined for the swam collective.
 
@@ -817,13 +817,15 @@ with permutations. However, Clerc\cite{PermutationPSO} proposed a modification o
 Every particle's position is a candidate solution which is a permutation of tasks and homes and
 a particle's velocity consists of a set of swaps that should be performed on its position.
 
-Clerc then redefines the operations of position/velocity addition, position subtraction and scalar multiplication: 
+Clerc then redefines the operations of position/velocity addition, position subtraction and scalar multiplication:
 \begin{itemize}
 \item Adding a velocity to a position is defined as performing all of the swaps on the position.
 \item Multiplying a velocity by a scalar results in a new velocity that consists of $scalar\cdot |velocity|$ swaps; which is achieved through truncation or augmentation with swaps repeated from the existing velocity.
 \item Subtracting two positions results in a velocity that consists of the swaps needed to turn the first position into the second position.
 \end{itemize}
 Given these new operations, the classical PSO algorithm can be used as-is.
+
+Another consideration has been made to adapt to stagnation. When a more optimal solution has not been found for 15 iterations, then the particles are ``scattered''. They are all assigned random new positions and half of them retain the swarm's ``memory''. That is, half of the particles have an $l_\mathit{best}$ equal to the most optimal solution found by the swarm so far and the other half simply have an $l_\mathit{best}$ set to their new current position. This strikes a balance between exploitation of the previous best solution and exploration of new spaces.
 
 \subsubsection{Hand Iterations}
 
@@ -1016,7 +1018,7 @@ p_{43} &= 0.24933 \\
 p_{44} &= 0.23842
 \end{align*}
 
-This corresponds to the partially constructed canonical vector solution and energy of $robot_1$: 
+This corresponds to the partially constructed canonical vector solution and energy of $robot_1$:
 
 $$
 S(1) = \{4, 2\} \qquad \mathit{energy}(1) = 40.096
