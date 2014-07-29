@@ -139,7 +139,7 @@ Instead of including a robot aging factor, an energy capacity feature has been i
 
 Suppose we have a set of tasks, $\{1, 2, ..., n_\mathit{tasks}\}$, which need to be completed by a set of robots, $\{1, 2, ..., n_\mathit{robots}\}$.
 
-We seek a solution $S$ that consists of an assignment of each robot an ordered set of tasks for it to complete (known as a ``tour") such that each task is performed exactly once. Additionally, we aim to minimize the overall cost of the solution. Each tour begins and ends at the robot's ``home".
+We seek a solution $S$ that consists of assigning each robot an ordered set of tasks to complete (known as a ``tour"), such that each task is performed by exactly one robot. Additionally, we aim to minimize the overall cost of the solution. Each tour begins and ends at the robot's ``home".
 
 The notion of a $robot$'s path is formalized as:
 $$
@@ -161,9 +161,9 @@ $$
 $$
 which should be interpreted as
 \begin{itemize}
-\item $S(1) = \{ home_1, 3, 4, 2, home_1 \}$
-\item $S(2) = \{ home_2, home_2 \}$
-\item $S(3) = \{ home_3, 1, 5, home_3 \}$
+\item $S(1) = \{ \mathit{home}(1), 3, 4, 2, \mathit{home}(1) \}$
+\item $S(2) = \{ \mathit{home}(2), \mathit{home}(2) \}$
+\item $S(3) = \{ \mathit{home}(3), 1, 5, \mathit{home}(3) \}$
 \end{itemize}
 
 \subsubsection{Data Homogeneity}
@@ -209,9 +209,9 @@ $\beta$ is a normalization parameter that makes $\mathit{cost}_\mathit{time}$ di
 The time it takes to travel between tasks is a function of ``distance" and ``velocity." Each robot, $r$, may travel at a different velocity, measured in units distance per units time.
 $$\mathit{velocity}(r) > 0, \in \mathbb{R}$$
 Each task, $t$, may be a different distance from each other task, $u$. For simplicity, we represent home locations as tasks.
-$$\mathit{distance}(t, u) > 0, \in \mathbb{R}$$
+$$\mathit{distance}(t, u) \ge 0, \in \mathbb{R}$$
 
-Additionally, each robot, $r$, may complete each task, $t$, in a different amount of time.
+Additionally, each robot $r$ may complete each task $t$, in a different amount of time.
 $$\mathit{task \, time}(r, t) > 0, \in \mathbb{R}$$
 
 The total amount of time it takes for a robot $r$, to complete a tour $P$, is given by:
@@ -1079,11 +1079,18 @@ The other algorithms were suboptimal in either speed or optimality of solution, 
 
 \subsection{Small Scale}
 
-Our small scale problem featured a very small problem space with only 8! solutions and most of our metaheuristic algorithms were able to converge to the same solution. This data set displays some of the differences between the algorithms, both TS and SA were very effective by converging quickly on the optimal value. GA, ACO and PSO also converged to the optimal value, but more slowly than TS and SA. This is a property that we will see in the larger data sets where these differences are more pronounced.
+Our small dataset problem featured a very small permutation space with $8! = 40320$ possibilities, on which most of our metaheuristic algorithms were able to converge to the same solution. We take this as strong evidence of having found the optimal solution (though recall this is not a canonical dataset, so we are uncertain in this claim).
+
+The problem displays some of the differences between the algorithms, with both TS and SA being very effective with fast convergence to the optimal solution. GA, ACO and PSO also converged to the optimal value, but more slowly than TS and SA. This is a property that we will see in the larger datasets where said differences are more pronounced.
 
 \subsection{Medium Scale}
 
 \subsection{Large Scale}
+
+The large scale dataset was the most interesting of the three, and really differentiated between the five algorithms under consideration. We found significantly more variation in convergence speed and optimality of solutions on this dataset.
+
+The more complex algorithms had much more trouble converging as a result of the size of the problem space, owing partially in fact because some of algorithms scale to large problem sets much more effectively than others. Take, for example, the ACO implementation which runs on the order of $O(n^2)$ for traversing the graph. For comparison, TS has only to look at a random selection of the neighborhood to find an improving solution. 
+
 
 \begin{center}
 \begin{figure}
@@ -1101,13 +1108,18 @@ This paper has presented a comparative study of metaheuristic algorithms used wi
 
 We found that our algorithms had varied performance which is quite apparent in Figure 1. Simulated Annealing was our most successful algorithm due to a fast convergence rate with the most optimal solution. Simulated Annealing was known to be effective in solving problems similar to MRTA including Quadratic Assignment in previous papers\cite{Badreldin}, so this is not a particularly surprising discovery.
 
-The more complex algorithms were Ant Colony Optimization, Particle Swarm Optimization and Genetic Algorithm, none of which had incredible performances of convergence, though the latter did find very strong solutions. These algorithms were the most difficult to implement and optimize so their relatively poor performance is relatively expected. Each of these algorithms contains significantly more calculations per iteration and tuning parameters than their simpler alternatives.
+The more complicated algorithms were the P-Metaheuristic algorithms: Ant Colony Optimization, Particle Swarm Optimization and Genetic Algorithm. None of them had incredible speeds of convergence, though GA did find very strong solutions. These algorithms were the most difficult to implement and optimize so their relatively poor performance is to be expected. Each of these algorithms contains significantly more calculations per iteration and tuning parameters than their simpler alternatives.
+
+This difference in scaling is one of our primary concerns for future study because given algorithms with more effective scaling we may have been able to get better results from the P-Metaheuristic algorithms. Further optimizations are needed to implement these algorithms as efficiently as the S-Metaheuristic algorithms. 
+
+Since we had only intermediate experience writing MATLAB programs, we were unable to optimize our program as thoroughly as expert MATLAB programmers would have been capable. The choice of language also made an tremendously poor impact on speed; faster languages would certainly see hugely improved results. In addition to algorithmic improvements, each method had several internal parameters in need of tuning.
 
 Tuning the algorithms' various parameters was by far the most difficult aspect of the project, owing to the fact that we did not implement adaptive versions of the algorithms. Due to the stochastic nature of these algorithms, a qualitative evaluation of a set of parameters is very hard to perform. The sheer number of parameters also made it difficult to tune effectively because modification of one rarely lead to drastically different results, but modification of many did not lead itself to analysis.
 
 However, as is so often the case, it was modifications of the algorithms themselves that lead to the most drastic changes. For example, the GA algorithm originally used a generational model, but switching to a steady state model lead to much better parents for following generations. Additionally, this change lead to a faster convergence. 
 
 Furthermore, our PSO algorithm was also modified to not persist velocities between iterations. Due to the way velocity was defined, no sense of direction could possibly persist between positions. Thusly, after performing a swap between solutions, velocity would not apply, so it was thrown out entirely. This was one of our breakthroughs in the implementation of this algorithm, and significantly helped lead to convergence.
+
 
 \printbibliography
 
