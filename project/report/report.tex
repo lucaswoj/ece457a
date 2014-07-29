@@ -72,11 +72,11 @@ Tasks particularly well suited to MRSs include
 
 \subsection{Problem}
 
-In this report, we will determine the strengths and weaknesses of different metaheuristic algorithms in finding near-optimal solutions to complex task allocation problems. Complex task allocation, as defined in this assignment's problem statement, is
-\todo{this is rendering off the page for Sandy}
-\mbox{\blockquote{
+In this report, we will determine the strengths and weaknesses of different metaheuristic algorithms in finding near-optimal solutions to complex task allocation problems. Complex task allocation, as defined in this assignment's problem statement, is:
+\begin{quote}
   In mobile surveillance systems, complex task allocation addresses how to optimally assign a set of surveillance tasks to a set of mobile sensing agents to maximize overall expected performance, taking into account the priorities of the tasks and the skill ratings of the mobile robots.
-}}
+\end{quote}
+
 Replacing humans with robots in surveillance tasks -- and allocating those robots efficiently -- is important because areas under surveillance usually possess a high degree of danger.
 
 Efficiently finding near-optimal solutions to complex task allocation has broad implications beyond surveillance. In essence, this report answers the question ``which robot should perform which task?''\cite{Badreldin}
@@ -1069,13 +1069,13 @@ The different scenarios will allow for qualitative analysis on the scalability o
 
 Our experimental data was generated randomly because there are no canonical data sets for the MRTA problem that we could find. For each of the data sets there were 6 different parameters generated randomly: a $\mathit{priority(task)}$ vector, a $\mathit{distance(node, node)}$ matrix, a $\mathit{skill(robot, task)}$ matrix, a $\mathit{task\,time(robot, task)}$ matrix, an $\mathit{energy(robot)}$ matrix and a $\mathit{velocity(robot)}$ vector.
 
-%TODO add macbook pro stats
-Our experiment was to run each of our algorithms 5 times on each of the data sets and then compare this data. We ran it on a MacBook Pro with %%%%%%%%%%%%%%%%.
-Each algorithm output a standard format to a .csv file which allowed us to run the same analysis on data sets from different algorithms. This also made it simple to create graphs and average our data between trials. This analysis revealed some interesting results when we compared our quantitative metrics.
+The experiment run was to evaluate each algorithms five times over each dataset. The algorithms were run on a single MacBook Pro with a 2.6Hz quad-core Intel Core-i7 processor, and 8GB of RAM to ensure numeric consistency between the individual optimization processes.
 
-Our results revealed that each of the algorithms had some defining properties and displayed quite different performance charateristics. For example our TS algorithm was our fastest to converge and converged to a value that was reasonably low but it did not converge to the lowest value for our largest data sets. Our SA algorithm was slower to converge than TS, but it achieved the most optimal solution between all of our tested algorithms.
+Each algorithm created a .csv file with a standardized output in an attempt to run identical analyses throughout. Such a system facilitated easy creation of graphs and other statistical tools. The analysis under discussion revealed some interesting results when compared over quantitative metrics.
 
-Our other algorithms were neither the quickest to converge or were able to find the most optimal solution but they did have some positive performance characteristics. Our implementation of GA was effective in finding a good solution but it was much slower to converge to a value. PSO was able to find solutions for smaller scale problems, but for large problem sets it was slow and did not converge. This is the same situation for ACO which worked well for the small and medium problem sets, but could not converge for the large data set. 
+Our results revealed that each algorithm had both defining properties and a distinct performance profile. For example, the TS algorithm converged most quickly to a reasonable solution, but failed to find optimal solutions in most cases. Simulated Annealing converged more slowly, but resulted in the best solutions of the algorithms compared by this report.
+
+The other algorithms were suboptimal in either speed or optimality of solution, though they did have some positive performance characteristics. The GA implementation consistently found good solutions, but was found to converge very slowly. PSO and ACO both solved the smaller problem sets in record time, but neither performed well on the large dataset. 
 
 \subsection{Small Scale}
 
