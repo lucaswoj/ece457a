@@ -15,6 +15,7 @@
 \usepackage{pdfpages}
 
 \addbibresource{report.bib}
+\pagenumbering{gobble}
 
 \setcounter{secnumdepth}{5}
 \newcommand{\subsubsubsection}[1]{\paragraph{#1} \mbox{}}
@@ -35,6 +36,10 @@
 
 \maketitle
 
+\newpage
+
+\pagenumbering{roman}
+
 \section*{Summary}
 
 This report is an analysis of the efficacy of different metaheuristic algorithms in solving a complex task allocation problem.
@@ -49,6 +54,16 @@ The results of experimentation are as follows. The algorithm that produced the b
 If computation time needs to be minimized, then Tabu Search is able to produce the best solution in the shortest amount of time -- though its solutions are inferior to those produced by Simulated Annealing.
 
 In conclusions, this report recommends the use of Simulated Annealing for the purposes of Complex Task Allocation.
+
+\newpage
+
+\tableofcontents
+
+\listoffigures
+
+\newpage
+
+\pagenumbering{arabic}
 
 \section{Introduction}
 
@@ -1122,6 +1137,8 @@ However, as is so often the case, it was modifications of the algorithms themsel
 Furthermore, our PSO algorithm was also modified to not persist velocities between iterations. Due to the way velocity was defined, no sense of direction could possibly persist between positions. Thusly, after performing a swap between solutions, velocity would not apply, so it was thrown out entirely. This was one of our breakthroughs in the implementation of this algorithm, and significantly helped lead to convergence.
 
 This comparative study of metaheuristic algorithms revealed some interesting data, and we were able to draw some enlightening conclusions in this report. TS and SA were the most effective algorithms we developed, but the data from small scale problems show that our P-Metaheuristic algorithms are also able to solve MRTA optimization problems.  If better results are required one could create adaptive or cooperative versions of these algorithms in order to tune the algorithms to particular data sets. In conclusion, TS and SA are the most effective algorithms to solve MRTA optimization problems and they are also very easy to implement.
+
+\newpage
 
 \printbibliography
 
