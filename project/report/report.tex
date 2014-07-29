@@ -1244,6 +1244,14 @@ The different scenarios will allow for qualitative analysis on the scalability o
 
 Our experimental data was generated randomly because there are no canonical data sets for the MRTA problem that we could find. For each of the data sets there were 6 different parameters generated randomly: a $\mathit{Priority}$ matrix, a $\mathit{Distance}$ matrix, a $\mathit{Skill}$ matrix, a $\mathit{Task Time}$ matrix, an $\mathit{Energy}$ matrix and a $\mathit{Velocity}$ vector.
 
+%TODO add macbook pro stats
+Our experiment was to run each of our algorithms 5 times on each of the data sets and then compare this data. We ran it on a MacBook Pro with %%%%%%%%%%%%%%%%.
+Each algorithm output a standard format to a .csv file which allowed us to run the same analysis on data sets from different algorithms. This also made it simple to create graphs and average our data between trials. This analysis revealed some interesting results when we compared our quantitative metrics.
+
+Our results revealed that each of the algorithms had some defining properties and displayed quite different performance charateristics. For example our TS algorithm was our fastest to converge and converged to a value that was reasonably low but it did not converge to the lowest value for our largest data sets. Our SA algorithm was slower to converge than TS, but it achieved the most optimal solution between all of our tested algorithms.
+
+Our other algorithms were neither the quickest to converge or were able to find the most optimal solution but they did have some positive performance characteristics. Our implementation of GA was effective in finding a good solution but it was much slower to converge to a value. PSO was able to find solutions for smaller scale problems, but for large problem sets it was slow and did not converge. This is the same situation for ACO which worked well for the small and medium problem sets, but could not converge for the large data set. 
+
 \subsection{Small Scale}
 
 Our small scale problem featured a very small problem space with only 8! solutions and most of our metaheuristic algorithms were able to converge to the same solution. This data set displays some of the differences between the algorithms, both TS and SA were very effective by converging quickly on the optimal value. GA, ACO and PSO also converged to the optimal value, but more slowly than TS and SA. This is a property that we will see in the larger data sets where these differences are more pronounced.
@@ -1251,6 +1259,8 @@ Our small scale problem featured a very small problem space with only 8! solutio
 \subsection{Medium Scale}
 
 \subsection{Large Scale}
+
+
 
 \section{Conclusions \& Recommendations}
 % Report your observation and interpret obtained results. Briefly explain your
