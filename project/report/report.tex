@@ -757,7 +757,7 @@ $$S_\mathit{gbest} = [1, 2, 0, 3], \; cost(S_\mathit{gbest}) = 3.1617$$
 \subsubsection{Parameter Tuning}
 Particle Swarm Optimization has four main parameters to be tuned:
 
-$w$ is the inertia factor that determines how much of a particle's velocity is retained between iterations. $c_1, c_2$ which control the relative importance of an individual's memory versus that of the swarm, respectively. $n_{partices}$ is the number of particles used for simulation.\\
+$w$ is the inertia factor that determines how much of a particle's velocity is retained between iterations. $c_1, c_2$ which control the relative importance of an individual's memory versus that of the swarm, respectively. $n_{particles}$ is the number of particles used for simulation.\\
 
 Through empirical testing, it became apparent that a velocity did not retain any meaningful notion of direction between iterations. A set of swaps has a completely different impact depending on what position it is applied to. For this reason, $w$ was set to 0.
 
@@ -821,7 +821,7 @@ $$
 
 We then define an $r_0$ value that will be used to control the level of exploitation versus the level of exploration by the ants.
 For each state transition the ant makes, a random number, $r$, is generated.
-If $r<=r_0$ then the most desirable path (weighted by pheromones) is exploited, else if $r>r_0$
+If $r\leq r_0$ then the most desirable path (weighted by pheromones) is exploited, else if $r>r_0$
 a randomly selected path is explored. We will use a value of $r_0=0.43$.
 
 The most desirable path is defined as the neighboring node that maximizes:
