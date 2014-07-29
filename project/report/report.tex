@@ -139,7 +139,7 @@ Instead of including a robot aging factor, an energy capacity feature has been i
 
 Suppose we have a set of tasks, $\{1, 2, ..., n_\mathit{tasks}\}$, which need to be completed by a set of robots, $\{1, 2, ..., n_\mathit{robots}\}$.
 
-We seek a solution $S$ that consists of an assignment of each robot an ordered set of tasks for it to complete (known as a ``tour") such that each task is performed exactly once. Additionally, we aim to minimize the overall cost of the solution. Each tour begins and ends at the robot's ``home".
+We seek a solution $S$ that consists of assigning each robot an ordered set of tasks to complete (known as a ``tour"), such that each task is performed by exactly one robot. Additionally, we aim to minimize the overall cost of the solution. Each tour begins and ends at the robot's ``home".
 
 The notion of a $robot$'s path is formalized as:
 $$
@@ -161,9 +161,9 @@ $$
 $$
 which should be interpreted as
 \begin{itemize}
-\item $S(1) = \{ home_1, 3, 4, 2, home_1 \}$
-\item $S(2) = \{ home_2, home_2 \}$
-\item $S(3) = \{ home_3, 1, 5, home_3 \}$
+\item $S(1) = \{ \mathit{home}(1), 3, 4, 2, \mathit{home}(1) \}$
+\item $S(2) = \{ \mathit{home}(2), \mathit{home}(2) \}$
+\item $S(3) = \{ \mathit{home}(3), 1, 5, \mathit{home}(3) \}$
 \end{itemize}
 
 \subsubsection{Data Homogeneity}
@@ -209,9 +209,9 @@ $\beta$ is a normalization parameter that makes $\mathit{cost}_\mathit{time}$ di
 The time it takes to travel between tasks is a function of ``distance" and ``velocity." Each robot, $r$, may travel at a different velocity, measured in units distance per units time.
 $$\mathit{velocity}(r) > 0, \in \mathbb{R}$$
 Each task, $t$, may be a different distance from each other task, $u$. For simplicity, we represent home locations as tasks.
-$$\mathit{distance}(t, u) > 0, \in \mathbb{R}$$
+$$\mathit{distance}(t, u) \ge 0, \in \mathbb{R}$$
 
-Additionally, each robot, $r$ may complete each task, $t$, in a different amount of time.
+Additionally, each robot $r$ may complete each task $t$, in a different amount of time.
 $$\mathit{task \, time}(r, t) > 0, \in \mathbb{R}$$
 
 The total amount of time it takes for a robot $r$, to complete a tour $P$, is given by:
