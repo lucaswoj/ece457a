@@ -286,20 +286,15 @@ The area of interest for the robots in the MRS can be represented as a two dimen
 \item \textbf{Fair division of salesmen}: There are constraints on the maximum amount of work that a robot can perform on their tour and so the required traveling should be distributed amongst the available agents in a relatively fair manner as defined by the problem parameters.
 \end{enumerate}
 
-In an MRS, there is heterogeneity in robot composition. This requires the augmentation of the ``salesman'' idea to support some differentiating factors. This report has identified 4 main features:
+In an MRS, there is heterogeneity in robot composition, as well as the tasks that are assigned to visit. This requires the augmentation of the ``salesman'' and ``city'' ideas to support some differentiating factors. This report has identified 5 main features:
 
 \begin{enumerate}
 \item \textbf{Velocity}: Each robot has a speed at which they travel between tasks.
 \item \textbf{Energy}: Each robot has an energy capacity that restricts how long it can be away from its home node.
 \item \textbf{Skill}: Each robot has a skill rating that represents its ability to complete a task.
 \item \textbf{Task Completion Time}: Robots do not necessarily take the same amount of time to complete a task.
+\item \textbf{Priority}: Some tasks are more important than others and should be considered first.
 
-\end{enumerate}
-
-In this MRTA problem, there is also heterogeneity in the tasks that are assigned to visit. For this reason, the idea of ``cities'' have been augmented with the following features\todo{there's only one feature}:
-
-\begin{enumerate}
-\item \textbf{Priority}: Some tasks are more important that others and should be considered first.
 \end{enumerate}
 
 The next section describes the graph that will be constructed for use with mTSP.
