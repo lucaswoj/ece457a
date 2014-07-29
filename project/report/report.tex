@@ -35,8 +35,6 @@
 
 \maketitle
 
-\listoftodos
-
 \section*{Summary}
 
 This report is an analysis of the efficacy of different metaheuristic algorithms in solving a complex task allocation problem.
@@ -364,7 +362,7 @@ The distances between tasks and home locations are:
 \newpage
 \section{Proposed Solution}
 
-In this section, we will consider five metahuristics in the context of complex task allocation:
+In this section, we will consider five metaheuristics in the context of complex task allocation:
 \begin{itemize}
 \item tabu search
 \item simulated annealing
@@ -375,7 +373,7 @@ In this section, we will consider five metahuristics in the context of complex t
 
 In the following subsections, we will, for each metaheuristic, provide a brief
 high level description of the algorithm, show and explain two ``hand iterations"
-on the reduced problem, and provide a Matlab implementation.
+on the reduced problem, and provide a MATLAB implementation.
 
 All hand iterations will use $\alpha = 0.5$, treating time and quality costs
 equally, and $\beta = 0.06979$, calculated as specified in section 3.2.1. Where applicable
@@ -585,7 +583,7 @@ S_{1,2} = [2, 0, 3, 1], & \qquad cost(S_{1,2}) = 3.0201
 \end{align*}
 
 
-Another random number is genereated: $r=0.65$, another crossover. This crossover will be between $S_{0,2}$ and $S_{0,4}$, with crossover points as 2 and 4. This yields two more children:
+Another random number is generated: $r=0.65$, another crossover. This crossover will be between $S_{0,2}$ and $S_{0,4}$, with crossover points as 2 and 4. This yields two more children:
 
 \begin{align*}
 S_{1,3} = [3, 2, 0, 1], & \qquad cost(S_{1,3}) = 3.6619 \\
@@ -690,8 +688,7 @@ This strikes a balance between exploitation of the previous best solution and ex
 
 \subsubsection{Hand Iterations}
 
-\todo{don't say \"in this course\", find the actual citation.}
-As per the recommendations in this course, we set the following constants
+As is generally recommended when using PSO, we initialize the constants $c_1, c_2$ and $w$ as
 \begin{align*}
 c_1 = c_2 & = 1.4944 \\
 w & = 0.792
