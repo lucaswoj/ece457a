@@ -7,13 +7,13 @@ function bestSolution = solve(iterations = 10)
     numNodes = homes(end) - 1;
     numTasks = homes(1) - 1;
 
-    tau = ones(numNodes + 1);
+    tau = rand(numNodes + 1);
 
     bestAge = 0;
-    maxAge = 100;
+    maxAge = 50;
 
     exploitConst = 0.41;
-    exploreConst = 2;
+    exploreConst = 1.15;
     rho = 0.76;
     rnaught = 0.43;
     numAnts = 3;
