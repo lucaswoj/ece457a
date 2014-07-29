@@ -5,9 +5,9 @@
 
 \documentclass[a4paper]{article}
 
-\newcommand{\addbibresource}[1]{}
-\newcommand{\printbibliography}{}
-%\usepackage[style=ieee,sorting=none,dateabbrev=false,backend=biber]{biblatex}
+%\newcommand{\addbibresource}[1]{}
+%\newcommand{\printbibliography}{}
+\usepackage[style=ieee,sorting=none,dateabbrev=false,backend=biber]{biblatex}
 \usepackage[english]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
@@ -53,7 +53,7 @@ Unfortunately, we were unable to find a canonical dataset for this problem, and 
 
 The results of experimentation are as follows. The algorithm that produced the best solution was Simulated Annealing, at the cost of a relatively large number of iterations to achieve convergence.
 
-If computation time needs to be minimized, then ALGORITHM is able to produce the most optimal solution in \todo{fill this out}SMALLER NUMBER of ITERATIONS.
+If computation time needs to be minimized, then Tabu Search is able to produce the best solution in the shortest amount of time -- though its solutions are inferior to those produced by Simulated Annealing.
 
 In conclusions, this report recommends the use of Simulated Annealing for the purposes of Complex Task Allocation.
 
@@ -1261,14 +1261,15 @@ Our experimental data was generated randomly because there are no canonical data
 This paper has presented a comparative study of metaheuristic algorithms used within an optimization based approach to solving the MRTA problem. Five metaheuristics were considered: Tabu Search, Simulated Annealing, Genetic Algorithms, Particle Swarm optimization, and Ant Colony Optimization.
 
 %TODO insert figure reference
-We found that our algorithms had varied performance which is quite apparent in SOMEFIGURESTHATWETALKABOUTHERE. Simulated Annealing was our most successful algorithm because it both converged very quickly, and achieved the most optimal solution. Simulated Annealing was known to be effective in solving problems similar to MRTA including Quadradic Assignment in previous papers, so it is not a suprising discovery\cite{Badreldin}.
+We found that our algorithms had varied performance which is quite apparent in \todo{figure out what this should be}Figure xx.xx?. Simulated Annealing was our most successful algorithm due to a fast convergence rate with the most optimal solution. Simulated Annealing was known to be effective in solving problems similar to MRTA including Quadratic Assignment in previous papers\cite{Badreldin}, so this is not a particularly surprising discovery.
 
-Our more complex algorithms were Ant Colony Optimization, Particle Swarm Optimization and Genetic Algorithm and they all did not perform to our hopes and expectations. These algorithms were the most difficult to implement and optimize so it is not surprising that they were slower than our more simple algorithms. Each of these algorithms contains many more calculations per iteration than TS and SA and the also contain many more tuning parameters.
+The more complex algorithms were Ant Colony Optimization, Particle Swarm Optimization and Genetic Algorithm, none of which had incredible performances of convergence, though the latter did find very strong solutions. These algorithms were the most difficult to implement and optimize so their relatively poor performance is relatively expected. Each of these algorithms contains significantly more calculations per iteration and tuning parameters than their simpler alternatives.
 
-The tuning parameters were very hard to modify manually because we did not develop adaptive versions of our algorithms. It is hard to determine if the parameter tuning was successful because of the variance between runs of the same algorithm. The number of parameters also made it difficult to tune effectively because if we modified one at a time it was difficult to see major improvements, but if we modified more than one at a time it would be difficult to tell what caused improvement.
+Tuning the algorithms' various parameters was by far the most difficult aspect of the project, owing to the fact that we did not implement adaptive versions of the algorithms. Due to the stochastic nature of these algorithms, a qualitative evaluation of a set of parameters is very hard to perform. The sheer number of parameters also made it difficult to tune effectively because modification of one rarely lead to drastically different results, but modification of many did not lead itself to analysis.
 
-The most effective way we were able to modify our algorithms was to modify the methods that they used to generate new solutions because they could give us major improvements in speed. For example in our GA algorithm we originally used a generational model; by switching to a steady state model we were able to pick much better parents for our next generations and converge much faster. We also modified our PSO to not persist a velocity between iterations because the way velocity is defined it does not persist a sense of direction across positions. Thus when we made a swap between solutions the velocity value does not apply, so we simply throw it out. This was one of our breakthroughs while implementing this algorithm and helped us get a converging algorithm.
+However, as is so often the case, it was modifications of the algorithms themselves that lead to the most drastic changes. For example, the GA algorithm originally used a generational model, but switching to a steady state model lead to much better parents for following generations. Additionally, this change lead to a faster convergence. 
 
+Furthermore, our PSO algorithm was also modified to not persist velocities between iterations. Due to the way velocity was defined, no sense of direction could possibly persist between positions. Thusly, after performing a swap between solutions, velocity would not apply, so it was thrown out entirely. This was one of our breakthroughs in the implementation of this algorithm, and significantly helped lead to convergence.
 
 
 \printbibliography
