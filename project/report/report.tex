@@ -605,6 +605,14 @@ We decrement the tenure of all elements in the tabu list. Since this solution wa
 After two iterations, we have
 $$S_{\text{best}} = [2, 0, 1, 3], \; \textit{cost}(S_{\text{best}}) = 2.9759$$
 
+\subsubsection{Parameter Tuning}
+
+Tabu search as described effectively has two parameters: tabu tenure and the number of considered neighbours. Note that in the hand iterations above, we consider all neighbours but for larger problems we would choose a number of random neighbours to consider.
+
+Emperically, we found that increasing the tabu tenure caused the algorithm to run slower but be less likely to become trapped in a local minima. Therefore, we reccomend a smaller tabu tenure for time sensitive applications and a larger tabu tenure for less constrainted offline analysis. A tabu tenure of 125 worked well for the large problem.
+
+We found that increasing number of neighbours to consider did not have a substantial effect on iteration time; however did it affect the time to convergence. There was an optimal number of neighbours to consider for each problem size. Considering 10 neighbours for the large problem worked well.
+
 \subsection{Simulated Annealing Algorithm} % Dane
 
 The simulated annealing metaheuristic is based on the physical annealing process, used to alter the properties of materials through controlled cooling.\cite{Kirkpatrick}
@@ -613,7 +621,7 @@ A cost function specific to the problem is used to represent the ``energy'' of a
 Controlled cooling is used to find a near-optimal solution, similar to how particles settle into a stable, low-energy configuration in physical annealing.
 Since there is no concept of temperature in general optimization problems, an artificial temperature value $T$ is used to represent the temperature of the system.
 
-The algorithm begins with a random solution. At each iteration, a neighboring solution is chosen at random. The probability of selecting this new solution over the old solution is $\mathit{P}(\Delta{}E) = e^{-\frac{\Delta{}E}{k_{B}T}}$, based on the Boltzmann probability factor.\cite{Kirkpatrick} 
+The algorithm begins with a random solution. At each iteration, a neighboring solution is chosen at random. The probability of selecting this new solution over the old solution is $\mathit{P}(\Delta{}E) = e^{-\frac{\Delta{}E}{k_{B}T}}$, based on the Boltzmann probability factor.\cite{Kirkpatrick}
 
 This probability function ensures that any improving solution is accepted, and that there is a possibility to accept any non-improving solution when $T>0$. Given a high temperature, there is a large probability of selecting non-improving solutions, which decreases as the temperature decreases. As the algorithm reaches the minimum temperature, it should converge to an optimal or near-optimal solution.
 
@@ -679,7 +687,7 @@ On the small data set, geometric cooling seems to find the optimal solution more
 
 Genetic algorithms cover a large group of similar algorithms, so for our comparative study it is necessary to specify an instance of Genetic Algorithm that solves the problem adequately.
 
-Since this is a permutation problem we are unable to encode the solution as a binary string; thus it is necessary to use a version of Genetic Algorithm which can handle permutations. 
+Since this is a permutation problem we are unable to encode the solution as a binary string; thus it is necessary to use a version of Genetic Algorithm which can handle permutations.
 
 To initialize the solver we choose a random starting solution for each individual and then start iterating. Each iteration will consist of crossover, mutation and then survivor selection, each step of which must be customized for the problem set. Each step has many alternatives between which it is necessary to choose.
 
@@ -1196,12 +1204,12 @@ Our experimental data was generated randomly because there are no canonical data
 % if appropriate, but avoid making your report into a check-list or a series of
 % encrypted notes.
 
-This paper has presented a comparative study of metaheuristic algorithms used within an optimization based approach to solving the MRTA problem. Five metaheuristics were considered: Tabu Search, Simulated Annealing, Genetic Algorithms, Particle Swarm optimization, and Ant Colony Optimization. 
+This paper has presented a comparative study of metaheuristic algorithms used within an optimization based approach to solving the MRTA problem. Five metaheuristics were considered: Tabu Search, Simulated Annealing, Genetic Algorithms, Particle Swarm optimization, and Ant Colony Optimization.
 
 %TODO insert figure reference
-We found that our algorithms had varied performance which is quite apparent in SOMEFIGURESTHATWETALKABOUTHERE. Simulated Annealing was our most successful algorithm because it both converged very quickly, and achieved the most optimal solution. Simulated Annealing was known to be effective in solving problems similar to MRTA including Quadradic Assignment in previous papers, so it is not a suprising discovery\cite{Badreldin}. 
+We found that our algorithms had varied performance which is quite apparent in SOMEFIGURESTHATWETALKABOUTHERE. Simulated Annealing was our most successful algorithm because it both converged very quickly, and achieved the most optimal solution. Simulated Annealing was known to be effective in solving problems similar to MRTA including Quadradic Assignment in previous papers, so it is not a suprising discovery\cite{Badreldin}.
 
-Our more complex algorithms were Ant Colony Optimization, Particle Swarm Optimization and Genetic Algorithm and they all did not perform to our hopes and expectations. These algorithms were the most difficult to implement and optimize so it is not surprising that they were slower than our more simple algorithms. Each of these algorithms contains many more calculations per iteration than TS and SA and the also contain many more tuning parameters. 
+Our more complex algorithms were Ant Colony Optimization, Particle Swarm Optimization and Genetic Algorithm and they all did not perform to our hopes and expectations. These algorithms were the most difficult to implement and optimize so it is not surprising that they were slower than our more simple algorithms. Each of these algorithms contains many more calculations per iteration than TS and SA and the also contain many more tuning parameters.
 
 The tuning parameters were very hard to modify manually because we did not develop adaptive versions of our algorithms. It is hard to determine if the parameter tuning was successful because of the variance between runs of the same algorithm. The number of parameters also made it difficult to tune effectively because if we modified one at a time it was difficult to see major improvements, but if we modified more than one at a time it would be difficult to tell what caused improvement.
 
