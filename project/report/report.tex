@@ -685,6 +685,8 @@ On the small data set, geometric cooling seems to find the optimal solution more
 
 \subsection{Genetic Algorithm} % Austin
 
+Genetic Algorithm(GA) is a class of algorithms that use techniques from natural selection and biology in order to solve optimization problems. The basic idea of GA is to simulate a population of animals that breed and experience selection pressure to evolve to the optimal solution. The population is modified according to methods that are taken from nature including sexual recombination and mutation. Sexual recombination is modeled by crossover functions and mutation is modeled by mutation functions.
+
 Genetic algorithms cover a large group of similar algorithms, so for our comparative study it is necessary to specify an instance of Genetic Algorithm that solves the problem adequately.
 
 Since this is a permutation problem we are unable to encode the solution as a binary string; thus it is necessary to use a version of Genetic Algorithm which can handle permutations.
@@ -1243,6 +1245,8 @@ The different scenarios will allow for qualitative analysis on the scalability o
 Our experimental data was generated randomly because there are no canonical data sets for the MRTA problem that we could find. For each of the data sets there were 6 different parameters generated randomly: a $\mathit{Priority}$ matrix, a $\mathit{Distance}$ matrix, a $\mathit{Skill}$ matrix, a $\mathit{Task Time}$ matrix, an $\mathit{Energy}$ matrix and a $\mathit{Velocity}$ vector.
 
 \subsection{Small Scale}
+
+Our small scale problem featured a very small problem space with only 8! solutions and most of our metaheuristic algorithms were able to converge to the same solution. This data set displays some of the differences between the algorithms, both TS and SA were very effective by converging quickly on the optimal value. GA, ACO and PSO also converged to the optimal value, but more slowly than TS and SA. This is a property that we will see in the larger data sets where these differences are more pronounced.
 
 \subsection{Medium Scale}
 
